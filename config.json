@@ -1,6 +1,6 @@
 {
     "alert": {
-        "show": true,
+        "show": false,
         "autoDismiss": true,
         "duration": "fast",
         "color": "blue",
