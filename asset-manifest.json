@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/imaps-app/static/css/main.71adb81b.css",
-    "main.js": "/imaps-app/static/js/main.8608cf52.js",
+    "main.css": "/imaps-app/static/css/main.b0b21943.css",
+    "main.js": "/imaps-app/static/js/main.8b788ffa.js",
     "static/css/7055.6a28dad8.chunk.css": "/imaps-app/static/css/7055.6a28dad8.chunk.css",
     "static/js/7055.0a114592.chunk.js": "/imaps-app/static/js/7055.0a114592.chunk.js",
     "static/js/9289.305cdbc1.chunk.js": "/imaps-app/static/js/9289.305cdbc1.chunk.js",
@@ -13,12 +13,12 @@
     "static/js/8340.68306b32.chunk.js": "/imaps-app/static/js/8340.68306b32.chunk.js",
     "static/css/4816.c3f14b96.chunk.css": "/imaps-app/static/css/4816.c3f14b96.chunk.css",
     "static/js/4816.31dc345d.chunk.js": "/imaps-app/static/js/4816.31dc345d.chunk.js",
-    "static/css/8388.cfd91914.chunk.css": "/imaps-app/static/css/8388.cfd91914.chunk.css",
+    "static/css/8388.dfeb4cdd.chunk.css": "/imaps-app/static/css/8388.dfeb4cdd.chunk.css",
     "static/js/8388.4a64611e.chunk.js": "/imaps-app/static/js/8388.4a64611e.chunk.js",
     "static/js/738.217c835e.chunk.js": "/imaps-app/static/js/738.217c835e.chunk.js",
     "static/js/345.c4ddff7a.chunk.js": "/imaps-app/static/js/345.c4ddff7a.chunk.js",
     "static/js/7832.42ea617d.chunk.js": "/imaps-app/static/js/7832.42ea617d.chunk.js",
-    "static/js/4978.fe49dcb8.chunk.js": "/imaps-app/static/js/4978.fe49dcb8.chunk.js",
+    "static/js/2999.7c05d669.chunk.js": "/imaps-app/static/js/2999.7c05d669.chunk.js",
     "static/js/2882.f6fc5420.chunk.js": "/imaps-app/static/js/2882.f6fc5420.chunk.js",
     "static/js/8023.c39539ac.chunk.js": "/imaps-app/static/js/8023.c39539ac.chunk.js",
     "static/js/4473.f7512806.chunk.js": "/imaps-app/static/js/4473.f7512806.chunk.js",
@@ -268,8 +268,8 @@
     "static/js/5036.6de82512.chunk.js": "/imaps-app/static/js/5036.6de82512.chunk.js",
     "static/js/3907.2d9c53af.chunk.js": "/imaps-app/static/js/3907.2d9c53af.chunk.js",
     "index.html": "/imaps-app/index.html",
-    "main.71adb81b.css.map": "/imaps-app/static/css/main.71adb81b.css.map",
-    "main.8608cf52.js.map": "/imaps-app/static/js/main.8608cf52.js.map",
+    "main.b0b21943.css.map": "/imaps-app/static/css/main.b0b21943.css.map",
+    "main.8b788ffa.js.map": "/imaps-app/static/js/main.8b788ffa.js.map",
     "7055.6a28dad8.chunk.css.map": "/imaps-app/static/css/7055.6a28dad8.chunk.css.map",
     "7055.0a114592.chunk.js.map": "/imaps-app/static/js/7055.0a114592.chunk.js.map",
     "9289.305cdbc1.chunk.js.map": "/imaps-app/static/js/9289.305cdbc1.chunk.js.map",
@@ -281,12 +281,12 @@
     "8340.68306b32.chunk.js.map": "/imaps-app/static/js/8340.68306b32.chunk.js.map",
     "4816.c3f14b96.chunk.css.map": "/imaps-app/static/css/4816.c3f14b96.chunk.css.map",
     "4816.31dc345d.chunk.js.map": "/imaps-app/static/js/4816.31dc345d.chunk.js.map",
-    "8388.cfd91914.chunk.css.map": "/imaps-app/static/css/8388.cfd91914.chunk.css.map",
+    "8388.dfeb4cdd.chunk.css.map": "/imaps-app/static/css/8388.dfeb4cdd.chunk.css.map",
     "8388.4a64611e.chunk.js.map": "/imaps-app/static/js/8388.4a64611e.chunk.js.map",
     "738.217c835e.chunk.js.map": "/imaps-app/static/js/738.217c835e.chunk.js.map",
     "345.c4ddff7a.chunk.js.map": "/imaps-app/static/js/345.c4ddff7a.chunk.js.map",
     "7832.42ea617d.chunk.js.map": "/imaps-app/static/js/7832.42ea617d.chunk.js.map",
-    "4978.fe49dcb8.chunk.js.map": "/imaps-app/static/js/4978.fe49dcb8.chunk.js.map",
+    "2999.7c05d669.chunk.js.map": "/imaps-app/static/js/2999.7c05d669.chunk.js.map",
     "2882.f6fc5420.chunk.js.map": "/imaps-app/static/js/2882.f6fc5420.chunk.js.map",
     "8023.c39539ac.chunk.js.map": "/imaps-app/static/js/8023.c39539ac.chunk.js.map",
     "4473.f7512806.chunk.js.map": "/imaps-app/static/js/4473.f7512806.chunk.js.map",
@@ -519,7 +519,7 @@
     "3907.2d9c53af.chunk.js.map": "/imaps-app/static/js/3907.2d9c53af.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.71adb81b.css",
-    "static/js/main.8608cf52.js"
+    "static/css/main.b0b21943.css",
+    "static/js/main.8b788ffa.js"
   ]
 }
