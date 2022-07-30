@@ -5,7 +5,7 @@ import ActionToggle from "@arcgis/core/support/actions/ActionToggle";
 import LayerList from "@arcgis/core/widgets/LayerList";
 import { lazy, Suspense } from "react";
 import { createRoot } from "react-dom/client";
-const OpacitySlider = lazy(() => import("../Layers/OpacitySlider"));
+const OpacitySlider = lazy(() => import("../OpacitySlider"));
 
 export function initializeLayers(
   ref: HTMLDivElement,

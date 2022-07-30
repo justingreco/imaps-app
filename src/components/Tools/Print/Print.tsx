@@ -31,7 +31,7 @@ import {
   getTemplateName,
   getCustomElements,
   exportMap,
-} from "./utils";
+} from "./utils/print";
 function Print(args: any) {
   const loaded = useRef(false);
   const customScaleSelect = useRef(null);

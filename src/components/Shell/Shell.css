@@ -46,3 +46,7 @@ calcite-loader {
   right: 0;
   top: 0;
 }
+
+calcite-action-bar {
+  min-width: 50px;
+}

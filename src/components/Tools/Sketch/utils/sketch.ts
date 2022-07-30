@@ -6,6 +6,8 @@ import Color from "@arcgis/core/Color";
 import SimpleFillSymbol from "@arcgis/core/symbols/SimpleFillSymbol";
 import SimpleLineSymbol from "@arcgis/core/symbols/SimpleLineSymbol";
 import TextSymbol from "@arcgis/core/symbols/TextSymbol";
+import WebStyleSymbol from "@arcgis/core/symbols/WebStyleSymbol";
+import request from "@arcgis/core/request";
 
 let pointLayer: GraphicsLayer;
 let polylineLayer: GraphicsLayer;
@@ -93,7 +95,9 @@ function addGraphic(e: any) {
     if (e.graphic.geometry.type === "polygon") {
       e.graphic.symbol = fillSymbol;
       sketchLayer.polygonLayer.add(e.graphic);
-      setTimeout(() => polygonSketchViewModel.updateGraphics.add(e.graphic));
+      console.log(e.graphic.symbol.color);
+
+   //   setTimeout(() => polygonSketchViewModel.updateGraphics.add(e.graphic));
 
       polygonSketchViewModel.create(e.tool);
     }
@@ -137,12 +141,13 @@ export function polygonSymbolUpdated(
   width: number
 ) {
   fillSymbol.color = fillColor;
+  console.log(fillSymbol.color);
   fillSymbol.outline.color = outlineColor;
   fillSymbol.outline.width = width;
   polygonSketchViewModel.activeFillSymbol = fillSymbol;
-  polygonSketchViewModel.updateGraphics.forEach((graphic) => {
-    graphic.symbol = fillSymbol;
-  });
+  // polygonSketchViewModel.updateGraphics.forEach((graphic) => {
+  //   graphic.symbol = fillSymbol;
+  // });
 }
 
 export function polylineSymbolUpdated(lineColor: Color, width: number) {
@@ -184,4 +189,20 @@ export function clearSketch(setActiveTool: Function) {
   sketchLayer.pointLayer.graphics.removeAll();
   sketchLayer.polylineLayer.graphics.removeAll();
   sketchLayer.textLayer.graphics.removeAll();
+}
+
+
+
+export function getSymbols(){
+  return new Promise((resolve, reject) => {
+    const symbol: WebStyleSymbol = new WebStyleSymbol({
+      styleUrl: "http://www.arcgis.com/sharing/rest/content/items/70ccf6bcbd304773a164be896e76edd3/data",
+      name: "Centered Sphere"
+    });
+  
+    request(symbol.styleUrl).then(result => {
+      resolve(result.data.items);
+    })
+  });
+
 }

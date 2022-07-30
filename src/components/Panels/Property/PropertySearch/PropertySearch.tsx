@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { initializeSearch } from "./utils";
+import { initializeSearch } from "../utils/search";
 import "./PropertySearch.css";
 function PropertySearch(args: any) {
   const ref = useRef<HTMLDivElement>(null);

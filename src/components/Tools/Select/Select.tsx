@@ -17,7 +17,7 @@ import {
   bufferProperty,
   createSketch,
   initializeSelect,
-} from "./utils";
+} from "./utils/select";
 import SketchViewModel from "@arcgis/core/widgets/Sketch/SketchViewModel";
 export const Select = (args: any) => {
   const ref = useRef() as any;

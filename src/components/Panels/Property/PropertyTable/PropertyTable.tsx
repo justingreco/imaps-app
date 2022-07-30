@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { initializeFeatureTable, updateTable } from "./utils";
+import { initializeFeatureTable, updateTable } from "../utils/table";
 
 function PropertyTable(args: any) {
   const ref = useRef() as any;

@@ -44,9 +44,9 @@ function LineSymbols(args: any) {
         id="line"
         label="Line"
         color={lineColor.toRgba()}
-        colorSet={(color: any) => {
-          setLineColor(color);
-          args.polylineSymbolUpdated(lineColor, width);
+        colorSet={(c: any) => {
+          setLineColor(c);
+          args.polylineSymbolUpdated(c, width);
         }}
       ></ColorButton>
       <SizeSlider

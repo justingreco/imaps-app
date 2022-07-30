@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { initializeFeatureTable, updateTable } from "./utils";
+import { initializeFeatureTable, updateTable } from "../utils/addresses";
 import "./AddressTable.css";
 function AddressTable(args: any) {
   const ref = useRef() as any;

@@ -1,6 +1,6 @@
 import React from "react";
 import { useEffect, useRef, useState } from "react";
-import { initializeBookmarks } from "./utils";
+import { initializeBookmarks } from "./utils/bookmarks";
 import "./Bookmarks.css";
 export const Bookmarks = (args: any) => {
   const bookmarkRef = useRef() as any;

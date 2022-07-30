@@ -9,11 +9,13 @@ import "@esri/calcite-components/dist/components/calcite-label";
 import "./Sketch.css";
 import Color from "@arcgis/core/Color";
 import {
+  CalciteAction,
   CalciteButton,
   CalciteColorPicker,
   CalciteColorPickerSwatch,
   CalciteInput,
   CalciteLabel,
+  CalcitePanel,
   CalcitePopover,
   CalciteSlider,
 } from "@esri/calcite-components-react";
@@ -22,17 +24,17 @@ import React, { useEffect, useRef, useState } from "react";
 function ColorButton(args: any) {
   const popover = useRef<HTMLCalcitePopoverElement>(null);
   const picker = useRef<HTMLCalciteColorPickerElement>(null);
-  const [color, setColor] = useState<any>();
+  const [color, setColor] = useState<Color>();
   const [transparency, setTransparency] = useState<any>(0);
   useEffect(() => {
     if (args.color) {
-      setColor(args.color);
+      setColor(new Color(args.color));
       setTransparency((1 - args.color[3]) * 100);
     }
-  }, []);
+  }, [args.color]);
 
   return (
-    <div>
+    <div id={args.id}>
       <CalciteLabel>
         {args.label} Color
         <CalciteButton
@@ -42,7 +44,7 @@ function ColorButton(args: any) {
           color="neutral"
           appearance="outline"
         >
-          <CalciteColorPickerSwatch color={color}></CalciteColorPickerSwatch>
+          <CalciteColorPickerSwatch color={color?.toHex()}></CalciteColorPickerSwatch>
         </CalciteButton>
       </CalciteLabel>
       <CalcitePopover
@@ -52,14 +54,28 @@ function ColorButton(args: any) {
         label={""}
         referenceElement={`${args.id}-popover-button`}
       >
+        <CalcitePanel heading="Color">
+        <CalciteAction
+            icon="x"
+            text=""
+            slot="header-actions-end"
+            onClick={() => {
+              popover.current?.toggle();
+              const c = new Color(color);
+              c.a = 1 - transparency / 100;
+              args.colorSet(c);
+            }}
+          ></CalciteAction>
         <CalciteColorPicker
           ref={picker}
           hideSaved
           hideHex
           hideChannels
-          onCalciteColorPickerInput={(e) => setColor(e.target.value)}
+          value={color ? color.toHex() : '#FF0000'}
+          onCalciteColorPickerInput={(e) => setColor(new Color(e.target.value))}
         ></CalciteColorPicker>
-        <CalciteButton
+        </CalcitePanel>
+        {/* <CalciteButton
           width="full"
           onClick={() => {
             popover.current?.toggle();
@@ -69,7 +85,7 @@ function ColorButton(args: any) {
           }}
         >
           Done
-        </CalciteButton>
+        </CalciteButton> */}
       </CalcitePopover>
       {!args.hideTransparency && (
         <CalciteLabel>

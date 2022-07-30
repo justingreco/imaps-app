@@ -19,7 +19,7 @@ import {
 } from "@esri/calcite-components-react";
 import React, { useEffect, useRef, useState } from "react";
 import "./Header.css";
-import { toggleTheme } from "./utils";
+import { toggleTheme } from "./utils/header";
 function Header() {
   const logo = useRef<HTMLImageElement>(null);
   const ref = useRef<HTMLElement>();

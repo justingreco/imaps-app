@@ -8,3 +8,20 @@
   font-size: var(--calcite-font-size--1);
   padding: 1em;
 }
+
+.esri-distance-measurement-2d__container {
+  display: grid;
+}
+
+.esri-distance-measurement-2d__settings {
+  grid-row: 1;
+  grid-column: 2;
+}
+.esri-distance-measurement-2d__measurement {
+  grid-row: 1;
+  grid-column: 1;
+}
+.esri-distance-measurement-2d__measurement-item {
+  grid-row: 2;
+  grid-column: 1 / 3;
+}

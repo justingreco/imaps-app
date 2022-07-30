@@ -2,7 +2,6 @@ import {
   CalciteCombobox,
   CalciteComboboxItem,
   CalciteLabel,
-  CalciteSelect,
 } from "@esri/calcite-components-react";
 import React, { useEffect, useRef, useState } from "react";
 import {
@@ -10,7 +9,7 @@ import {
   intersectingStreetSelected,
   intializeLocationFeature,
   intializeLocationSearch,
-} from "./utils";
+} from "./utils/location";
 import "./Location.css";
 function Location(args: any) {
   const searchDiv = useRef(null);

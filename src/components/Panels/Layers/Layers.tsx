@@ -7,7 +7,7 @@ import {
 } from "@esri/calcite-components-react";
 import React from "react";
 import { useEffect, useRef, useState } from "react";
-import { filterLayers, initializeLayers, resetLayers } from "./utils";
+import { filterLayers, initializeLayers, resetLayers } from "./utils/layers";
 import "./Layers.css";
 export const Layers = (args: any) => {
   const ref = useRef() as any;

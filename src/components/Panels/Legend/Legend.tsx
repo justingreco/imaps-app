@@ -1,6 +1,6 @@
 import React from "react";
 import { useEffect, useRef, useState } from "react";
-import { initializeLegend } from "./utils";
+import { initializeLegend } from "./utils/legend";
 export const Legend = (args: any) => {
   const ref = useRef() as any;
   const loaded = useRef(false);

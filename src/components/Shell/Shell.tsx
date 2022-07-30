@@ -27,7 +27,8 @@ import {
   mapViewSet,
   panelSelected,
   toolSelected,
-} from "./utils";
+  widgetActivated,
+} from "./utils/shell";
 import { Select } from "../Tools/Select/Select";
 
 import { createRoot } from "react-dom/client";
@@ -55,6 +56,7 @@ function Shell() {
   const [loading, setLoading] = useState(true);
   const [alert, setAlert] = useState<any>();
   const [showAlert, setShowAlert] = useState(false);
+  const [contentBehind, setContentBehind] = useState(false);
 
   const [view, setView] = useState<__esri.MapView>();
   const [properties, setProperties] = useState<__esri.Graphic[]>();
@@ -66,6 +68,18 @@ function Shell() {
   }, [properties]);
   useEffect(() => {
     if (!loaded.current) {
+      window.addEventListener("resize", () => {
+        if (window.innerWidth < 700) {
+          setActivePanel("");
+          setContentBehind(true);
+        } else {
+          setContentBehind(false);
+        }
+      });
+      if (window.innerWidth < 700) {
+        setActivePanel("");
+        setContentBehind(true);
+      }
       loaded.current = true;
       fetch("./config.json").then((response) => {
         response.json().then((config) => {
@@ -91,14 +105,19 @@ function Shell() {
     }
   }, []);
   return (
-    <CalciteShell>
+    <CalciteShell contentBehind={contentBehind ? true : undefined}>
       <Header></Header>
+      <CalciteShellPanel
+        collapsed
+        slot="primary-panel"
+        position="start"
+      ></CalciteShellPanel>
       <CalciteShellPanel
         class="custom-width"
         slot="contextual-panel"
         widthScale={undefined}
         position="end"
-        resizable
+        resizable={contentBehind ? undefined : true}
         collapsed={activePanel === ""}
       >
         <CalciteActionBar slot="action-bar" position="end">
@@ -512,11 +531,23 @@ function Shell() {
 
       <WebMap
         mapId="95092428774c4b1fb6a3b6f5fed9fbc4"
-        mapViewSet={(view: __esri.MapView) =>
-          mapViewSet(view, setView, setLoading, setShowAlert, setAlert)
+        mapViewSet={(mapView: __esri.MapView) =>
+          mapViewSet(mapView, setView, setLoading, setShowAlert, setAlert)
         }
         geometrySet={(geometry: __esri.Geometry) => setGeometry(geometry)}
         properties={properties}
+        widgetActivated={(mapView: __esri.MapView) => {
+          if (mapView) {
+            widgetActivated(mapView, setActiveTool);
+            toolSelected(
+              "",
+              activeTool,
+              setActiveTool,
+              setActivePanel,
+              setSelectDismissed
+            );
+          }
+        }}
       ></WebMap>
       <CalciteScrim loading hidden={!loading ? true : undefined}></CalciteScrim>
       <CalciteAlert

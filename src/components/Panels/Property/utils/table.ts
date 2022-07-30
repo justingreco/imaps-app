@@ -7,7 +7,7 @@ import FeatureSet from "@arcgis/core/rest/support/FeatureSet";
 import Graphic from "@arcgis/core/Graphic";
 import ButtonMenuItem from "@arcgis/core/widgets/FeatureTable/Grid/support/ButtonMenuItem";
 
-import "./PropertyTable.css";
+import "../PropertyTable/PropertyTable.css";
 let featureTable: FeatureTable;
 export function initializeFeatureTable(
   ref: HTMLDivElement,

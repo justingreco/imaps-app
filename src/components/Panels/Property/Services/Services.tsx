@@ -12,7 +12,7 @@ import { useEffect, useState } from "react";
 import { services } from "../../../../config/config";
 
 import ServiceLayer from "./ServiceLayer";
-import { getServices } from "./utils";
+import { getServices } from "../utils/services";
 
 export const Services = (args: any) => {
   const [view, setView] = useState<__esri.MapView>();

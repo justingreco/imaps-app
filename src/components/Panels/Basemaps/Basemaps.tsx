@@ -19,7 +19,7 @@ import {
   initializeEsriMaps,
   initializeImageMaps,
   tabChanged,
-} from "./utils";
+} from "./utils/basemaps";
 import "./Basemaps.css";
 function Basemaps(args: any) {
   const [view, setView] = useState<MapView>();

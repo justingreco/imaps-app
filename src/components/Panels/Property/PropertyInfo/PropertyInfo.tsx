@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { createTemplate } from "../popuptemplate";
-import { initializeFeature, updateFeature } from "./utils";
+import { initializeFeature, updateFeature } from "../utils/info";
 
 function PropertyInfo(args: any) {
   const loaded = useRef(false);

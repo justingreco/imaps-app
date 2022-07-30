@@ -1,20 +1,18 @@
 import MapView from "@arcgis/core/views/MapView";
 import WebMap from "@arcgis/core/WebMap";
-import Expand from "@arcgis/core/widgets/Expand";
-import CoordinateConversion from "@arcgis/core/widgets/CoordinateConversion";
-import Home from "@arcgis/core/widgets/Home";
-import Compass from "@arcgis/core/widgets/Compass";
-import ScaleBar from "@arcgis/core/widgets/ScaleBar";
+
 import { constraints } from "./constraints";
 import Graphic from "@arcgis/core/Graphic";
 import UniqueValueRenderer from "@arcgis/core/renderers/UniqueValueRenderer";
 import FeatureLayer from "@arcgis/core/layers/FeatureLayer";
 import FeatureSet from "@arcgis/core/rest/support/FeatureSet";
+import { addWidgets } from "./widgets";
 
 export function initializeMap(
   ref: HTMLDivElement,
   mapId: string,
-  geometrySet: Function
+  geometrySet: Function,
+  widgetActivated: Function
 ) {
   const view = new MapView({
     container: ref,
@@ -22,17 +20,20 @@ export function initializeMap(
   });
   getWebMap(mapId).then((webmap: WebMap) => {
     view.map = webmap;
-    addWidgets(view);
+    addWidgets(view, widgetActivated);
     view.when(() => {
       view.map.add(selectionLayer);
       view.map.add(selectionCluster);
     });
   });
-  if (window) {
-    window.onbeforeunload = () => {
+  document.addEventListener("visibilitychange",(e) => {
+    if (document.hidden) {
       saveMap(view);
-    };
-  }
+    }
+  }, false);
+
+
+
   view.on("hold", (event) => {
     geometrySet(event.mapPoint);
   });
@@ -84,18 +85,7 @@ function getWebMap(mapId: string): Promise<WebMap> {
     }
   });
 }
-function addWidgets(view: MapView) {
-  const coodinates = new CoordinateConversion({ view: view });
-  const coodinateExpand = new Expand({
-    content: coodinates,
-    expandIconClass: "esri-icon-pan",
-    mode: "floating",
-  });
-  view.ui.add(coodinateExpand, "bottom-left");
-  view.ui.add(new Home({ view: view }), "top-left");
-  view.ui.add(new Compass({ view: view }), "top-left");
-  view.ui.add(new ScaleBar({ view: view }), "bottom-left");
-}
+
 const saveMap = (view: MapView) => {
   if (view && view?.ready) {
     const groups = view.map.allLayers
@@ -293,3 +283,4 @@ function updateClusters(properties: Graphic[]) {
         })
     );
 }
+

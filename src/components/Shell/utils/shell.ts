@@ -145,3 +145,8 @@ function sendAlert(
   setShowAlert(true);
   setLoading(false);
 }
+
+export function widgetActivated(view: MapView, setActiveTool: Function) {
+  (view as any).activeTool = null;
+  setActiveTool("");
+}

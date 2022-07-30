@@ -19,7 +19,7 @@ import {
   CalciteStepper,
   CalciteStepperItem,
 } from "@esri/calcite-components-react";
-import { addBasemap } from "./utils";
+import { addBasemap } from "./utils/blend";
 import "./Blend.css";
 
 function Blend(args: any) {

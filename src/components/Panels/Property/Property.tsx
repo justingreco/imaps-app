@@ -14,7 +14,7 @@ import "./Property.css";
 import PropertySearch from "./PropertySearch/PropertySearch";
 import MapView from "@arcgis/core/views/MapView";
 import PropertyTable from "./PropertyTable/PropertyTable";
-import { getPropertyByGeometry } from "./utils";
+import { getPropertyByGeometry } from "./utils/property";
 import PropertyInfo from "./PropertyInfo/PropertyInfo";
 function Property(args: any) {
   const [view, setView] = useState<MapView>();

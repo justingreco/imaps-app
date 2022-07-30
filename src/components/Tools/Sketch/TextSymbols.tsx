@@ -49,11 +49,11 @@ function TextSymbols(args: any) {
         label="Font"
         color={fontColor.toRgba()}
         hideTransparency
-        colorSet={(color: any) => {
-          setFontColor(color);
+        colorSet={(c: any) => {
+          setFontColor(c);
           args.textSymbolUpdated(
             fontSize,
-            fontColor,
+            c,
             haloSize,
             haloColor,
             showHalo,
@@ -104,13 +104,13 @@ function TextSymbols(args: any) {
           label=""
           color={haloColor.toRgba()}
           hideTransparency
-          colorSet={(color: any) => {
-            setHaloColor(color);
+          colorSet={(c: any) => {
+            setHaloColor(c);
             args.textSymbolUpdated(
               fontSize,
               fontColor,
               haloSize,
-              haloColor,
+              c,
               showHalo,
               textContent
             );

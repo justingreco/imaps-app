@@ -4,7 +4,7 @@ import "@esri/calcite-components/dist/components/calcite-action-pad";
 import { CalciteAction } from "@esri/calcite-components-react";
 import React from "react";
 import { useEffect, useRef, useState } from "react";
-import { initializeMeasure } from "./utils";
+import { initializeMeasure } from "./utils/measure";
 import Measurement from "@arcgis/core/widgets/Measurement";
 import "./Measure.css";
 export const Measure = (args: any) => {
