@@ -156,8 +156,7 @@ export function getTemplateName(
 ) {
   //const graphics = (props.view as __esri.MapView).map.findLayerById('print-graphic') as __esri.GraphicsLayer;
   //graphics.visible = false;
-
-  let selectedTemplate = JSON.parse(selectedLayout).template.replace(".", "");
+  let  selectedTemplate = selectedLayout.template ?  selectedLayout.template.replace(".", "") :  JSON.parse(selectedLayout).template.replace(".","");
 
   if (showAttributes) {
     selectedTemplate += "_attributes";
@@ -251,8 +250,10 @@ export const exportMap = (
   url: string,
   template: PrintTemplate,
   view: __esri.MapView,
-  oldScale: number
+  oldScale: number,
+  format: string
 ): Promise<__esri.PrintResponse> => {
+  template.format = format as any;
   return new Promise((resolve, reject) => {
     print
       .execute(

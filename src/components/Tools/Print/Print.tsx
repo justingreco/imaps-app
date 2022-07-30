@@ -235,7 +235,7 @@ function Print(args: any) {
               view.scale = printTemplate.outScale;
             }
             setTimeout(() => {
-              exportMap(args.exportUrl, printTemplate, view, oldScale)
+              exportMap(args.exportUrl, printTemplate, view, oldScale, selectedFormat as string)
                 .then((result) => {
                   setTimeout(() => {
                     //graphics.visible = true;
