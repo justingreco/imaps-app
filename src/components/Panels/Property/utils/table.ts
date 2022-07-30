@@ -8,6 +8,7 @@ import Graphic from "@arcgis/core/Graphic";
 import ButtonMenuItem from "@arcgis/core/widgets/FeatureTable/Grid/support/ButtonMenuItem";
 
 import "../PropertyTable/PropertyTable.css";
+import * as reactiveUtils from "@arcgis/core/core/reactiveUtils";
 let featureTable: FeatureTable;
 export function initializeFeatureTable(
   ref: HTMLDivElement,
@@ -62,15 +63,16 @@ export function initializeFeatureTable(
   });
 }
 function initializeGrid(featureTable: FeatureTable) {
-  setTimeout(() => {
+  (featureTable.findColumn("REID") as any).width = 100;
+  (featureTable.findColumn("SITE_ADDRESS") as any).width = 130;
+  (featureTable.findColumn("PIN_NUM") as any).width = 100;
+  (featureTable.findColumn("OWNER") as any).width = 150;
+  featureTable.refresh();  
+
+  requestAnimationFrame(() => {
     const grid = (featureTable.container as HTMLElement).querySelector(
       "vaadin-grid"
-    ) as any;
-    (featureTable as any).grid.findColumn("REID").width = 100;
-    (featureTable as any).grid.findColumn("SITE_ADDRESS").width = 130;
-    (featureTable as any).grid.findColumn("PIN_NUM").width = 100;
-    (featureTable as any).grid.findColumn("OWNER").width = 150;
-    featureTable.refresh();
+    ) as any;    
     grid?.addEventListener("cell-activate", (e: any) => {
       featureTable.clearSelection();
       const feature = e.detail.model.item.feature;
@@ -84,7 +86,8 @@ function initializeGrid(featureTable: FeatureTable) {
         }
       });
     });
-  }, 100);
+});
+
 }
 
 function getTableLayer(view: MapView) {
