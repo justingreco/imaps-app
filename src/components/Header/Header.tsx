@@ -46,6 +46,9 @@ function Header() {
           scale="m"
           width="l"
           type="click"
+          onCalciteDropdownOpen={(e: any) => {
+            e.target.shadowRoot?.querySelector('.calcite-dropdown-content').querySelector('div')?.setAttribute('style', 'max-height: calc(100vh - 70px)');
+          }}
         >
           <CalciteButton scale="m" slot="dropdown-trigger">
             <CalciteIcon icon="hamburger" scale="m"></CalciteIcon>

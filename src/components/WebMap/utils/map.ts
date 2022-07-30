@@ -24,9 +24,9 @@ export function initializeMap(
     view.when(() => {
       view.map.add(selectionLayer);
       view.map.add(selectionCluster);
-      // setTimeout(() => {
-      //   handlePolygonLabels(view);
-      // }, 5000);      
+      setTimeout(() => {
+        handlePolygonLabels(view);
+      }, 5000);      
     });
   });
   document.addEventListener("visibilitychange",(e) => {

@@ -22,3 +22,7 @@ calcite-switch {
   height: 36px;
   margin: 0.5em;
 }
+
+:host .calcite-dropdown-wrapper {
+  max-height: 100px;
+}
