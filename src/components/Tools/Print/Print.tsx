@@ -101,7 +101,7 @@ function Print(args: any) {
         <CalciteSelect
           label={""}
           onCalciteSelectChange={(e) =>
-            setCustomScale(e.target.selectedOption.value)
+            setSelectedFormat(e.target.selectedOption.value)
           }
         >
           {formats.map((format, i) => {
