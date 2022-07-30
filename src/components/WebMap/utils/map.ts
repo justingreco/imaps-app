@@ -7,7 +7,7 @@ import UniqueValueRenderer from "@arcgis/core/renderers/UniqueValueRenderer";
 import FeatureLayer from "@arcgis/core/layers/FeatureLayer";
 import FeatureSet from "@arcgis/core/rest/support/FeatureSet";
 import { addWidgets } from "./widgets";
-
+import { handlePolygonLabels } from './labeling';
 export function initializeMap(
   ref: HTMLDivElement,
   mapId: string,
@@ -24,6 +24,9 @@ export function initializeMap(
     view.when(() => {
       view.map.add(selectionLayer);
       view.map.add(selectionCluster);
+      // setTimeout(() => {
+      //   handlePolygonLabels(view);
+      // }, 5000);      
     });
   });
   document.addEventListener("visibilitychange",(e) => {

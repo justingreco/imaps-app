@@ -157,7 +157,7 @@ export function getTemplateName(
   //const graphics = (props.view as __esri.MapView).map.findLayerById('print-graphic') as __esri.GraphicsLayer;
   //graphics.visible = false;
 
-  let selectedTemplate = selectedLayout.template.replace(".", "");
+  let selectedTemplate = JSON.parse(selectedLayout).template.replace(".", "");
 
   if (showAttributes) {
     selectedTemplate += "_attributes";
