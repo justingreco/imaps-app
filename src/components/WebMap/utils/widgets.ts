@@ -14,21 +14,23 @@ export function addWidgets(view: MapView, widgetActivated: Function) {
     mode: "floating",
   });
   view.ui.add(coodinateExpand, "bottom-left");
-  view.ui.add(new Home({ view: view }), "top-left");
+  view.ui.add(new Home({ view: view, goToOverride: (view, params) => {
+    view.goTo(view.constraints)
+  } }), "top-left");
   view.ui.add(new Compass({ view: view }), "top-left");
   view.ui.add(new ScaleBar({ view: view }), "bottom-left");
   const streetview = createStreetviewButton(view, widgetActivated);
   const identify = createIdentifyButton(view, widgetActivated);
   view.ui.add(identify, "top-left");
   view.ui.add(streetview, "top-left");
-  view.watch('activeTool' , (activeTool) => {
+  view.watch("activeTool", (activeTool) => {
     if (activeTool) {
       view.popup.autoOpenEnabled = false;
       streetviewClick?.remove();
-      document.querySelector(".identify-widget")?.classList.remove('active');    
-      document.querySelector(".streetview-widget")?.classList.remove("active");  
+      document.querySelector(".identify-widget")?.classList.remove("active");
+      document.querySelector(".streetview-widget")?.classList.remove("active");
     }
-  })
+  });
 }
 
 const createStreetviewButton = (
@@ -55,7 +57,7 @@ const createStreetviewButton = (
   text.textContent = "Open streetview";
   button.appendChild(icon);
   button.appendChild(text);
- button.addEventListener("click", () => {
+  button.addEventListener("click", () => {
     widgetActivated(view);
 
     view.popup.autoOpenEnabled = false;
@@ -82,37 +84,39 @@ const createStreetviewButton = (
   return button;
 };
 
-export const createIdentifyButton = (view: MapView, widgetActivated: Function): any => {
-  const infoButton = document.createElement('div');
-  infoButton.classList.add('identify-widget');
-  infoButton.classList.add('esri-component');
-  infoButton.classList.add('esri-widget--button');
-  infoButton.classList.add('esri-widget');
-  infoButton.classList.add('active');
-  infoButton.classList.add('map-tool');
+export const createIdentifyButton = (
+  view: MapView,
+  widgetActivated: Function
+): any => {
+  const infoButton = document.createElement("div");
+  infoButton.classList.add("identify-widget");
+  infoButton.classList.add("esri-component");
+  infoButton.classList.add("esri-widget--button");
+  infoButton.classList.add("esri-widget");
+  infoButton.classList.add("active");
+  infoButton.classList.add("map-tool");
 
-  infoButton.setAttribute('role', 'button');
-  infoButton.setAttribute('aria-label', 'Identify features');
-  infoButton.setAttribute('title', 'Identify features');
-  const icon = document.createElement('span');
-  icon.classList.add('esri-icon');
-  icon.classList.add('esri-icon-description');
-  icon.setAttribute('aria-hidden', 'true');
+  infoButton.setAttribute("role", "button");
+  infoButton.setAttribute("aria-label", "Identify features");
+  infoButton.setAttribute("title", "Identify features");
+  const icon = document.createElement("span");
+  icon.classList.add("esri-icon");
+  icon.classList.add("esri-icon-description");
+  icon.setAttribute("aria-hidden", "true");
 
-  const text = document.createElement('span');
-  text.classList.add('esri-icon-font-fallback-text');
-  text.textContent = 'Idenfity features';
+  const text = document.createElement("span");
+  text.classList.add("esri-icon-font-fallback-text");
+  text.textContent = "Idenfity features";
   infoButton.appendChild(icon);
   infoButton.appendChild(text);
   view.popup.autoOpenEnabled = true;
   infoButton.addEventListener("click", () => {
     view.popup.autoOpenEnabled = true;
-    streetviewClick?.remove();  
-    document.querySelector(".identify-widget")?.classList.add('active');    
-    document.querySelector(".streetview-widget")?.classList.remove("active");    
-  
-    widgetActivated(view);  
+    streetviewClick?.remove();
+    document.querySelector(".identify-widget")?.classList.add("active");
+    document.querySelector(".streetview-widget")?.classList.remove("active");
+
+    widgetActivated(view);
   });
   return infoButton;
 };
-

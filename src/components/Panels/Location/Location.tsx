@@ -80,4 +80,4 @@ function Location(args: any) {
   );
 }
 
-export default Location;
+export default React.memo(Location);

@@ -97,7 +97,7 @@ function addGraphic(e: any) {
       sketchLayer.polygonLayer.add(e.graphic);
       console.log(e.graphic.symbol.color);
 
-   //   setTimeout(() => polygonSketchViewModel.updateGraphics.add(e.graphic));
+      //   setTimeout(() => polygonSketchViewModel.updateGraphics.add(e.graphic));
 
       polygonSketchViewModel.create(e.tool);
     }
@@ -191,18 +191,16 @@ export function clearSketch(setActiveTool: Function) {
   sketchLayer.textLayer.graphics.removeAll();
 }
 
-
-
-export function getSymbols(){
+export function getSymbols() {
   return new Promise((resolve, reject) => {
     const symbol: WebStyleSymbol = new WebStyleSymbol({
-      styleUrl: "http://www.arcgis.com/sharing/rest/content/items/70ccf6bcbd304773a164be896e76edd3/data",
-      name: "Centered Sphere"
+      styleUrl:
+        "http://www.arcgis.com/sharing/rest/content/items/70ccf6bcbd304773a164be896e76edd3/data",
+      name: "Centered Sphere",
     });
-  
-    request(symbol.styleUrl).then(result => {
-      resolve(result.data.items);
-    })
-  });
 
+    request(symbol.styleUrl).then((result) => {
+      resolve(result.data.items);
+    });
+  });
 }

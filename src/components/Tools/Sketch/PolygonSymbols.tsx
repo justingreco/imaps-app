@@ -53,7 +53,7 @@ function PolygonSymbols(args: any) {
         label="Fill"
         colorSet={(c: any) => {
           setFillColor(c);
-          console.log(c)
+          console.log(c);
           args.polygonSymbolUpdated(c, outlineColor, width);
         }}
       ></ColorButton>

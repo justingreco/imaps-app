@@ -47,7 +47,10 @@ function Header() {
           width="l"
           type="click"
           onCalciteDropdownOpen={(e: any) => {
-            e.target.shadowRoot?.querySelector('.calcite-dropdown-content').querySelector('div')?.setAttribute('style', 'max-height: calc(100vh - 70px)');
+            e.target.shadowRoot
+              ?.querySelector(".calcite-dropdown-content")
+              .querySelector("div")
+              ?.setAttribute("style", "max-height: calc(100vh - 70px)");
           }}
         >
           <CalciteButton scale="m" slot="dropdown-trigger">
@@ -141,5 +144,4 @@ function Header() {
     </div>
   );
 }
-
-export default Header;
+export default React.memo(Header);

@@ -235,7 +235,13 @@ function Print(args: any) {
               view.scale = printTemplate.outScale;
             }
             setTimeout(() => {
-              exportMap(args.exportUrl, printTemplate, view, oldScale, selectedFormat as string)
+              exportMap(
+                args.exportUrl,
+                printTemplate,
+                view,
+                oldScale,
+                selectedFormat as string
+              )
                 .then((result) => {
                   setTimeout(() => {
                     //graphics.visible = true;
@@ -313,4 +319,4 @@ function Print(args: any) {
   );
 }
 
-export default Print;
+export default React.memo(Print);

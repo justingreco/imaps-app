@@ -20,4 +20,4 @@ export const Bookmarks = (args: any) => {
   return <div ref={bookmarkRef}></div>;
 };
 
-export default Bookmarks;
+export default React.memo(Bookmarks);

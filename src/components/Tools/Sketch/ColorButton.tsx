@@ -44,7 +44,9 @@ function ColorButton(args: any) {
           color="neutral"
           appearance="outline"
         >
-          <CalciteColorPickerSwatch color={color?.toHex()}></CalciteColorPickerSwatch>
+          <CalciteColorPickerSwatch
+            color={color?.toHex()}
+          ></CalciteColorPickerSwatch>
         </CalciteButton>
       </CalciteLabel>
       <CalcitePopover
@@ -55,7 +57,7 @@ function ColorButton(args: any) {
         referenceElement={`${args.id}-popover-button`}
       >
         <CalcitePanel heading="Color">
-        <CalciteAction
+          <CalciteAction
             icon="x"
             text=""
             slot="header-actions-end"
@@ -66,14 +68,16 @@ function ColorButton(args: any) {
               args.colorSet(c);
             }}
           ></CalciteAction>
-        <CalciteColorPicker
-          ref={picker}
-          hideSaved
-          hideHex
-          hideChannels
-          value={color ? color.toHex() : '#FF0000'}
-          onCalciteColorPickerInput={(e) => setColor(new Color(e.target.value))}
-        ></CalciteColorPicker>
+          <CalciteColorPicker
+            ref={picker}
+            hideSaved
+            hideHex
+            hideChannels
+            value={color ? color.toHex() : "#FF0000"}
+            onCalciteColorPickerInput={(e) =>
+              setColor(new Color(e.target.value))
+            }
+          ></CalciteColorPicker>
         </CalcitePanel>
         {/* <CalciteButton
           width="full"

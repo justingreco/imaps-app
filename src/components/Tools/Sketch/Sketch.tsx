@@ -83,7 +83,6 @@ function Sketch(args: any) {
         hidden={activeTool !== "point" ? true : undefined}
       >
         <PointSymbols></PointSymbols>
-        
       </div>
       <div
         id="line-symbols"
@@ -118,4 +117,4 @@ function Sketch(args: any) {
   );
 }
 
-export default Sketch;
+export default React.memo(Sketch);

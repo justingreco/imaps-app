@@ -7,7 +7,10 @@ import UniqueValueRenderer from "@arcgis/core/renderers/UniqueValueRenderer";
 import FeatureLayer from "@arcgis/core/layers/FeatureLayer";
 import FeatureSet from "@arcgis/core/rest/support/FeatureSet";
 import { addWidgets } from "./widgets";
-import { handlePolygonLabels } from './labeling';
+import { handlePolygonLabels } from "./labeling";
+import * as reactiveUtils from "@arcgis/core/core/reactiveUtils";
+import Basemap from "@arcgis/core/Basemap";
+import Color from "@arcgis/core/Color";
 export function initializeMap(
   ref: HTMLDivElement,
   mapId: string,
@@ -18,24 +21,34 @@ export function initializeMap(
     container: ref,
     constraints: constraints as any,
   });
+
   getWebMap(mapId).then((webmap: WebMap) => {
     view.map = webmap;
     addWidgets(view, widgetActivated);
     view.when(() => {
       view.map.add(selectionLayer);
       view.map.add(selectionCluster);
-      setTimeout(() => {
-        handlePolygonLabels(view);
-      }, 5000);      
+      reactiveUtils.whenOnce(() => view.map.basemap.loaded).then((loaded) => {
+        getBackgroundColor(view.map.basemap).then(color => {
+          if (color) {
+            view.background = {color: color} as __esri.ColorBackground;
+          }
+        });
+      });      
+      // setTimeout(() => {
+      //   handlePolygonLabels(view);
+      // }, 5000);
     });
   });
-  document.addEventListener("visibilitychange",(e) => {
-    if (document.hidden) {
-      saveMap(view);
-    }
-  }, false);
-
-
+  document.addEventListener(
+    "visibilitychange",
+    (e) => {
+      if (document.hidden) {
+        saveMap(view);
+      }
+    },
+    false
+  );
 
   view.on("hold", (event) => {
     geometrySet(event.mapPoint);
@@ -123,7 +136,7 @@ const saveMap = (view: MapView) => {
     const json = (view.map as any).toJSON();
     json.initialState.viewpoint.targetGeometry = view.extent;
     window.localStorage.setItem("imaps_calcite", JSON.stringify(json));
-    // window.localStorage.removeItem('imaps_calcite');
+    //window.localStorage.removeItem('imaps_calcite');
   }
 };
 const clusterConfig = {
@@ -287,3 +300,20 @@ function updateClusters(properties: Graphic[]) {
     );
 }
 
+
+const getBackgroundColor = (basemap: Basemap): Promise<Color | null> => {
+  return new Promise((resolve, reject) => {
+    const baseLayer = basemap.baseLayers.find(layer => {return layer.type === 'vector-tile'});
+    if (baseLayer?.type === 'vector-tile') {
+      reactiveUtils.whenOnce(() => baseLayer.loaded).then(loaded => {
+        const background = (baseLayer as __esri.VectorTileLayer).getStyleLayer('background');
+        if (background) {
+          const color: Color = new Color(background.paint["background-color"]);
+          resolve(color);
+        } else {
+          resolve(null);
+        }
+      });
+    }
+  });
+}

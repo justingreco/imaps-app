@@ -18,7 +18,6 @@ import {
   initializeBasemaps,
   initializeEsriMaps,
   initializeImageMaps,
-  tabChanged,
 } from "./utils/basemaps";
 import "./Basemaps.css";
 function Basemaps(args: any) {
@@ -54,9 +53,6 @@ function Basemaps(args: any) {
     <div className="basemaps">
       <CalciteTabs position="below" layout="center" scale="m">
         <CalciteTabNav
-          onCalciteTabChange={(e) =>
-            tabChanged(e, view as MapView, setShowAlert)
-          }
           slot="tab-nav"
         >
           <CalciteTabTitle>Maps</CalciteTabTitle>
@@ -95,4 +91,4 @@ function Basemaps(args: any) {
   );
 }
 
-export default Basemaps;
+export default React.memo(Basemaps);

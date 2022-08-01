@@ -135,3 +135,4 @@ export const Select = (args: any) => {
     </div>
   );
 };
+export default React.memo(Select);

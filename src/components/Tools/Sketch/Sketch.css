@@ -2,7 +2,7 @@ calcite-color-picker-swatch {
   width: 100%;
   height: 24px;
 }
-.sticky  {
+.sticky {
   display: sticky;
 }
 .symbol {
@@ -29,11 +29,9 @@ calcite-color-picker-swatch {
   flex-direction: column;
 }
 
-#sketch-div{
-    box-sizing: border-box;
-    font-size: var(--calcite-font-size--1);
-    overflow-y: auto;
-    max-height: calc(100vh - 160px) !important;
-
+#sketch-div {
+  box-sizing: border-box;
+  font-size: var(--calcite-font-size--1);
+  overflow-y: auto;
+  max-height: calc(100vh - 160px) !important;
 }
-

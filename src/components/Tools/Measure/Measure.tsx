@@ -68,4 +68,4 @@ export const Measure = (args: any) => {
     </div>
   );
 };
-export default Measure;
+export default React.memo(Measure);

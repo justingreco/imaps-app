@@ -1,9 +1,8 @@
-.map-tool.active{
-    background-color: var(--calcite-ui-brand);
-    color: white;
-  }
-  .map-tool.active:hover{
-    background-color: var(--calcite-ui-brand);
-    color: white;
-  }
-  
+.map-tool.active {
+  background-color: var(--calcite-ui-brand);
+  color: white;
+}
+.map-tool.active:hover {
+  background-color: var(--calcite-ui-brand);
+  color: white;
+}

@@ -6,7 +6,9 @@ export function toolSelected(
   activeTool: string,
   setActiveTool: Function,
   setActivePanel: Function,
-  setSelectDismissed: Function
+  setSelectDismissed: Function,
+  activePanelChanged: Function,
+  activeToolChanged: Function,
 ) {
   const panel = document.getElementById(
     `${activeTool}-panel`
@@ -21,10 +23,14 @@ export function toolSelected(
       ?.setAttribute("style", "display:flex");
   }
   activeTool === tool ? setActiveTool("") : setActiveTool(tool);
+  activeToolChanged(tool);
+
   setSelectDismissed(tool !== "select");
 
   if (window.innerWidth < 735) {
     setActivePanel("");
+    activePanelChanged("");
+
   }
 }
 
@@ -32,11 +38,16 @@ export function panelSelected(
   panel: string,
   activePanel: string,
   setActiveTool: Function,
-  setActivePanel: Function
+  setActivePanel: Function,
+  activePanelChanged: Function,
+  activeToolChanged: Function,
 ) {
   activePanel === panel ? setActivePanel("") : setActivePanel(panel);
+  activePanelChanged(panel);
   if (window.innerWidth < 735) {
     setActiveTool("");
+    activeToolChanged("");
+
   }
 }
 

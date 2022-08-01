@@ -17,4 +17,4 @@ export const Legend = (args: any) => {
 
   return <div ref={ref}></div>;
 };
-export default Legend;
+export default React.memo(Legend);

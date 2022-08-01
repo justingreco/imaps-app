@@ -1,4 +1,4 @@
-import React, { lazy, Suspense, useEffect, useRef, useState } from "react";
+import React, { lazy, Suspense, useCallback, useEffect, useRef, useState } from "react";
 import "@esri/calcite-components/dist/components/calcite-action";
 import "@esri/calcite-components/dist/components/calcite-action-bar";
 import "@esri/calcite-components/dist/components/calcite-action-group";
@@ -35,15 +35,7 @@ import { createRoot } from "react-dom/client";
 // import Basemaps from "../Panels/Basemaps/Basemaps";
 import Print from "../Tools/Print/Print";
 import Property from "../Panels/Property/Property";
-const Layers = lazy(() => import("../Panels/Layers/Layers"));
-const Legend = lazy(() => import("../Panels/Legend/Legend"));
-const Location = lazy(() => import("../Panels/Location/Location"));
-
-const Sketch = lazy(() => import("../Tools/Sketch/Sketch"));
-const Bookmarks = lazy(() => import("../Tools/Bookmarks/Bookmarks"));
-const Measure = lazy(() => import("../Tools/Measure/Measure"));
-
-const Basemaps = lazy(() => import("../Panels/Basemaps/Basemaps"));
+import Toolbar from "./Toolbar";
 function Shell() {
   const [activePanel, setActivePanel] = useState("search");
   const [activeTool, setActiveTool] = useState("");
@@ -104,6 +96,39 @@ function Shell() {
       });
     }
   }, []);
+
+  const mapCallback = useCallback((mapView: __esri.MapView) => {
+    mapViewSet(mapView, setView, setLoading, setShowAlert, setAlert);
+  }, [view]);
+  const geometryCallback = useCallback((geometry: __esri.Geometry) => {
+    setGeometry(geometry);
+  }, [geometry]);
+  const widgetCallback = useCallback((mapView: __esri.MapView) => {
+    if (mapView) {
+      widgetActivated(mapView, setActiveTool);
+      toolSelected(
+        "",
+        activeTool,
+        setActiveTool,
+        setActivePanel,
+        setSelectDismissed,
+        undefined as any,
+        undefined as any
+      );
+    }
+  }, []);  
+  const activePanelChanged = useCallback((panel: string) => {
+    setActivePanel(panel);
+  }, []);    
+  const activeToolChanged = useCallback((tool: string) => {
+    setActiveTool(tool);
+  }, []);  
+  const panelDismissed = useCallback(() => {
+    setActivePanel("");
+  }, []);  
+  const toolDismissed = useCallback(() => {
+    setActiveTool("");
+  }, []);  
   return (
     <CalciteShell contentBehind={contentBehind ? true : undefined}>
       <Header></Header>
@@ -120,224 +145,7 @@ function Shell() {
         resizable={contentBehind ? undefined : true}
         collapsed={activePanel === ""}
       >
-        <CalciteActionBar slot="action-bar" position="end">
-          <CalciteActionGroup>
-            <CalciteAction
-              icon="search"
-              text="Property Search"
-              active={activePanel === "search" ? true : undefined}
-              onClick={() =>
-                panelSelected(
-                  "search",
-                  activePanel,
-                  setActiveTool,
-                  setActivePanel
-                )
-              }
-            ></CalciteAction>
-            <CalciteAction
-              icon="pin"
-              text="Location Search"
-              active={activePanel === "location" ? true : undefined}
-              onClick={() => {
-                panelSelected(
-                  "location",
-                  activePanel,
-                  setActiveTool,
-                  setActivePanel
-                );
-                if (view?.map) {
-                  const container = document.getElementById("location-div");
-                  if (!container?.hasChildNodes()) {
-                    const root = createRoot(container as HTMLDivElement);
-                    root.render(
-                      <Suspense fallback={""}>
-                        <Location view={view} />
-                      </Suspense>
-                    );
-                  }
-                }
-              }}
-            ></CalciteAction>
-            <CalciteAction
-              icon="layers"
-              text="Layers"
-              active={activePanel === "layers" ? true : undefined}
-              onClick={() => {
-                panelSelected(
-                  "layers",
-                  activePanel,
-                  setActiveTool,
-                  setActivePanel
-                );
-                if (view?.map) {
-                  const container = document.getElementById("layer-div");
-                  if (!container?.hasChildNodes()) {
-                    const root = createRoot(container as HTMLDivElement);
-                    root.render(
-                      <Suspense fallback={""}>
-                        <Layers view={view} />
-                      </Suspense>
-                    );
-                  }
-                }
-              }}
-            ></CalciteAction>
-            <CalciteAction
-              icon="legend"
-              text="Legend"
-              active={activePanel === "legend" ? true : undefined}
-              onClick={() => {
-                panelSelected(
-                  "legend",
-                  activePanel,
-                  setActiveTool,
-                  setActivePanel
-                );
-                if (view?.map) {
-                  const container = document.getElementById("legend-div");
-                  if (!container?.hasChildNodes()) {
-                    const root = createRoot(container as HTMLDivElement);
-                    root.render(
-                      <Suspense fallback={""}>
-                        <Legend view={view} />
-                      </Suspense>
-                    );
-                  }
-                }
-              }}
-            ></CalciteAction>
-            <CalciteAction
-              icon="basemap"
-              text="Basemaps"
-              active={activePanel === "basemap" ? true : undefined}
-              onClick={() => {
-                panelSelected(
-                  "basemaps",
-                  activePanel,
-                  setActiveTool,
-                  setActivePanel
-                );
-                if (view?.map) {
-                  const container = document.getElementById("basemaps-div");
-                  if (!container?.hasChildNodes()) {
-                    const root = createRoot(container as HTMLDivElement);
-                    root.render(
-                      <Suspense fallback={""}>
-                        <Basemaps view={view} />
-                      </Suspense>
-                    );
-                  }
-                }
-              }}
-            ></CalciteAction>
-          </CalciteActionGroup>
-          <CalciteActionGroup>
-            <CalciteAction
-              icon="select"
-              text="Property Select"
-              active={activeTool === "select" ? true : undefined}
-              onClick={() =>
-                toolSelected(
-                  "select",
-                  activeTool,
-                  setActiveTool,
-                  setActivePanel,
-                  setSelectDismissed
-                )
-              }
-            ></CalciteAction>
-            <CalciteAction
-              icon="measure"
-              text="Measure"
-              active={activeTool === "measure" ? true : undefined}
-              onClick={() => {
-                toolSelected(
-                  "measure",
-                  activeTool,
-                  setActiveTool,
-                  setActivePanel,
-                  setSelectDismissed
-                );
-                if (view?.map) {
-                  const container = document.getElementById("measure-div");
-                  if (!container?.hasChildNodes()) {
-                    const root = createRoot(container as HTMLDivElement);
-                    root.render(
-                      <Suspense fallback={""}>
-                        <Measure view={view} />
-                      </Suspense>
-                    );
-                  }
-                }
-              }}
-            ></CalciteAction>
-            <CalciteAction
-              icon="pencil"
-              text="Sketch"
-              active={activeTool === "sketch" ? true : undefined}
-              onClick={() => {
-                toolSelected(
-                  "sketch",
-                  activeTool,
-                  setActiveTool,
-                  setActivePanel,
-                  setSelectDismissed
-                );
-                if (view?.map) {
-                  const container = document.getElementById("sketch-div");
-                  if (!container?.hasChildNodes()) {
-                    const root = createRoot(container as HTMLDivElement);
-                    root.render(
-                      <Suspense fallback={""}>
-                        <Sketch view={view} />
-                      </Suspense>
-                    );
-                  }
-                }
-              }}
-            ></CalciteAction>
-            <CalciteAction
-              icon="bookmark"
-              text="Bookmarks"
-              active={activeTool === "bookmarks" ? true : undefined}
-              onClick={() => {
-                toolSelected(
-                  "bookmarks",
-                  activeTool,
-                  setActiveTool,
-                  setActivePanel,
-                  setSelectDismissed
-                );
-                if (view?.map) {
-                  const container = document.getElementById("bookmarks-div");
-                  if (!container?.hasChildNodes()) {
-                    const root = createRoot(container as HTMLDivElement);
-                    root.render(
-                      <Suspense fallback={""}>
-                        <Bookmarks view={view} />
-                      </Suspense>
-                    );
-                  }
-                }
-              }}
-            ></CalciteAction>
-            <CalciteAction
-              icon="print"
-              text="Print"
-              active={activeTool === "print" ? true : undefined}
-              onClick={() =>
-                toolSelected(
-                  "print",
-                  activeTool,
-                  setActiveTool,
-                  setActivePanel,
-                  setSelectDismissed
-                )
-              }
-            ></CalciteAction>
-          </CalciteActionGroup>
-        </CalciteActionBar>
+        {view && <Toolbar view={view} activePanelChanged={activePanelChanged} activeToolChanged={activeToolChanged} ></Toolbar>}
         <CalcitePanel
           id="search-panel"
           heading="Property Search"
@@ -384,7 +192,7 @@ function Shell() {
           closed={activePanel !== "location" ? true : undefined}
           dismissed={activePanel !== "location" ? true : undefined}
           dismissible
-          onCalcitePanelDismiss={() => setActivePanel("")}
+          onCalcitePanelDismiss={panelDismissed}
         >
           <div id="location-div"></div>
         </CalcitePanel>
@@ -395,7 +203,7 @@ function Shell() {
           closed={activePanel !== "layers" ? true : undefined}
           dismissed={activePanel !== "layers" ? true : undefined}
           dismissible
-          onCalcitePanelDismiss={() => setActivePanel("")}
+          onCalcitePanelDismiss={panelDismissed}
         >
           <div id="layer-div"></div>
         </CalcitePanel>
@@ -406,7 +214,7 @@ function Shell() {
           closed={activePanel !== "legend" ? true : undefined}
           dismissed={activePanel !== "legend" ? true : undefined}
           dismissible
-          onCalcitePanelDismiss={() => setActivePanel("")}
+          onCalcitePanelDismiss={panelDismissed}
         >
           {/* {view && <Legend view={view}></Legend>} */}
           <div id="legend-div"></div>
@@ -418,7 +226,7 @@ function Shell() {
           closed={activePanel !== "basemaps" ? true : undefined}
           dismissed={activePanel !== "basemaps" ? true : undefined}
           dismissible
-          onCalcitePanelDismiss={() => setActivePanel("")}
+          onCalcitePanelDismiss={panelDismissed}
         >
           {/* {view && <Basemaps view={view}></Basemaps>} */}
           <div id="basemaps-div"></div>
@@ -447,7 +255,7 @@ function Shell() {
             <Select
               view={view}
               selectedProperty={selectedProperty}
-              geometrySet={(geometry: __esri.Geometry) => setGeometry(geometry)}
+              geometrySet={geometryCallback}
               selectDismissed={selectDismissed}
             ></Select>
           )}
@@ -459,7 +267,7 @@ function Shell() {
           closed={activeTool !== "measure" ? true : undefined}
           dismissed={activeTool !== "measure" ? true : undefined}
           dismissible
-          onCalcitePanelDismiss={() => setActiveTool("")}
+          onCalcitePanelDismiss={toolDismissed}
         >
           <CalciteAction
             icon="chevron-up"
@@ -476,7 +284,7 @@ function Shell() {
           closed={activeTool !== "sketch" ? true : undefined}
           dismissed={activeTool !== "sketch" ? true : undefined}
           dismissible
-          onCalcitePanelDismiss={() => setActiveTool("")}
+          onCalcitePanelDismiss={toolDismissed}
         >
           <CalciteAction
             icon="chevron-up"
@@ -493,7 +301,7 @@ function Shell() {
           closed={activeTool !== "bookmarks" ? true : undefined}
           dismissed={activeTool !== "bookmarks" ? true : undefined}
           dismissible
-          onCalcitePanelDismiss={() => setActiveTool("")}
+          onCalcitePanelDismiss={toolDismissed}
         >
           <CalciteAction
             icon="chevron-up"
@@ -511,7 +319,7 @@ function Shell() {
           closed={activeTool !== "print" ? true : undefined}
           dismissed={activeTool !== "print" ? true : undefined}
           dismissible
-          onCalcitePanelDismiss={() => setActiveTool("")}
+          onCalcitePanelDismiss={toolDismissed}
         >
           <CalciteAction
             icon="chevron-up"
@@ -531,23 +339,10 @@ function Shell() {
 
       <WebMap
         mapId="95092428774c4b1fb6a3b6f5fed9fbc4"
-        mapViewSet={(mapView: __esri.MapView) =>
-          mapViewSet(mapView, setView, setLoading, setShowAlert, setAlert)
-        }
-        geometrySet={(geometry: __esri.Geometry) => setGeometry(geometry)}
+        mapViewSet={mapCallback}
+        geometrySet={geometryCallback}
         properties={properties}
-        widgetActivated={(mapView: __esri.MapView) => {
-          if (mapView) {
-            widgetActivated(mapView, setActiveTool);
-            toolSelected(
-              "",
-              activeTool,
-              setActiveTool,
-              setActivePanel,
-              setSelectDismissed
-            );
-          }
-        }}
+        widgetActivated={widgetCallback}
       ></WebMap>
       <CalciteScrim loading hidden={!loading ? true : undefined}></CalciteScrim>
       <CalciteAlert

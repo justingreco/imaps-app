@@ -67,12 +67,12 @@ function initializeGrid(featureTable: FeatureTable) {
   (featureTable.findColumn("SITE_ADDRESS") as any).width = 130;
   (featureTable.findColumn("PIN_NUM") as any).width = 100;
   (featureTable.findColumn("OWNER") as any).width = 150;
-  featureTable.refresh();  
+  featureTable.refresh();
 
   requestAnimationFrame(() => {
     const grid = (featureTable.container as HTMLElement).querySelector(
       "vaadin-grid"
-    ) as any;    
+    ) as any;
     grid?.addEventListener("cell-activate", (e: any) => {
       featureTable.clearSelection();
       const feature = e.detail.model.item.feature;
@@ -86,8 +86,7 @@ function initializeGrid(featureTable: FeatureTable) {
         }
       });
     });
-});
-
+  });
 }
 
 function getTableLayer(view: MapView) {
