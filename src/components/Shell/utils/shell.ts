@@ -23,7 +23,7 @@ export function toolSelected(
       ?.setAttribute("style", "display:flex");
   }
   activeTool === tool ? setActiveTool("") : setActiveTool(tool);
-  activeToolChanged(tool);
+  activeToolChanged(activeTool === tool ? "" : tool);
 
   setSelectDismissed(tool !== "select");
 
@@ -43,7 +43,9 @@ export function panelSelected(
   activeToolChanged: Function,
 ) {
   activePanel === panel ? setActivePanel("") : setActivePanel(panel);
-  activePanelChanged(panel);
+
+
+  activePanelChanged(  activePanel === panel ? "" : panel);
   if (window.innerWidth < 735) {
     setActiveTool("");
     activeToolChanged("");

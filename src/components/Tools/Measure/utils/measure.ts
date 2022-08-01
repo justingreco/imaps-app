@@ -5,5 +5,6 @@ export function initializeMeasure(ref: HTMLDivElement, view: MapView) {
     view: view,
     container: ref,
   });
+
   return measurement;
 }

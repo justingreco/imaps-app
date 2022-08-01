@@ -13,11 +13,11 @@ function PropertySearch(args: any) {
       initializeSearch(
         ref.current as HTMLDivElement,
         args.view,
-        args.setCondos
+        args.condosSelected
       );
     }
   }, [args.view]);
   return <div ref={ref}></div>;
 }
 
-export default PropertySearch;
+export default React.memo(PropertySearch);

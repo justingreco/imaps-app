@@ -46,4 +46,4 @@ function PropertyInfo(args: any) {
   return <div ref={ref}></div>;
 }
 
-export default PropertyInfo;
+export default React.memo(PropertyInfo);

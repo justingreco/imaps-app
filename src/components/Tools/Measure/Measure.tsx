@@ -15,12 +15,19 @@ export const Measure = (args: any) => {
   useEffect(() => {
     if (!loaded.current) {
       loaded.current = true;
-      setMeasurement(initializeMeasure(measureRef.current, args.view));
+      const widget = initializeMeasure(measureRef.current, args.view);
+      setMeasurement(widget);
+      widget.watch('activeTool', (activeTool) => {
+        setSelectedTool(activeTool ?  activeTool : '');
+        measurement?.clear();
+      });
+      args.measurementCreated(widget);
     }
     return () => {
       measurement && measurement?.destroy();
     };
   }, []);
+
 
   return (
     <div>

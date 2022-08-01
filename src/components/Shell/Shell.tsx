@@ -1,4 +1,4 @@
-import React, { lazy, Suspense, useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import "@esri/calcite-components/dist/components/calcite-action";
 import "@esri/calcite-components/dist/components/calcite-action-bar";
 import "@esri/calcite-components/dist/components/calcite-action-group";
@@ -11,8 +11,6 @@ import "@esri/calcite-components/dist/components/calcite-alert";
 
 import {
   CalciteAction,
-  CalciteActionBar,
-  CalciteActionGroup,
   CalciteAlert,
   CalcitePanel,
   CalciteScrim,
@@ -25,13 +23,11 @@ import "./Shell.css";
 import {
   collapsePanel,
   mapViewSet,
-  panelSelected,
   toolSelected,
   widgetActivated,
 } from "./utils/shell";
 import { Select } from "../Tools/Select/Select";
 
-import { createRoot } from "react-dom/client";
 // import Basemaps from "../Panels/Basemaps/Basemaps";
 import Print from "../Tools/Print/Print";
 import Property from "../Panels/Property/Property";
@@ -51,8 +47,12 @@ function Shell() {
   const [contentBehind, setContentBehind] = useState(false);
 
   const [view, setView] = useState<__esri.MapView>();
+  const viewRef = useRef<__esri.MapView>();
+
   const [properties, setProperties] = useState<__esri.Graphic[]>();
   const [selectDismissed, setSelectDismissed] = useState(true);
+  const [dismissedTool, setDismissedTool] = useState<string>();
+
   useEffect(() => {
     if (properties) {
       setActivePanel("search");
@@ -98,6 +98,7 @@ function Shell() {
   }, []);
 
   const mapCallback = useCallback((mapView: __esri.MapView) => {
+    viewRef.current = mapView;
     mapViewSet(mapView, setView, setLoading, setShowAlert, setAlert);
   }, [view]);
   const geometryCallback = useCallback((geometry: __esri.Geometry) => {
@@ -121,13 +122,22 @@ function Shell() {
     setActivePanel(panel);
   }, []);    
   const activeToolChanged = useCallback((tool: string) => {
-    setActiveTool(tool);
+    // setActiveTool(tool);
+    
+    // if (tool === '') {
+    //   setDismissedTool(tool);
+    // }
+    setActiveTool(prevValue => {
+      setDismissedTool(prevValue);
+      return tool;
+    });    
   }, []);  
-  const panelDismissed = useCallback(() => {
+  const panelDismissed = useCallback((e: any) => {
     setActivePanel("");
   }, []);  
-  const toolDismissed = useCallback(() => {
+  const toolDismissed = useCallback((e: any) => {
     setActiveTool("");
+    setDismissedTool(e.target['data-panel']);
   }, []);  
   return (
     <CalciteShell contentBehind={contentBehind ? true : undefined}>
@@ -145,7 +155,12 @@ function Shell() {
         resizable={contentBehind ? undefined : true}
         collapsed={activePanel === ""}
       >
-        {view && <Toolbar view={view} activePanelChanged={activePanelChanged} activeToolChanged={activeToolChanged} ></Toolbar>}
+        {view && <Toolbar view={view} 
+          activePanelChanged={activePanelChanged} 
+          activeToolChanged={activeToolChanged}
+          dismissedTool={dismissedTool}
+          expandable={contentBehind ? true : undefined}
+        ></Toolbar>}
         <CalcitePanel
           id="search-panel"
           heading="Property Search"
@@ -209,6 +224,7 @@ function Shell() {
         </CalcitePanel>
         <CalcitePanel
           id="legend-panel"
+          data-panel="legend"
           heading="Legend"
           hidden={activePanel !== "legend"}
           closed={activePanel !== "legend" ? true : undefined}
@@ -262,6 +278,7 @@ function Shell() {
         </CalcitePanel>
         <CalcitePanel
           id="measure-panel"
+          data-panel="measure"
           heading="Measure"
           hidden={activeTool !== "measure"}
           closed={activeTool !== "measure" ? true : undefined}

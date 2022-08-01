@@ -9,13 +9,13 @@ let condos: FeatureLayer;
 let addresses: FeatureLayer;
 let search: Search;
 let properties: FeatureLayer;
-function getQueryParams(setCondos: Function) {
+function getQueryParams(condosSelected: Function) {
   const url = new URL(window.location as any);
   const pins = url.searchParams.get("pins");
   if (pins !== "" && pins !== null) {
     searchCondos(`PIN_NUM in ('${pins?.replaceAll(",", "','")}')`, []).then(
       (result) => {
-        setCondos(result);
+        condosSelected(result);
       }
     );
   }

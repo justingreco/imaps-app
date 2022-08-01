@@ -3,7 +3,7 @@ import {
   CalciteActionBar,
   CalciteActionGroup,
 } from "@esri/calcite-components-react";
-import React, { lazy, Suspense, useEffect, useState } from "react";
+import React, { lazy, Suspense, useCallback, useEffect, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { panelSelected, toolSelected } from "./utils/shell";
 const Layers = lazy(() => import("../Panels/Layers/Layers"));
@@ -21,15 +21,30 @@ function Toolbar(args: any) {
   const [activeTool, setActiveTool] = useState("");
   const [view, setView] = useState<__esri.MapView>();
   const [selectDismissed, setSelectDismissed] = useState(true);
-  
+  const measurement = useRef<__esri.Measurement>();
+
   useEffect(() => {
 
     if (args.view) {
       setView(args.view);
     }
+    
   }, []);
+  useEffect(() => {
+    if (args.dismissedTool) {
+      if (args.dismissedTool === 'measure') {
+        (measurement.current as any).activeTool = null;
+      }
+
+      setActiveTool('');
+    }
+  }, [args.dismissedTool]);  
+  const measurementCreated = useCallback((widget: __esri.Measurement) => {
+    measurement.current = widget;
+  }, []);  
+
   return (
-<CalciteActionBar slot="action-bar" position="end">
+<CalciteActionBar slot="action-bar" position="end" expandDisabled={args.expandable}>
           <CalciteActionGroup>
             <CalciteAction
               icon="search"
@@ -189,7 +204,7 @@ function Toolbar(args: any) {
                     const root = createRoot(container as HTMLDivElement);
                     root.render(
                       <Suspense fallback={""}>
-                        <Measure view={view} />
+                        <Measure view={view} measurementCreated={measurementCreated}/>
                       </Suspense>
                     );
                   }

@@ -4,6 +4,8 @@ import Home from "@arcgis/core/widgets/Home";
 import Compass from "@arcgis/core/widgets/Compass";
 import ScaleBar from "@arcgis/core/widgets/ScaleBar";
 import MapView from "@arcgis/core/views/MapView";
+import Track from '@arcgis/core/widgets/Track';
+
 let streetviewClick: IHandle | null = null;
 
 export function addWidgets(view: MapView, widgetActivated: Function) {
@@ -18,6 +20,8 @@ export function addWidgets(view: MapView, widgetActivated: Function) {
     view.goTo(view.constraints)
   } }), "top-left");
   view.ui.add(new Compass({ view: view }), "top-left");
+  const track = new Track({ view: view });
+  view.ui.add(track, 'top-left');
   view.ui.add(new ScaleBar({ view: view }), "bottom-left");
   const streetview = createStreetviewButton(view, widgetActivated);
   const identify = createIdentifyButton(view, widgetActivated);

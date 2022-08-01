@@ -28,4 +28,4 @@ function PropertyTable(args: any) {
   return <div ref={ref}></div>;
 }
 
-export default PropertyTable;
+export default React.memo(PropertyTable);

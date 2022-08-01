@@ -23,4 +23,4 @@ function AddressTable(args: any) {
   return <div id="address-table" ref={ref}></div>;
 }
 
-export default AddressTable;
+export default React.memo(AddressTable);
