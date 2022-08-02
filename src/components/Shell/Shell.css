@@ -58,3 +58,24 @@ calcite-action-bar {
 .tools calcite-panel div {
   background-color: var(--calcite-ui-foreground-1) !important;
 }
+
+@media only screen and (max-width: 400px) {
+  .esri-expand {
+    display: none;
+  }
+  .custom-width calcite-panel {
+    max-width: calc(100vw - 50px);
+    position: absolute;
+    right: 50px;
+  }
+  .custom-width {
+    width: 100%;
+  }
+  calcite-action-bar {
+    right: 0;
+    position: absolute;
+    bottom: 0;
+    top: 0;    
+  }
+
+}
