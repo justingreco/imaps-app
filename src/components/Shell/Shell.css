@@ -28,7 +28,7 @@ calcite-loader {
 
 .custom-width {
   --calcite-shell-panel-width: 350px;
-  --calcite-shell-panel-min-width: 350px; 
+  --calcite-shell-panel-min-width: 350px;
   --calcite-shell-panel-max-width: calc(100vw - 400px);
 }
 
@@ -51,7 +51,6 @@ calcite-action-bar {
   min-width: 50px;
 }
 
-
 .tools {
   box-shadow: rgb(0 0 0 / 16%) 0px 0px 16px 0px !important;
 }
@@ -59,4 +58,3 @@ calcite-action-bar {
 .tools calcite-panel div {
   background-color: var(--calcite-ui-foreground-1) !important;
 }
-

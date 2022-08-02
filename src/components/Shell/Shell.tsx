@@ -98,13 +98,19 @@ function Shell() {
     }
   }, []);
 
-  const mapCallback = useCallback((mapView: __esri.MapView) => {
-    viewRef.current = mapView;
-    mapViewSet(mapView, setView, setLoading, setShowAlert, setAlert);
-  }, [view]);
-  const geometryCallback = useCallback((geometry: __esri.Geometry) => {
-    setGeometry(geometry);
-  }, [geometry]);
+  const mapCallback = useCallback(
+    (mapView: __esri.MapView) => {
+      viewRef.current = mapView;
+      mapViewSet(mapView, setView, setLoading, setShowAlert, setAlert);
+    },
+    [view]
+  );
+  const geometryCallback = useCallback(
+    (geometry: __esri.Geometry) => {
+      setGeometry(geometry);
+    },
+    [geometry]
+  );
   const widgetCallback = useCallback((mapView: __esri.MapView) => {
     if (mapView) {
       widgetActivated(mapView, setActiveTool);
@@ -118,28 +124,31 @@ function Shell() {
         undefined as any
       );
     }
-  }, []);  
+  }, []);
   const activePanelChanged = useCallback((panel: string) => {
     setActivePanel(panel);
-  }, []);    
+  }, []);
   const activeToolChanged = useCallback((tool: string) => {
-    setActiveTool(prevValue => {
+    setActiveTool((prevValue) => {
       setDismissedTool(prevValue);
       return tool;
-    });    
-  }, []);  
+    });
+  }, []);
   const panelDismissed = useCallback((e: any) => {
     setActivePanel("");
-  }, []);  
+  }, []);
   const toolDismissed = useCallback((e: any) => {
     setActiveTool("");
-    setDismissedTool(e.target['data-panel']);
-  }, []);  
-  const propertySelected = useCallback((feature: __esri.Graphic, condos: __esri.Graphic[]) => {
-    setSelectedProperty(feature);
+    setDismissedTool(e.target["data-panel"]);
+  }, []);
+  const propertySelected = useCallback(
+    (feature: __esri.Graphic, condos: __esri.Graphic[]) => {
+      setSelectedProperty(feature);
 
-    setProperties(getDistinctProperties(feature, condos));
-  }, []);    
+      setProperties(getDistinctProperties(feature, condos));
+    },
+    []
+  );
   return (
     <CalciteShell contentBehind={contentBehind ? true : undefined}>
       <Header></Header>
@@ -156,12 +165,15 @@ function Shell() {
         resizable={contentBehind ? undefined : true}
         collapsed={activePanel === ""}
       >
-        {view && <Toolbar view={view} 
-          activePanelChanged={activePanelChanged} 
-          activeToolChanged={activeToolChanged}
-          dismissedTool={dismissedTool}
-          expandable={contentBehind ? true : undefined}
-        ></Toolbar>}
+        {view && (
+          <Toolbar
+            view={view}
+            activePanelChanged={activePanelChanged}
+            activeToolChanged={activeToolChanged}
+            dismissedTool={dismissedTool}
+            expandable={contentBehind ? true : undefined}
+          ></Toolbar>
+        )}
         <CalcitePanel
           id="search-panel"
           heading="Property Search"

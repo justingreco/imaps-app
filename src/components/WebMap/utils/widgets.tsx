@@ -4,7 +4,7 @@ import Home from "@arcgis/core/widgets/Home";
 import Compass from "@arcgis/core/widgets/Compass";
 import ScaleBar from "@arcgis/core/widgets/ScaleBar";
 import MapView from "@arcgis/core/views/MapView";
-import Track from '@arcgis/core/widgets/Track';
+import Track from "@arcgis/core/widgets/Track";
 import React, { lazy, Suspense } from "react";
 
 import { createRoot } from "react-dom/client";
@@ -21,12 +21,18 @@ export function addWidgets(view: MapView, widgetActivated: Function) {
     mode: "floating",
   });
   view.ui.add(coordinateExpand, "bottom-left");
-  view.ui.add(new Home({ view: view, goToOverride: (view, params) => {
-    view.goTo(view.constraints)
-  } }), "top-left");
+  view.ui.add(
+    new Home({
+      view: view,
+      goToOverride: (view, params) => {
+        view.goTo(view.constraints);
+      },
+    }),
+    "top-left"
+  );
   view.ui.add(new Compass({ view: view }), "top-left");
   const track = new Track({ view: view });
-  view.ui.add(track, 'top-left');
+  view.ui.add(track, "top-left");
   view.ui.add(new ScaleBar({ view: view }), "bottom-left");
   const streetview = createStreetviewButton(view, widgetActivated);
   const identify = createIdentifyButton(view, widgetActivated);
@@ -50,22 +56,22 @@ const addOverview = (view: __esri.MapView) => {
     expandIconClass: "esri-icon-overview-arrow-top-left",
     collapseIconClass: "esri-icon-overview-arrow-bottom-right",
     mode: "floating",
-    id: 'overview'
-  });  
-  view.ui.add(overviewExpand, "bottom-right");
-  reactiveUtils.whenOnce(() => overviewExpand.expanded).then(() => {
-    if (!container?.hasChildNodes()) {
-      const root = createRoot(container as HTMLDivElement);
-      root.render(
-        <Suspense fallback={""}>
-          <Overview id="overview-map" view={view} />
-        </Suspense>
-      );
-    }  
+    id: "overview",
   });
-
-
-}
+  view.ui.add(overviewExpand, "bottom-right");
+  reactiveUtils
+    .whenOnce(() => overviewExpand.expanded)
+    .then(() => {
+      if (!container?.hasChildNodes()) {
+        const root = createRoot(container as HTMLDivElement);
+        root.render(
+          <Suspense fallback={""}>
+            <Overview id="overview-map" view={view} />
+          </Suspense>
+        );
+      }
+    });
+};
 
 const createStreetviewButton = (
   view: MapView,

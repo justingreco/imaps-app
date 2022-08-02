@@ -28,13 +28,15 @@ export function initializeMap(
     view.when(() => {
       view.map.add(selectionLayer);
       view.map.add(selectionCluster);
-      reactiveUtils.whenOnce(() => view.map.basemap.loaded).then((loaded) => {
-        getBackgroundColor(view.map.basemap).then(color => {
-          if (color) {
-            view.background = {color: color} as __esri.ColorBackground;
-          }
+      reactiveUtils
+        .whenOnce(() => view.map.basemap.loaded)
+        .then((loaded) => {
+          getBackgroundColor(view.map.basemap).then((color) => {
+            if (color) {
+              view.background = { color: color } as __esri.ColorBackground;
+            }
+          });
         });
-      });      
       // setTimeout(() => {
       //   handlePolygonLabels(view);
       // }, 5000);
@@ -300,20 +302,27 @@ function updateClusters(properties: Graphic[]) {
     );
 }
 
-
 const getBackgroundColor = (basemap: Basemap): Promise<Color | null> => {
   return new Promise((resolve, reject) => {
-    const baseLayer = basemap.baseLayers.find(layer => {return layer.type === 'vector-tile'});
-    if (baseLayer?.type === 'vector-tile') {
-      reactiveUtils.whenOnce(() => baseLayer.loaded).then(loaded => {
-        const background = (baseLayer as __esri.VectorTileLayer).getStyleLayer('background');
-        if (background) {
-          const color: Color = new Color(background.paint["background-color"]);
-          resolve(color);
-        } else {
-          resolve(null);
-        }
-      });
+    const baseLayer = basemap.baseLayers.find((layer) => {
+      return layer.type === "vector-tile";
+    });
+    if (baseLayer?.type === "vector-tile") {
+      reactiveUtils
+        .whenOnce(() => baseLayer.loaded)
+        .then((loaded) => {
+          const background = (
+            baseLayer as __esri.VectorTileLayer
+          ).getStyleLayer("background");
+          if (background) {
+            const color: Color = new Color(
+              background.paint["background-color"]
+            );
+            resolve(color);
+          } else {
+            resolve(null);
+          }
+        });
     }
   });
-}
+};

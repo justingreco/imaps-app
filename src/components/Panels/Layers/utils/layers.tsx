@@ -72,24 +72,26 @@ const setPropertyColor = (layer: FeatureLayer, light: boolean) => {
     (renderer.symbol as __esri.SimpleFillSymbol).outline.color.r = 0;
     (renderer.symbol as __esri.SimpleFillSymbol).outline.color.g = 0;
     (renderer.symbol as __esri.SimpleFillSymbol).outline.color.b = 0;
-  }
-  else {
+  } else {
     (renderer.symbol as __esri.SimpleFillSymbol).outline.color.r = 255;
     (renderer.symbol as __esri.SimpleFillSymbol).outline.color.g = 255;
     (renderer.symbol as __esri.SimpleFillSymbol).outline.color.b = 255;
   }
   layer.renderer = renderer;
-}
+};
 const togglePropertyColor = (layer: FeatureLayer, sections: any) => {
   if (sections.length > 1) {
-    setPropertyColor(layer,  !sections.getItemAt(1).getItemAt(0).value);
+    setPropertyColor(layer, !sections.getItemAt(1).getItemAt(0).value);
   }
-}
+};
 export const togglePropertyLabels = (
   event: __esri.LayerListTriggerActionEvent
 ) => {
   if (event.item.layer.title === "Property") {
-    togglePropertyColor(event.item.layer as FeatureLayer, event.item.actionsSections);
+    togglePropertyColor(
+      event.item.layer as FeatureLayer,
+      event.item.actionsSections
+    );
     if (!(event.item.layer as __esri.FeatureLayer).labelsVisible) {
       (event.item.layer as __esri.FeatureLayer).labelsVisible = true;
     }
@@ -181,8 +183,9 @@ const addPropertyLabelToggles = (item: any) => {
         return new ActionToggle({
           value: item.layer.labelingInfo?.find((info: any) => {
             return (
-              info.labelExpressionInfo?.expression.includes(expression.expression) &&
-              item.layer.labelsVisible
+              info.labelExpressionInfo?.expression.includes(
+                expression.expression
+              ) && item.layer.labelsVisible
             );
           }),
           title: expression.title,
@@ -192,12 +195,14 @@ const addPropertyLabelToggles = (item: any) => {
     );
     (item as __esri.ListItem).actionsSections.push(toggles);
 
-    toggles  = new Collection();
-    toggles.add(new ActionToggle({
-      value: item.layer.renderer.symbol.outline.color.isBright,
-      title: 'Light Outline',
-      visible: true
-    }) as any);
+    toggles = new Collection();
+    toggles.add(
+      new ActionToggle({
+        value: item.layer.renderer.symbol.outline.color.isBright,
+        title: "Light Outline",
+        visible: true,
+      }) as any
+    );
     (item as __esri.ListItem).actionsSections.push(toggles);
 
     (item as __esri.ListItem).actionsOpen = true;
@@ -207,7 +212,10 @@ const addPropertyLabelToggles = (item: any) => {
       title.textContent = "Labels";
       title.setAttribute("style", "padding: 0.5em;margin: 0;");
       const actions = document.querySelector(".esri-layer-list__item-actions");
-      if (actions?.parentElement && !document.getElementById('labels-actions-title')) {
+      if (
+        actions?.parentElement &&
+        !document.getElementById("labels-actions-title")
+      ) {
         actions.prepend(title);
       }
     }, 500);
@@ -215,7 +223,12 @@ const addPropertyLabelToggles = (item: any) => {
 };
 
 const createPanel = (item: __esri.ListItem) => {
-  if (item.visible && !item.panel && item.layer.type !== "group" && item.layer.type !== undefined) {  
+  if (
+    item.visible &&
+    !item.panel &&
+    item.layer.type !== "group" &&
+    item.layer.type !== undefined
+  ) {
     const slider = document.createElement("slider-container");
     const root = createRoot(slider as HTMLDivElement);
     root.render(
@@ -223,13 +236,13 @@ const createPanel = (item: __esri.ListItem) => {
         <OpacitySlider value={item.layer.opacity} layer={item.layer} />
       </Suspense>
     );
-    
+
     item.panel = {
       content: [slider, "legend"],
-      open:  false,
+      open: false,
     } as __esri.ListItemPanel;
   }
-}
+};
 
 const layerListItemCreated = (event: any): void => {
   const item = event.item;

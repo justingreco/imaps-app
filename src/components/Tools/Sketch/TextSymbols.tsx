@@ -141,4 +141,3 @@ function TextSymbols(args: any) {
   );
 }
 export default React.memo(TextSymbols);
-

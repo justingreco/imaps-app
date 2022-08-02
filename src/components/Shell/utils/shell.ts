@@ -8,7 +8,7 @@ export function toolSelected(
   setActivePanel: Function,
   setSelectDismissed: Function,
   activePanelChanged: Function,
-  activeToolChanged: Function,
+  activeToolChanged: Function
 ) {
   const panel = document.getElementById(
     `${activeTool}-panel`
@@ -30,7 +30,6 @@ export function toolSelected(
   if (window.innerWidth < 735) {
     setActivePanel("");
     activePanelChanged("");
-
   }
 }
 
@@ -40,16 +39,14 @@ export function panelSelected(
   setActiveTool: Function,
   setActivePanel: Function,
   activePanelChanged: Function,
-  activeToolChanged: Function,
+  activeToolChanged: Function
 ) {
   activePanel === panel ? setActivePanel("") : setActivePanel(panel);
 
-
-  activePanelChanged(  activePanel === panel ? "" : panel);
+  activePanelChanged(activePanel === panel ? "" : panel);
   if (window.innerWidth < 735) {
     setActiveTool("");
     activeToolChanged("");
-
   }
 }
 
@@ -164,16 +161,15 @@ export function widgetActivated(view: MapView, setActiveTool: Function) {
   setActiveTool("");
 }
 
-export const getDistinctProperties = (feature: __esri.Graphic, condos: __esri.Graphic[]) => {
+export const getDistinctProperties = (
+  feature: __esri.Graphic,
+  condos: __esri.Graphic[]
+) => {
   const pins: string[] = [];
   const properties = condos.filter((condo) => {
-    if (pins.includes(condo.getAttribute("PIN_NUM")))
-      return false;
+    if (pins.includes(condo.getAttribute("PIN_NUM"))) return false;
     if (feature) {
-      if (
-        condo.getAttribute("PIN_NUM") ===
-        feature.getAttribute("PIN_NUM")
-      ) {
+      if (condo.getAttribute("PIN_NUM") === feature.getAttribute("PIN_NUM")) {
         condo.setAttribute("selected", 1);
       } else {
         condo.setAttribute("selected", 2);
@@ -185,4 +181,4 @@ export const getDistinctProperties = (feature: __esri.Graphic, condos: __esri.Gr
     return true;
   });
   return properties;
-}
+};

@@ -52,9 +52,7 @@ function Basemaps(args: any) {
   return (
     <div className="basemaps">
       <CalciteTabs position="below" layout="center" scale="m">
-        <CalciteTabNav
-          slot="tab-nav"
-        >
+        <CalciteTabNav slot="tab-nav">
           <CalciteTabTitle>Maps</CalciteTabTitle>
           <CalciteTabTitle>Images</CalciteTabTitle>
           <CalciteTabTitle>Esri</CalciteTabTitle>

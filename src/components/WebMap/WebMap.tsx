@@ -19,9 +19,7 @@ function WebMap(args: any) {
       view.current = mapView;
       args.mapViewSet(view.current);
     }
-    return () => {
-       
-    };
+    return () => {};
   }, []);
   useEffect(() => {
     if (args.properties) {

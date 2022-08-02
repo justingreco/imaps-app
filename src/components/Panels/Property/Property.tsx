@@ -55,30 +55,35 @@ function Property(args: any) {
       );
     }
   }, [args.geometry]);
-  const condosSelected = useCallback((selectedCondos: __esri.Graphic[]) => {
-    setCondos(selectedCondos);
-    condoRef.current = selectedCondos;
-    if (selectedCondos.length === 1) {
-      setInfoDisabled(false);
+  const condosSelected = useCallback(
+    (selectedCondos: __esri.Graphic[]) => {
+      setCondos(selectedCondos);
+      condoRef.current = selectedCondos;
+      if (selectedCondos.length === 1) {
+        setInfoDisabled(false);
+        setActiveTab("info");
+        setFeature(selectedCondos[0]);
+        args.selected(selectedCondos[0], selectedCondos);
+      } else {
+        setInfoDisabled(true);
+        setActiveTab("list");
+        setFeature(undefined);
+        args.selected(undefined, selectedCondos);
+      }
+    },
+    [condoRef.current, condos, args.selected]
+  );
+
+  const featureSelected = useCallback(
+    (selectedFeature: __esri.Graphic) => {
+      setFeature(selectedFeature);
+      //args.featureSelected(feature);
+      args.selected(selectedFeature, condoRef.current);
       setActiveTab("info");
-      setFeature(selectedCondos[0]);
-      args.selected(selectedCondos[0], selectedCondos);
-    } else {
-      setInfoDisabled(true);
-      setActiveTab("list");
-      setFeature(undefined);
-      args.selected(undefined, selectedCondos);
-    }
-  }, [condoRef.current, condos, args.selected]);  
-
-  const featureSelected = useCallback((selectedFeature: __esri.Graphic) => {
-    setFeature(selectedFeature);
-    //args.featureSelected(feature);
-    args.selected(selectedFeature, condoRef.current);
-    setActiveTab("info");
-    setInfoDisabled(false);
-  }, [args.selected, feature]);  
-
+      setInfoDisabled(false);
+    },
+    [args.selected, feature]
+  );
 
   return (
     <div className="property">

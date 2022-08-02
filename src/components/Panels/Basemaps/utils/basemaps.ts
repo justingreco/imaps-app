@@ -50,9 +50,11 @@ export function initializeImageMaps(
         images.source.refresh();
       });
     }
-    view.watch("extent", (extent: __esri.Extent) => viewExtentChanged(extent, view, setShowAlert));
+    view.watch("extent", (extent: __esri.Extent) =>
+      viewExtentChanged(extent, view, setShowAlert)
+    );
   });
-  view.map.watch('basemap', (basemap: Basemap) => {
+  view.map.watch("basemap", (basemap: Basemap) => {
     checkBasemapTheme(basemap, view).then((isLight: boolean) => {
       setPropertyColor(view, isLight);
     });
@@ -93,8 +95,11 @@ const getBoundary = (view: __esri.MapView): Promise<Polygon> => {
   });
 };
 
-
-const viewExtentChanged = (extent: __esri.Extent, view: MapView,  setShowAlert: Function) => {
+const viewExtentChanged = (
+  extent: __esri.Extent,
+  view: MapView,
+  setShowAlert: Function
+) => {
   if (
     imageryBoundary &&
     images.source.basemaps.find(
@@ -120,48 +125,63 @@ const viewExtentChanged = (extent: __esri.Extent, view: MapView,  setShowAlert: 
       }, 1000);
     }
   }
-}
+};
 
-
-const checkBasemapTheme = (basemap: Basemap, view: MapView): Promise<boolean> => {
-   return new Promise((resolve, reject) => {
+const checkBasemapTheme = (
+  basemap: Basemap,
+  view: MapView
+): Promise<boolean> => {
+  return new Promise((resolve, reject) => {
     if (basemap.baseLayers.length) {
-      const baseLayer = basemap.baseLayers.find(layer => {return layer.type === 'vector-tile'});
-      if (baseLayer?.type === 'vector-tile') {
-        reactiveUtils.whenOnce(() => baseLayer.loaded).then(loaded => {
-          const background = (baseLayer as __esri.VectorTileLayer).getStyleLayer('background');
-          if (background) {
-            const color: Color = new Color(background.paint["background-color"]);
-            view.background = {color: color} as __esri.ColorBackground;
-            resolve((color as any).isBright);
-          } else {
-            resolve(true);
-          }
-        });
-  
-      } else if (!baseLayer && basemap.baseLayers.getItemAt(0).type === 'imagery') {
+      const baseLayer = basemap.baseLayers.find((layer) => {
+        return layer.type === "vector-tile";
+      });
+      if (baseLayer?.type === "vector-tile") {
+        reactiveUtils
+          .whenOnce(() => baseLayer.loaded)
+          .then((loaded) => {
+            const background = (
+              baseLayer as __esri.VectorTileLayer
+            ).getStyleLayer("background");
+            if (background) {
+              const color: Color = new Color(
+                background.paint["background-color"]
+              );
+              view.background = { color: color } as __esri.ColorBackground;
+              resolve((color as any).isBright);
+            } else {
+              resolve(true);
+            }
+          });
+      } else if (
+        !baseLayer &&
+        basemap.baseLayers.getItemAt(0).type === "imagery"
+      ) {
         resolve(false);
       } else {
         resolve(true);
       }
     }
-   });
-}
+  });
+};
 
-const setPropertyColor = (view: MapView,isLight: boolean) => {
-  const layer = view.map.allLayers.find(layer => {return layer.title.includes('Property') && layer.type === 'feature'});
+const setPropertyColor = (view: MapView, isLight: boolean) => {
+  const layer = view.map.allLayers.find((layer) => {
+    return layer.title.includes("Property") && layer.type === "feature";
+  });
   if (layer) {
-    const renderer = ((layer as FeatureLayer)?.renderer as __esri.SimpleRenderer).clone();
+    const renderer = (
+      (layer as FeatureLayer)?.renderer as __esri.SimpleRenderer
+    ).clone();
     if (isLight) {
       (renderer.symbol as __esri.SimpleFillSymbol).outline.color.r = 0;
       (renderer.symbol as __esri.SimpleFillSymbol).outline.color.g = 0;
       (renderer.symbol as __esri.SimpleFillSymbol).outline.color.b = 0;
-    }
-    else {
+    } else {
       (renderer.symbol as __esri.SimpleFillSymbol).outline.color.r = 255;
       (renderer.symbol as __esri.SimpleFillSymbol).outline.color.g = 255;
       (renderer.symbol as __esri.SimpleFillSymbol).outline.color.b = 255;
     }
     (layer as FeatureLayer).renderer = renderer;
   }
-}
+};

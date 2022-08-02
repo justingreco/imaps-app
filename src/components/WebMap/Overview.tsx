@@ -12,18 +12,14 @@ function Overview(args: any) {
   useEffect(() => {
     if (!loaded.current && args.view) {
       loaded.current = true;
-      const mapView = initializeOverview(
-        ref.current,
-        args.view
-      );
+      const mapView = initializeOverview(ref.current, args.view);
       overview.current = mapView;
-      view.current = args.view
+      view.current = args.view;
     }
     return () => {
       overview.current && overview.current?.destroy();
     };
   }, []);
-
 
   return <div id="overview-map" ref={ref}></div>;
 }

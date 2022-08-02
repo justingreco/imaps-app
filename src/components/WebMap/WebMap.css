@@ -11,8 +11,6 @@
   z-index: 1000;
 }
 
-
-
 .identify-widget {
   position: absolute;
   left: 50px;
@@ -28,5 +26,4 @@
   width: 250px;
   height: 250px;
   background-color: var(--calcite-ui-foreground-1) !important;
-
 }

@@ -17,8 +17,8 @@ export const Measure = (args: any) => {
       loaded.current = true;
       const widget = initializeMeasure(measureRef.current, args.view);
       setMeasurement(widget);
-      widget.watch('activeTool', (activeTool) => {
-        setSelectedTool(activeTool ?  activeTool : '');
+      widget.watch("activeTool", (activeTool) => {
+        setSelectedTool(activeTool ? activeTool : "");
         measurement?.clear();
       });
       args.measurementCreated(widget);
@@ -27,7 +27,6 @@ export const Measure = (args: any) => {
       measurement && measurement?.destroy();
     };
   }, []);
-
 
   return (
     <div>
