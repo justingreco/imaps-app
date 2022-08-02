@@ -1,3 +1,5 @@
+import "@esri/calcite-components/dist/components/calcite-combobox";
+import "@esri/calcite-components/dist/components/calcite-combobox-item";
 import {
   CalciteCombobox,
   CalciteComboboxItem,
@@ -52,7 +54,7 @@ function Location(args: any) {
         <div>
           <CalciteLabel>
             Intersections
-            <CalciteCombobox label={""} selectionMode="single">
+            <CalciteCombobox label={""} selectionMode="single" scale="l">
               {intersections.map((intersection, i) => {
                 return (
                   <CalciteComboboxItem

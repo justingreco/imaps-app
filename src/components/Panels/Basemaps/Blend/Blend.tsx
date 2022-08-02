@@ -76,6 +76,7 @@ function Blend(args: any) {
           <CalciteCombobox
             label="Basemaps"
             selectionMode="single"
+            scale="l"
             onCalciteComboboxChange={(evt) =>
               addBasemap(
                 "images",
@@ -109,6 +110,7 @@ function Blend(args: any) {
           <CalciteCombobox
             label="Images"
             selectionMode="single"
+            scale="l"
             onCalciteComboboxChange={(evt) =>
               addBasemap(
                 "opacity",
