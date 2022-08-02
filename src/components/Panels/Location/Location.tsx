@@ -51,7 +51,7 @@ function Location(args: any) {
     <div id="location-search">
       <div ref={searchDiv}></div>
       {isIntersection && (
-        <div>
+        <div id="intersection-search">
           <CalciteLabel>
             Intersections
             <CalciteCombobox label={""} selectionMode="single" scale="l">
@@ -77,7 +77,7 @@ function Location(args: any) {
           </CalciteLabel>
         </div>
       )}
-      <div ref={featureDiv}></div>
+      <div id="location-feature" ref={featureDiv}></div>
     </div>
   );
 }
