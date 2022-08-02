@@ -1,3 +1,6 @@
+import "@esri/calcite-components/dist/components/calcite-combobox";
+import "@esri/calcite-components/dist/components/calcite-combobox-item";
+import { CalciteButton, CalciteCombobox, CalciteComboboxItem, CalcitePopover } from "@esri/calcite-components-react";
 import React, { useEffect, useState } from "react";
 import { getSymbols } from "./utils/sketch";
 
@@ -8,11 +11,18 @@ function PointSymbols(args: any) {
   }, []);
   return (
     <div id="point-symbols">
-      {/* {symbols.map((symbol, i)  => {
-      return <img key={i} src={`http://www.arcgis.com/sharing/rest/content/items/70ccf6bcbd304773a164be896e76edd3/${symbol.thumbnail.href}`}/>
-    })} */}
+
+<CalcitePopover label="Icons" referenceElement="popover-button">
+    <div id="symbols">
+    {symbols.map((symbol, i)  => {
+      return <div key={i} id={`pin-${i}`}></div>
+    })}
+    </div>
+
+</CalcitePopover>
+<CalciteButton id="popover-button">Activate Popover</CalciteButton>
     </div>
   );
 }
 
-export default PointSymbols;
+export default React.memo(PointSymbols);

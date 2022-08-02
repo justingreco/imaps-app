@@ -163,3 +163,26 @@ export function widgetActivated(view: MapView, setActiveTool: Function) {
   (view as any).activeTool = null;
   setActiveTool("");
 }
+
+export const getDistinctProperties = (feature: __esri.Graphic, condos: __esri.Graphic[]) => {
+  const pins: string[] = [];
+  const properties = condos.filter((condo) => {
+    if (pins.includes(condo.getAttribute("PIN_NUM")))
+      return false;
+    if (feature) {
+      if (
+        condo.getAttribute("PIN_NUM") ===
+        feature.getAttribute("PIN_NUM")
+      ) {
+        condo.setAttribute("selected", 1);
+      } else {
+        condo.setAttribute("selected", 2);
+      }
+    } else {
+      condo.setAttribute("selected", 2);
+    }
+    pins.push(condo.getAttribute("PIN_NUM"));
+    return true;
+  });
+  return properties;
+}

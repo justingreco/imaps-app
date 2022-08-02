@@ -22,6 +22,7 @@ import Header from "../Header/Header";
 import "./Shell.css";
 import {
   collapsePanel,
+  getDistinctProperties,
   mapViewSet,
   toolSelected,
   widgetActivated,
@@ -122,11 +123,6 @@ function Shell() {
     setActivePanel(panel);
   }, []);    
   const activeToolChanged = useCallback((tool: string) => {
-    // setActiveTool(tool);
-    
-    // if (tool === '') {
-    //   setDismissedTool(tool);
-    // }
     setActiveTool(prevValue => {
       setDismissedTool(prevValue);
       return tool;
@@ -139,6 +135,11 @@ function Shell() {
     setActiveTool("");
     setDismissedTool(e.target['data-panel']);
   }, []);  
+  const propertySelected = useCallback((feature: __esri.Graphic, condos: __esri.Graphic[]) => {
+    setSelectedProperty(feature);
+
+    setProperties(getDistinctProperties(feature, condos));
+  }, []);    
   return (
     <CalciteShell contentBehind={contentBehind ? true : undefined}>
       <Header></Header>
@@ -174,29 +175,7 @@ function Shell() {
             <Property
               view={view}
               geometry={geometry}
-              selected={(feature: __esri.Graphic, condos: __esri.Graphic[]) => {
-                setSelectedProperty(feature);
-                const pins: string[] = [];
-                const properties = condos.filter((condo) => {
-                  if (pins.includes(condo.getAttribute("PIN_NUM")))
-                    return false;
-                  if (feature) {
-                    if (
-                      condo.getAttribute("PIN_NUM") ===
-                      feature.getAttribute("PIN_NUM")
-                    ) {
-                      condo.setAttribute("selected", 1);
-                    } else {
-                      condo.setAttribute("selected", 2);
-                    }
-                  } else {
-                    condo.setAttribute("selected", 2);
-                  }
-                  pins.push(condo.getAttribute("PIN_NUM"));
-                  return true;
-                });
-                setProperties(properties);
-              }}
+              selected={propertySelected}
             ></Property>
           )}
         </CalcitePanel>

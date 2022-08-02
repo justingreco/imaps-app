@@ -7,6 +7,7 @@ import {
   CalciteSlider,
 } from "@esri/calcite-components-react";
 import { useEffect, useState } from "react";
+import React from "react";
 
 function SizeSlider(args: any) {
   const [value, setValue] = useState<any>();
@@ -42,4 +43,4 @@ function SizeSlider(args: any) {
     </CalciteLabel>
   );
 }
-export default SizeSlider;
+export default React.memo(SizeSlider);

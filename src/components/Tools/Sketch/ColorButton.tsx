@@ -142,4 +142,4 @@ function ColorButton(args: any) {
   );
 }
 
-export default ColorButton;
+export default React.memo(ColorButton);

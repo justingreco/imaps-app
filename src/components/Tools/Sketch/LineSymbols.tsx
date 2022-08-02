@@ -63,4 +63,4 @@ function LineSymbols(args: any) {
   );
 }
 
-export default LineSymbols;
+export default React.memo(LineSymbols);

@@ -145,9 +145,9 @@ export function polygonSymbolUpdated(
   fillSymbol.outline.color = outlineColor;
   fillSymbol.outline.width = width;
   polygonSketchViewModel.activeFillSymbol = fillSymbol;
-  // polygonSketchViewModel.updateGraphics.forEach((graphic) => {
-  //   graphic.symbol = fillSymbol;
-  // });
+  polygonSketchViewModel.updateGraphics.forEach((graphic) => {
+    graphic.symbol = fillSymbol;
+  });
 }
 
 export function polylineSymbolUpdated(lineColor: Color, width: number) {

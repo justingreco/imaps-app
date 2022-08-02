@@ -140,5 +140,5 @@ function TextSymbols(args: any) {
     </div>
   );
 }
+export default React.memo(TextSymbols);
 
-export default TextSymbols;

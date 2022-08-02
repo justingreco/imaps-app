@@ -20,7 +20,7 @@ function WebMap(args: any) {
       args.mapViewSet(view.current);
     }
     return () => {
-      // view.current && view.current?.destroy();
+       
     };
   }, []);
   useEffect(() => {
@@ -32,4 +32,4 @@ function WebMap(args: any) {
   return <div className="mapDiv" ref={ref}></div>;
 }
 
-export default WebMap;
+export default React.memo(WebMap);

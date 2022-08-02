@@ -5,17 +5,22 @@ import Compass from "@arcgis/core/widgets/Compass";
 import ScaleBar from "@arcgis/core/widgets/ScaleBar";
 import MapView from "@arcgis/core/views/MapView";
 import Track from '@arcgis/core/widgets/Track';
+import React, { lazy, Suspense } from "react";
+
+import { createRoot } from "react-dom/client";
+import * as reactiveUtils from "@arcgis/core/core/reactiveUtils";
+const Overview = lazy(() => import("../Overview"));
 
 let streetviewClick: IHandle | null = null;
 
 export function addWidgets(view: MapView, widgetActivated: Function) {
-  const coodinates = new CoordinateConversion({ view: view });
-  const coodinateExpand = new Expand({
-    content: coodinates,
+  const coordinates = new CoordinateConversion({ view: view });
+  const coordinateExpand = new Expand({
+    content: coordinates,
     expandIconClass: "esri-icon-pan",
     mode: "floating",
   });
-  view.ui.add(coodinateExpand, "bottom-left");
+  view.ui.add(coordinateExpand, "bottom-left");
   view.ui.add(new Home({ view: view, goToOverride: (view, params) => {
     view.goTo(view.constraints)
   } }), "top-left");
@@ -27,6 +32,7 @@ export function addWidgets(view: MapView, widgetActivated: Function) {
   const identify = createIdentifyButton(view, widgetActivated);
   view.ui.add(identify, "top-left");
   view.ui.add(streetview, "top-left");
+  addOverview(view);
   view.watch("activeTool", (activeTool) => {
     if (activeTool) {
       view.popup.autoOpenEnabled = false;
@@ -35,6 +41,30 @@ export function addWidgets(view: MapView, widgetActivated: Function) {
       document.querySelector(".streetview-widget")?.classList.remove("active");
     }
   });
+}
+const addOverview = (view: __esri.MapView) => {
+  const container = document.createElement("div");
+
+  const overviewExpand = new Expand({
+    content: container,
+    expandIconClass: "esri-icon-overview-arrow-top-left",
+    collapseIconClass: "esri-icon-overview-arrow-bottom-right",
+    mode: "floating",
+    id: 'overview'
+  });  
+  view.ui.add(overviewExpand, "bottom-right");
+  reactiveUtils.whenOnce(() => overviewExpand.expanded).then(() => {
+    if (!container?.hasChildNodes()) {
+      const root = createRoot(container as HTMLDivElement);
+      root.render(
+        <Suspense fallback={""}>
+          <Overview id="overview-map" view={view} />
+        </Suspense>
+      );
+    }  
+  });
+
+
 }
 
 const createStreetviewButton = (

@@ -167,4 +167,4 @@ function Blend(args: any) {
   );
 }
 
-export default Blend;
+export default React.memo(Blend);

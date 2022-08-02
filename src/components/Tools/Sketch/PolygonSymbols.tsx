@@ -80,4 +80,4 @@ function PolygonSymbols(args: any) {
   );
 }
 
-export default PolygonSymbols;
+export default React.memo(PolygonSymbols);
