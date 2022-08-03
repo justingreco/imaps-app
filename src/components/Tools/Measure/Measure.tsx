@@ -21,7 +21,13 @@ export const Measure = (args: any) => {
         setSelectedTool(activeTool ? activeTool : "");
         measurement?.clear();
       });
-      args.measurementCreated(widget);
+      var panel = document
+        .getElementById("measure-tools")
+        ?.closest("calcite-panel");
+      panel?.addEventListener("calcitePanelDismiss", () => {
+        (widget as any).activeTool = null;
+        measurement?.clear();
+      });
     }
     return () => {
       measurement && measurement?.destroy();
@@ -29,7 +35,7 @@ export const Measure = (args: any) => {
   }, []);
 
   return (
-    <div>
+    <div id="measure-tools">
       <div className="measure-container">
         <CalciteAction
           icon="measure-line"

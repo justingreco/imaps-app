@@ -5,13 +5,18 @@ import "@esri/calcite-components/dist/components/calcite-action-group";
 import {
   CalciteAction,
   CalciteActionGroup,
+  CalciteButton,
 } from "@esri/calcite-components-react";
 import "./Sketch.css";
 import {
+  cancelSketch,
   clearSketch,
+  deleteSelectedGraphics,
   initializeSketchViewModel,
+  pointSymbolUpdated,
   polygonSymbolUpdated,
   polylineSymbolUpdated,
+  stopSketching,
   textSymbolUpdated,
   toolSelected,
 } from "./utils/sketch";
@@ -22,9 +27,25 @@ import PointSymbols from "./PointSymbols";
 function Sketch(args: any) {
   const loaded = useRef(false);
   const [activeTool, setActiveTool] = useState("");
+  const [selectedGraphics, setSelectedGraphics] = useState<__esri.Graphic[]>(
+    []
+  );
+
   useEffect(() => {
     if (!loaded.current) {
-      initializeSketchViewModel(args.view);
+      initializeSketchViewModel(
+        args.view,
+        setActiveTool,
+        selectedGraphics,
+        setSelectedGraphics
+      );
+      var panel = document
+        .getElementById("sketch-tools")
+        ?.closest("calcite-panel");
+      panel?.addEventListener("calcitePanelDismiss", () => {
+        cancelSketch();
+        setActiveTool("");
+      });
     }
   }, []);
   return (
@@ -69,7 +90,15 @@ function Sketch(args: any) {
           ></CalciteAction>
         </CalciteActionGroup>
         <CalciteActionGroup layout="horizontal">
-          <CalciteAction icon="cursor" text={""}></CalciteAction>
+          <CalciteAction
+            icon="cursor"
+            text={""}
+            active={activeTool === "select" ? true : undefined}
+            onClick={() => {
+              stopSketching();
+              toolSelected("select", activeTool, setActiveTool);
+            }}
+          ></CalciteAction>
           <CalciteAction
             icon="trash"
             text={""}
@@ -82,7 +111,7 @@ function Sketch(args: any) {
         className="symbol"
         hidden={activeTool !== "point" ? true : undefined}
       >
-        <PointSymbols></PointSymbols>
+        <PointSymbols pointSymbolUpdated={pointSymbolUpdated}></PointSymbols>
       </div>
       <div
         id="line-symbols"
@@ -113,6 +142,20 @@ function Sketch(args: any) {
       >
         <TextSymbols textSymbolUpdated={textSymbolUpdated}></TextSymbols>
       </div>
+      {selectedGraphics.length > 0 && (
+        <CalciteButton
+          onClick={() =>
+            deleteSelectedGraphics(selectedGraphics, setSelectedGraphics)
+          }
+          alignment="center"
+          color="red"
+          appearance="transparent"
+          icon-end="trash"
+        >
+          {selectedGraphics.length}{" "}
+          {selectedGraphics.length > 1 ? "features" : "feature"}
+        </CalciteButton>
+      )}
     </div>
   );
 }

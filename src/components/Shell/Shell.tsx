@@ -139,7 +139,6 @@ function Shell() {
   }, []);
   const toolDismissed = useCallback((e: any) => {
     setActiveTool("");
-    setDismissedTool(e.target["data-panel"]);
   }, []);
   const propertySelected = useCallback(
     (feature: __esri.Graphic, condos: __esri.Graphic[]) => {
@@ -171,6 +170,7 @@ function Shell() {
             activePanelChanged={activePanelChanged}
             activeToolChanged={activeToolChanged}
             dismissedTool={dismissedTool}
+            activeTool={activeTool}
             expandable={contentBehind ? true : undefined}
           ></Toolbar>
         )}
@@ -247,6 +247,7 @@ function Shell() {
           closed={activeTool !== "select" ? true : undefined}
           dismissed={activeTool !== "select" ? true : undefined}
           dismissible
+          data-panel="select"
           onCalcitePanelDismiss={() => {
             setActiveTool("");
             setSelectDismissed(true);
@@ -287,6 +288,7 @@ function Shell() {
         </CalcitePanel>
         <CalcitePanel
           id="sketch-panel"
+          data-panel="sketch"
           heading="Sketch"
           hidden={activeTool !== "sketch"}
           closed={activeTool !== "sketch" ? true : undefined}
@@ -305,6 +307,7 @@ function Shell() {
         <CalcitePanel
           id="bookmarks-panel"
           heading="Bookmarks"
+          data-panel="bookmarks"
           hidden={activeTool !== "bookmarks"}
           closed={activeTool !== "bookmarks" ? true : undefined}
           dismissed={activeTool !== "bookmarks" ? true : undefined}
@@ -323,6 +326,7 @@ function Shell() {
         <CalcitePanel
           id="print-panel"
           heading="Print"
+          data-panel="print"
           hidden={activeTool !== "print"}
           closed={activeTool !== "print" ? true : undefined}
           dismissed={activeTool !== "print" ? true : undefined}

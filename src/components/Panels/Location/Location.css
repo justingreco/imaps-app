@@ -2,7 +2,8 @@
   margin-bottom: 1em;
 }
 
-#intersection-search, #location-feature {
+#intersection-search,
+#location-feature {
   margin: 1em;
   width: auto;
 }

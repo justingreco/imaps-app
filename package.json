@@ -2,9 +2,10 @@
   "name": "imaps-app",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://justingreco.github.io/imaps-app",
   "dependencies": {
     "@arcgis/core": "^4.24.7",
-    "@esri/calcite-components-react": "^0.27.0",
+    "@esri/calcite-comes\\\\ponents-react": "^0.27.0",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.3.0",
     "@testing-library/user-event": "^13.5.0",

@@ -8,7 +8,10 @@ import SimpleLineSymbol from "@arcgis/core/symbols/SimpleLineSymbol";
 import TextSymbol from "@arcgis/core/symbols/TextSymbol";
 import WebStyleSymbol from "@arcgis/core/symbols/WebStyleSymbol";
 import request from "@arcgis/core/request";
-
+import CIMSymbol from "@arcgis/core/symbols/CIMSymbol";
+import * as cimSymbolUtils from "@arcgis/core/symbols/support/cimSymbolUtils";
+import * as symbolUtils from "@arcgis/core/symbols/support/symbolUtils";
+import Graphic from "@arcgis/core/Graphic";
 let pointLayer: GraphicsLayer;
 let polylineLayer: GraphicsLayer;
 let polygonLayer: GraphicsLayer;
@@ -44,19 +47,32 @@ let textSymbol = new TextSymbol({
     weight: "bold",
   },
 });
+let pointSymbol: CIMSymbol;
 let pointSketchViewModel: SketchViewModel;
 let polylineSketchViewModel: SketchViewModel;
 
 let polygonSketchViewModel: SketchViewModel;
 
 let textSketchViewModel: SketchViewModel;
-
-export function initializeSketchViewModel(view: MapView) {
+let sketchLayerView: __esri.GraphicsLayerView;
+let highlights: any;
+let highlightedGraphic: Graphic;
+export function initializeSketchViewModel(
+  view: MapView,
+  setActiveTool: Function,
+  selectedGraphics: Graphic[],
+  setSelectedGraphics: Function
+) {
   sketchLayer = new MapNotesLayer({
     listMode: "hide",
     id: "notes-layer",
   });
   view.map.add(sketchLayer);
+  view
+    .whenLayerView(sketchLayer)
+    .then(
+      (layerView) => (sketchLayerView = layerView as __esri.GraphicsLayerView)
+    );
   pointLayer = sketchLayer.pointLayer;
   polylineLayer = sketchLayer.polylineLayer;
   polygonLayer = sketchLayer.polygonLayer;
@@ -71,6 +87,28 @@ export function initializeSketchViewModel(view: MapView) {
   (polylineSketchViewModel as any).activeLineSymbol = lineSymbol as any;
 
   textSketchViewModel = createSketchViewModels(textLayer, view, true);
+
+  const viewModels = [
+    pointSketchViewModel,
+    polylineSketchViewModel,
+    polygonSketchViewModel,
+    textSketchViewModel,
+  ];
+  viewModels.forEach((viewModel) => {
+    viewModel?.on("create", (e) => {
+      if (e.state === "cancel" && viewModel.activeTool === null) {
+        setActiveTool("select");
+        if (highlights) {
+          highlights.remove();
+        }
+      }
+    });
+    viewModel?.on("update", (e) => {
+      if (e.state === "start" || e.state === "active") {
+        setSelectedGraphics([...e.graphics]);
+      }
+    });
+  });
 }
 
 function createSketchViewModels(
@@ -95,11 +133,10 @@ function addGraphic(e: any) {
     if (e.graphic.geometry.type === "polygon") {
       e.graphic.symbol = fillSymbol;
       sketchLayer.polygonLayer.add(e.graphic);
-      console.log(e.graphic.symbol.color);
-
       //   setTimeout(() => polygonSketchViewModel.updateGraphics.add(e.graphic));
 
       polygonSketchViewModel.create(e.tool);
+      // polygonSketchViewModel.update(e.graphic, {});
     }
     if (e.graphic.geometry.type === "polyline") {
       e.graphic.symbol = lineSymbol;
@@ -111,6 +148,16 @@ function addGraphic(e: any) {
       sketchLayer.textLayer.add(e.graphic);
       textSketchViewModel.create("point");
     }
+    if (selectedTool === "point") {
+      e.graphic.symbol = pointSymbol;
+      sketchLayer.pointLayer.add(e.graphic);
+      pointSketchViewModel.create("point");
+    }
+    if (highlights) {
+      highlights.remove();
+    }
+    highlights = sketchLayerView.highlight(e.graphic);
+    highlightedGraphic = e.graphic;
   }
 }
 
@@ -133,30 +180,99 @@ export function toolSelected(
   if (tool === "text") {
     polylineSketchViewModel.create("point");
   }
+  if (tool === "point") {
+    polylineSketchViewModel.create("point");
+  }
 }
-
+let updatingPolygonSymbol = false;
 export function polygonSymbolUpdated(
   fillColor: Color,
   outlineColor: Color,
   width: number
 ) {
-  fillSymbol.color = fillColor;
-  console.log(fillSymbol.color);
-  fillSymbol.outline.color = outlineColor;
-  fillSymbol.outline.width = width;
-  polygonSketchViewModel.activeFillSymbol = fillSymbol;
-  polygonSketchViewModel.updateGraphics.forEach((graphic) => {
-    graphic.symbol = fillSymbol;
+  const preview = document.getElementById("polygon-preview");
+  if (preview && !updatingPolygonSymbol) {
+    fillSymbol.color = fillColor;
+    fillSymbol.outline.color = outlineColor;
+    fillSymbol.outline.width = width;
+    if (polygonSketchViewModel) {
+      polygonSketchViewModel.activeFillSymbol = fillSymbol;
+      if (sketchLayer.polygonLayer) {
+        updateHighlightedGraphicSymbol(sketchLayer.polygonLayer, fillSymbol);
+      }
+    }
+    updatingPolygonSymbol = true;
+    preview.innerHTML = "";
+    symbolUtils
+      .renderPreviewHTML(fillSymbol, {
+        node: preview as HTMLElement,
+        size: 24,
+      })
+      .then(() => (updatingPolygonSymbol = false));
+  }
+}
+
+function updateHighlightedGraphicSymbol(
+  layer: GraphicsLayer,
+  symbol: __esri.Symbol
+) {
+  if (highlightedGraphic) {
+    layer.remove(highlightedGraphic);
+    highlightedGraphic.symbol = symbol;
+    highlightedGraphic = highlightedGraphic.clone();
+    layer.add(highlightedGraphic);
+    highlights = sketchLayerView.highlight(highlightedGraphic);
+  }
+}
+
+export function pointSymbolUpdated(symbol: any, color: Color, size: number) {
+  request(`${symbol.url}${symbol.cimRef.replace(".", "")}`).then((ref) => {
+    //new CIMSymbol({data: `${url}/${id}/${symbol.cimRef}`})
+    pointSymbol = new CIMSymbol({
+      data: {
+        type: "CIMSymbolReference",
+        symbol: ref?.data,
+      },
+    });
+    cimSymbolUtils.applyCIMSymbolColor(pointSymbol, color);
+    cimSymbolUtils.scaleCIMSymbolTo(pointSymbol, size);
+    if (sketchLayer.pointLayer) {
+      updateHighlightedGraphicSymbol(sketchLayer.pointLayer, pointSymbol);
+    }
+    pointSketchViewModel.pointSymbol = pointSymbol;
+    const preview = document.getElementById("icon-preview");
+    if (preview) {
+      preview.innerHTML = "";
+      symbolUtils.renderPreviewHTML(pointSymbol, {
+        node: preview as HTMLElement,
+        size: size,
+      });
+    }
   });
 }
 
 export function polylineSymbolUpdated(lineColor: Color, width: number) {
   lineSymbol.color = lineColor;
   lineSymbol.width = width;
-  polylineSketchViewModel.activeFillSymbol = lineSymbol as any;
-  polylineSketchViewModel.updateGraphics.forEach((graphic) => {
-    graphic.symbol = lineSymbol;
-  });
+  if (polylineSketchViewModel) {
+    polylineSketchViewModel.polylineSymbol = lineSymbol as any;
+
+    polylineSketchViewModel.updateGraphics.forEach((graphic) => {
+      graphic.symbol = lineSymbol;
+    });
+    if (sketchLayer.polylineLayer) {
+      updateHighlightedGraphicSymbol(sketchLayer.polylineLayer, lineSymbol);
+    }
+  }
+
+  const preview = document.getElementById("line-preview");
+  if (preview) {
+    preview.innerHTML = "";
+    symbolUtils.renderPreviewHTML(lineSymbol, {
+      node: preview as HTMLElement,
+      size: width,
+    });
+  }
 }
 
 export function textSymbolUpdated(
@@ -173,9 +289,12 @@ export function textSymbolUpdated(
   textSymbol.haloSize = showHalo ? haloSize : 0;
   textSymbol.text = textContent;
   textSketchViewModel.pointSymbol = textSymbol as any;
+  if (sketchLayer.textLayer) {
+    updateHighlightedGraphicSymbol(sketchLayer.textLayer, textSymbol);
+  }
 }
 
-function cancelSketch() {
+export function cancelSketch() {
   pointSketchViewModel.cancel();
   polylineSketchViewModel.cancel();
   polygonSketchViewModel.cancel();
@@ -183,24 +302,59 @@ function cancelSketch() {
 }
 
 export function clearSketch(setActiveTool: Function) {
-  setActiveTool("");
-  cancelSketch();
   sketchLayer.polygonLayer.graphics.removeAll();
   sketchLayer.pointLayer.graphics.removeAll();
   sketchLayer.polylineLayer.graphics.removeAll();
   sketchLayer.textLayer.graphics.removeAll();
 }
 
-export function getSymbols() {
+export function getSymbols(ids: string[], url: string) {
   return new Promise((resolve, reject) => {
-    const symbol: WebStyleSymbol = new WebStyleSymbol({
-      styleUrl:
-        "http://www.arcgis.com/sharing/rest/content/items/70ccf6bcbd304773a164be896e76edd3/data",
-      name: "Centered Sphere",
-    });
+    const promises: Promise<any>[] = [];
 
-    request(symbol.styleUrl).then((result) => {
-      resolve(result.data.items);
+    ids.forEach((id) => {
+      const symbol: WebStyleSymbol = new WebStyleSymbol({
+        styleUrl: `${url}/${id}/data`,
+        name: "Pins",
+      });
+      promises.push(request(symbol.styleUrl));
+    });
+    if (promises.length) {
+    }
+    const items: any[] = [];
+
+    Promise.all(promises).then((results: any) => {
+      results.forEach((result: any) => {
+        result.data.items.forEach((item: any) => {
+          item.url = result.url.replace("data", "");
+          items.push(item);
+        });
+      });
+      // items.concat(result.data.items);
+
+      resolve(items);
+    });
+  });
+}
+
+export function stopSketching() {
+  pointSketchViewModel.cancel();
+  polygonSketchViewModel.cancel();
+  polylineSketchViewModel.cancel();
+  textSketchViewModel.cancel();
+}
+
+export function deleteSelectedGraphics(
+  selectedGraphics: Graphic[],
+  setSelectedGraphics: Function
+) {
+  pointLayer.removeMany(selectedGraphics);
+  polygonLayer.removeMany(selectedGraphics);
+  polylineLayer.removeMany(selectedGraphics);
+  textLayer.removeMany(selectedGraphics);
+  requestAnimationFrame(() => {
+    setSelectedGraphics((current: Graphic[]) => {
+      return [];
     });
   });
 }

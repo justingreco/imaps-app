@@ -5,20 +5,28 @@ import Graphic from "@arcgis/core/Graphic";
 import * as geometryEngine from "@arcgis/core/geometry/geometryEngine";
 let distance = 0;
 let propertyLayerView: __esri.FeatureLayerView;
+let sketchVm: SketchViewModel;
+let highlight: any;
+let layer: GraphicsLayer;
 
+export function cancelSelect() {
+  sketchVm.cancel();
+  if (highlight) {
+    highlight.remove();
+  }
+  layer.removeAll();
+}
 export function initializeSelect(
   ref: HTMLDivElement,
   view: MapView,
   geometrySet: Function,
   setSelectedTool: Function
 ) {
-  let highlight: any;
-
-  const layer = new GraphicsLayer({
+  layer = new GraphicsLayer({
     listMode: "hide",
   });
   view.map.add(layer);
-  const sketchVm = new SketchViewModel({
+  sketchVm = new SketchViewModel({
     view: view,
     layer: layer,
     defaultCreateOptions: {

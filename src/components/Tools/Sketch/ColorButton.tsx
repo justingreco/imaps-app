@@ -27,7 +27,7 @@ function ColorButton(args: any) {
   const [color, setColor] = useState<Color>();
   const [transparency, setTransparency] = useState<any>(0);
   useEffect(() => {
-    if (args.color) {
+    if (!color && args.color) {
       setColor(new Color(args.color));
       setTransparency((1 - args.color[3]) * 100);
     }

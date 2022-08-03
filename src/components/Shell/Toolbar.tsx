@@ -28,26 +28,16 @@ function Toolbar(args: any) {
   const [activeTool, setActiveTool] = useState("");
   const [view, setView] = useState<__esri.MapView>();
   const [selectDismissed, setSelectDismissed] = useState(true);
-  const measurement = useRef<__esri.Measurement>();
 
   useEffect(() => {
     if (args.view) {
       setView(args.view);
     }
   }, []);
+
   useEffect(() => {
-    if (args.dismissedTool) {
-      if (args.dismissedTool === "measure") {
-        (measurement.current as any).activeTool = null;
-      }
-
-      setActiveTool("");
-    }
-  }, [args.dismissedTool]);
-  const measurementCreated = useCallback((widget: __esri.Measurement) => {
-    measurement.current = widget;
-  }, []);
-
+    setActiveTool(args.activeTool);
+  }, [args.activeTool]);
   return (
     <CalciteActionBar
       slot="action-bar"
@@ -212,10 +202,7 @@ function Toolbar(args: any) {
                 const root = createRoot(container as HTMLDivElement);
                 root.render(
                   <Suspense fallback={""}>
-                    <Measure
-                      view={view}
-                      measurementCreated={measurementCreated}
-                    />
+                    <Measure view={view} />
                   </Suspense>
                 );
               }

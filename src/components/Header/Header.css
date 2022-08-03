@@ -26,3 +26,9 @@ calcite-switch {
 :host .calcite-dropdown-wrapper {
   max-height: 100px;
 }
+
+@media only screen and (max-height: 400px) {
+  #header {
+    display: none;
+  }
+}

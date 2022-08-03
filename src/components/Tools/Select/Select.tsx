@@ -15,6 +15,7 @@ import "./Select.css";
 import {
   bufferDistanceChanged,
   bufferProperty,
+  cancelSelect,
   createSketch,
   initializeSelect,
 } from "./utils/select";
@@ -40,6 +41,12 @@ export const Select = (args: any) => {
           setSelectedTool
         )
       );
+      var panel = document
+        .getElementById("select-tools")
+        ?.closest("calcite-panel");
+      panel?.addEventListener("calcitePanelDismiss", () => {
+        cancelSelect();
+      });
     }
     return () => {
       sketchVm && sketchVm.destroy();
@@ -57,7 +64,7 @@ export const Select = (args: any) => {
     }
   }, [args.selectDismissed]);
   return (
-    <div>
+    <div id="select-tools">
       <div className="select-container">
         <CalciteAction
           icon="pin"

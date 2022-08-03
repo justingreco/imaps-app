@@ -11,6 +11,8 @@ import { handlePolygonLabels } from "./labeling";
 import * as reactiveUtils from "@arcgis/core/core/reactiveUtils";
 import Basemap from "@arcgis/core/Basemap";
 import Color from "@arcgis/core/Color";
+import IdentityManager from "@arcgis/core/identity/IdentityManager";
+
 export function initializeMap(
   ref: HTMLDivElement,
   mapId: string,
@@ -21,11 +23,13 @@ export function initializeMap(
     container: ref,
     constraints: constraints as any,
   });
+  hideLogin();
 
   getWebMap(mapId).then((webmap: WebMap) => {
     view.map = webmap;
     addWidgets(view, widgetActivated);
     view.when(() => {
+      removeGraphicsLayers(view);
       view.map.add(selectionLayer);
       view.map.add(selectionCluster);
       reactiveUtils
@@ -103,7 +107,19 @@ function getWebMap(mapId: string): Promise<WebMap> {
     }
   });
 }
-
+function removeGraphicsLayers(view: MapView) {
+  view.map.removeMany([
+    view.map.findLayerById("selection-layer"),
+    view.map.findLayerById("feature-table"),
+  ]);
+  view.map.removeMany(
+    view.map.allLayers
+      .filter((layer: any) => {
+        return layer.type === "map-notes";
+      })
+      .toArray()
+  );
+}
 const saveMap = (view: MapView) => {
   if (view && view?.ready) {
     const groups = view.map.allLayers
@@ -124,17 +140,17 @@ const saveMap = (view: MapView) => {
           .toArray()
       );
     });
-    view.map.removeMany([
-      view.map.findLayerById("selection-layer"),
-      view.map.findLayerById("feature-table"),
-    ]);
-    view.map.removeMany(
-      view.map.allLayers
-        .filter((layer) => {
-          return layer.type === "map-notes";
-        })
-        .toArray()
-    );
+    // view.map.removeMany([
+    //   view.map.findLayerById("selection-layer"),
+    //   view.map.findLayerById("feature-table"),
+    // ]);
+    // view.map.removeMany(
+    //   view.map.allLayers
+    //     .filter((layer) => {
+    //       return layer.type === "map-notes";
+    //     })
+    //     .toArray()
+    // );
     const json = (view.map as any).toJSON();
     json.initialState.viewpoint.targetGeometry = view.extent;
     window.localStorage.setItem("imaps_calcite", JSON.stringify(json));
@@ -326,3 +342,24 @@ const getBackgroundColor = (basemap: Basemap): Promise<Color | null> => {
     }
   });
 };
+
+function hideLogin() {
+  IdentityManager.on("dialog-create", () => {
+    const observer: MutationObserver = new MutationObserver((mutations) => {
+      if (mutations.length) {
+        (
+          (mutations[0]?.target as HTMLElement)?.querySelector(
+            ".esri-button--secondary"
+          ) as HTMLElement
+        )?.click();
+        observer.disconnect();
+      } else {
+        observer.disconnect();
+      }
+    });
+
+    const container = IdentityManager.dialog.container;
+
+    observer.observe(container as Node, { childList: true });
+  });
+}
