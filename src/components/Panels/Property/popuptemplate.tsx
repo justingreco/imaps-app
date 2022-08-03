@@ -647,9 +647,11 @@ const wellCreator = (e: any, view: __esri.MapView) => {
     return layer?.title?.includes("Wells");
   });
   if (!layer) {
-    layer = new FeatureLayer({portalItem:  {
-      id: 'ef42e9e1d1eb4689bf90b592c2f6c419'
-    }});
+    layer = new FeatureLayer({
+      portalItem: {
+        id: "ef42e9e1d1eb4689bf90b592c2f6c419",
+      },
+    });
   }
   return (layer as FeatureLayer)
     .queryFeatures({
@@ -683,11 +685,12 @@ const wellCreator = (e: any, view: __esri.MapView) => {
         div.append(btn);
       }
       if (!layer) {
-        layer = new FeatureLayer({portalItem:  {
-          id: 'bb3eb1f6cc774bdda560554381a4c06f',
-        }
-      });
-      }      
+        layer = new FeatureLayer({
+          portalItem: {
+            id: "bb3eb1f6cc774bdda560554381a4c06f",
+          },
+        });
+      }
       (layer as FeatureLayer)
         .queryFeatures({
           where: `PIN_NUM = '${e.graphic.attributes["PIN_NUM"]}'`,
