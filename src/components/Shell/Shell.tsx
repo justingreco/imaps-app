@@ -181,13 +181,14 @@ function Shell() {
           closed={activePanel !== "search" ? true : undefined}
           dismissed={activePanel !== "search" ? true : undefined}
           dismissible
-          onCalcitePanelDismiss={() => setActivePanel("")}
+          onCalcitePanelDismiss={panelDismissed}
         >
           {view && (
             <Property
               view={view}
               geometry={geometry}
               selected={propertySelected}
+
             ></Property>
           )}
         </CalcitePanel>

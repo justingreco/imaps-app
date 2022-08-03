@@ -643,10 +643,15 @@ const deedCreator = (e: any) => {
 };
 
 const wellCreator = (e: any, view: __esri.MapView) => {
-  const layer = view.map.allLayers.find((layer: __esri.Layer) => {
-    return layer.title.includes("Wells");
-  }) as FeatureLayer;
-  return layer
+  let layer = view.map.allLayers.find((layer: __esri.Layer) => {
+    return layer?.title?.includes("Wells");
+  });
+  if (!layer) {
+    layer = new FeatureLayer({portalItem:  {
+      id: 'ef42e9e1d1eb4689bf90b592c2f6c419'
+    }});
+  }
+  return (layer as FeatureLayer)
     .queryFeatures({
       where: `PIN_NUM = '${e.graphic.attributes["PIN_NUM"]}'`,
       returnGeometry: false,
@@ -677,10 +682,13 @@ const wellCreator = (e: any, view: __esri.MapView) => {
         };
         div.append(btn);
       }
-      const layer = view.map.allLayers.find((layer: __esri.Layer) => {
-        return layer.title.includes("Septic");
-      }) as FeatureLayer;
-      layer
+      if (!layer) {
+        layer = new FeatureLayer({portalItem:  {
+          id: 'bb3eb1f6cc774bdda560554381a4c06f',
+        }
+      });
+      }      
+      (layer as FeatureLayer)
         .queryFeatures({
           where: `PIN_NUM = '${e.graphic.attributes["PIN_NUM"]}'`,
           returnGeometry: false,
