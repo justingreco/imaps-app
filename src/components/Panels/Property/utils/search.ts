@@ -33,6 +33,7 @@ export function initializeSearch(
     includeDefaultSources: false,
     popupEnabled: false,
     sources: [],
+    locationEnabled: false
   });
   search.sources = setSearchSources(addresses, condos, properties, search);
   search.on("search-complete", (event) => {
