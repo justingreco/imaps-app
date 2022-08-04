@@ -1,0 +1,2 @@
+"use strict";(globalThis.webpackChunkimaps_app=globalThis.webpackChunkimaps_app||[]).push([[516],{50516:(a,e,t)=>{t.r(e),t.d(e,{OpacitySlider:()=>p,default:()=>r});var l=t(85580),s=t(72791),i=t(80184);const p=a=>{const[e,t]=(0,s.useState)();return(0,s.useEffect)((()=>{a.layer&&t(a.layer)}),[a.layer]),(0,i.jsx)(l.XQ,{value:a.value,max:1,min:0,step:.05,onCalciteSliderInput:a=>{requestAnimationFrame((()=>{e&&(e.opacity=a.target.value)}))}})},r=p}}]);
+//# sourceMappingURL=516.bd57452d.chunk.js.map
