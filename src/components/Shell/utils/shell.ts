@@ -6,7 +6,6 @@ export function toolSelected(
   activeTool: string,
   setActiveTool: Function,
   setActivePanel: Function,
-  setSelectDismissed: Function,
   activePanelChanged: Function,
   activeToolChanged: Function
 ) {
@@ -24,8 +23,6 @@ export function toolSelected(
   }
   activeTool === tool ? setActiveTool("") : setActiveTool(tool);
   activeToolChanged(activeTool === tool ? "" : tool);
-
-  setSelectDismissed(tool !== "select");
 
   if (window.innerWidth < 735) {
     setActivePanel("");

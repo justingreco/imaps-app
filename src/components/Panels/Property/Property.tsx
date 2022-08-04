@@ -2,12 +2,15 @@ import "@esri/calcite-components/dist/components/calcite-tab";
 import "@esri/calcite-components/dist/components/calcite-tabs";
 import "@esri/calcite-components/dist/components/calcite-tab-nav";
 import "@esri/calcite-components/dist/components/calcite-tab-title";
+import "@esri/calcite-components/dist/components/calcite-panel";
+
 import {
   CalciteScrim,
   CalciteTab,
   CalciteTabNav,
   CalciteTabs,
   CalciteTabTitle,
+  CalcitePanel,
 } from "@esri/calcite-components-react";
 import React, { useEffect, useState, useRef, useCallback } from "react";
 import "./Property.css";
@@ -27,6 +30,7 @@ function Property(args: any) {
   const [infoDisabled, setInfoDisabled] = useState(true);
   const [searching, setSearching] = useState(false);
   const [activeTab, setActiveTab] = useState("list");
+  const [isActive, setIsActive] = useState(false);
 
   useEffect(() => {
     setView(args.view);
@@ -34,6 +38,7 @@ function Property(args: any) {
       loaded.current = true;
     }
   }, [args.view]);
+
   useEffect(() => {
     if (args.geometry && view) {
       getPropertyByGeometry(args.geometry, view as MapView).then(
@@ -85,45 +90,66 @@ function Property(args: any) {
     [args.selected, feature]
   );
 
+  useEffect(() => {
+    setIsActive(args.isActive);
+  }, [args.isActive]);
+  const panelDismissed = useCallback((e: any) => {
+    args.panelDismissed();
+  }, []);
+
   return (
-    <div className="property">
-      {view && (
-        <PropertySearch
-          view={view}
-          searchingChanged={(isSearching: boolean) => setSearching(isSearching)}
-          condosSelected={condosSelected}
-        ></PropertySearch>
-      )}
-      <CalciteTabs position="below" layout="center" scale="l">
-        <CalciteTabNav slot="tab-nav">
-          <CalciteTabTitle active={activeTab === "list" ? true : undefined}>
-            List
-          </CalciteTabTitle>
-          <CalciteTabTitle
-            active={activeTab === "info" ? true : undefined}
-            disabled={infoDisabled === true ? true : undefined}
-          >
-            Info
-          </CalciteTabTitle>
-        </CalciteTabNav>
-        <CalciteTab>
-          {view && (
-            <PropertyTable
-              view={view}
-              condos={condos}
-              featureSelected={featureSelected}
-            ></PropertyTable>
-          )}
-        </CalciteTab>
-        <CalciteTab>
-          {view && <PropertyInfo view={view} feature={feature}></PropertyInfo>}
-        </CalciteTab>
-        <CalciteScrim
-          loading
-          hidden={!searching ? true : undefined}
-        ></CalciteScrim>
-      </CalciteTabs>
-    </div>
+    <CalcitePanel
+      id="search-panel"
+      heading="Property Search"
+      hidden={!isActive}
+      closed={!isActive ? true : undefined}
+      dismissed={!isActive ? true : undefined}
+      dismissible
+      onCalcitePanelDismiss={panelDismissed}
+    >
+      <div className="property">
+        {view && (
+          <PropertySearch
+            view={view}
+            searchingChanged={(isSearching: boolean) =>
+              setSearching(isSearching)
+            }
+            condosSelected={condosSelected}
+          ></PropertySearch>
+        )}
+        <CalciteTabs position="below" layout="center" scale="l">
+          <CalciteTabNav slot="tab-nav">
+            <CalciteTabTitle active={activeTab === "list" ? true : undefined}>
+              List
+            </CalciteTabTitle>
+            <CalciteTabTitle
+              active={activeTab === "info" ? true : undefined}
+              disabled={infoDisabled === true ? true : undefined}
+            >
+              Info
+            </CalciteTabTitle>
+          </CalciteTabNav>
+          <CalciteTab>
+            {view && (
+              <PropertyTable
+                view={view}
+                condos={condos}
+                featureSelected={featureSelected}
+              ></PropertyTable>
+            )}
+          </CalciteTab>
+          <CalciteTab>
+            {view && (
+              <PropertyInfo view={view} feature={feature}></PropertyInfo>
+            )}
+          </CalciteTab>
+          <CalciteScrim
+            loading
+            hidden={!searching ? true : undefined}
+          ></CalciteScrim>
+        </CalciteTabs>
+      </div>
+    </CalcitePanel>
   );
 }
 

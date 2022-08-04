@@ -4,8 +4,9 @@ import {
   CalciteCombobox,
   CalciteComboboxItem,
   CalciteLabel,
+  CalcitePanel,
 } from "@esri/calcite-components-react";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import {
   addSearchEvents,
   intersectingStreetSelected,
@@ -24,6 +25,7 @@ function Location(args: any) {
   const [isIntersection, setIsIntersection] = useState(false);
   const [intersections, setIntersections] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [isActive, setIsActive] = useState(false);
 
   useEffect(() => {
     if (!loaded.current && searchDiv.current) {
@@ -47,38 +49,54 @@ function Location(args: any) {
       );
     }
   });
+  useEffect(() => {
+    setIsActive(args.isActive);
+  }, [args.isActive]);
+  const panelDismissed = useCallback((e: any) => {
+    args.panelDismissed();
+  }, []);
   return (
-    <div id="location-search">
-      <div ref={searchDiv}></div>
-      {isIntersection && (
-        <div id="intersection-search">
-          <CalciteLabel>
-            Intersections
-            <CalciteCombobox label={""} selectionMode="single" scale="l">
-              {intersections.map((intersection, i) => {
-                return (
-                  <CalciteComboboxItem
-                    key={i}
-                    textLabel={intersection}
-                    value={intersection}
-                    onCalciteComboboxItemChange={(e: any) => {
-                      if (e.target.selected) {
-                        intersectingStreetSelected(
-                          intersection,
-                          searchTerm,
-                          search?.current?.view as __esri.MapView
-                        );
-                      }
-                    }}
-                  ></CalciteComboboxItem>
-                );
-              })}
-            </CalciteCombobox>
-          </CalciteLabel>
-        </div>
-      )}
-      <div id="location-feature" ref={featureDiv}></div>
-    </div>
+    <CalcitePanel
+      id="location-panel"
+      heading="Location Search"
+      hidden={!isActive}
+      closed={!isActive ? true : undefined}
+      dismissed={!isActive ? true : undefined}
+      dismissible
+      onCalcitePanelDismiss={panelDismissed}
+    >
+      <div id="location-search">
+        <div ref={searchDiv}></div>
+        {isIntersection && (
+          <div id="intersection-search">
+            <CalciteLabel>
+              Intersections
+              <CalciteCombobox label={""} selectionMode="single" scale="l">
+                {intersections.map((intersection, i) => {
+                  return (
+                    <CalciteComboboxItem
+                      key={i}
+                      textLabel={intersection}
+                      value={intersection}
+                      onCalciteComboboxItemChange={(e: any) => {
+                        if (e.target.selected) {
+                          intersectingStreetSelected(
+                            intersection,
+                            searchTerm,
+                            search?.current?.view as __esri.MapView
+                          );
+                        }
+                      }}
+                    ></CalciteComboboxItem>
+                  );
+                })}
+              </CalciteCombobox>
+            </CalciteLabel>
+          </div>
+        )}
+        <div id="location-feature" ref={featureDiv}></div>
+      </div>
+    </CalcitePanel>
   );
 }
 

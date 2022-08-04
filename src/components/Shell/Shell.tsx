@@ -10,9 +10,7 @@ import "@esri/calcite-components/dist/components/calcite-scrim";
 import "@esri/calcite-components/dist/components/calcite-alert";
 
 import {
-  CalciteAction,
   CalciteAlert,
-  CalcitePanel,
   CalciteScrim,
   CalciteShell,
   CalciteShellPanel,
@@ -21,7 +19,6 @@ import WebMap from "../WebMap/WebMap";
 import Header from "../Header/Header";
 import "./Shell.css";
 import {
-  collapsePanel,
   getDistinctProperties,
   mapViewSet,
   toolSelected,
@@ -32,13 +29,19 @@ import { Select } from "../Tools/Select/Select";
 // import Basemaps from "../Panels/Basemaps/Basemaps";
 import Print from "../Tools/Print/Print";
 import Property from "../Panels/Property/Property";
+import Location from "../Panels/Location/Location";
+import Layers from "../Panels/Layers/Layers";
+
 import Toolbar from "./Toolbar";
+import Legend from "../Panels/Legend/Legend";
+import Basemaps from "../Panels/Basemaps/Basemaps";
+import Bookmarks from "../Tools/Bookmarks/Bookmarks";
+import Sketch from "../Tools/Sketch/Sketch";
+import Measure from "../Tools/Measure/Measure";
 function Shell() {
   const [activePanel, setActivePanel] = useState("search");
   const [activeTool, setActiveTool] = useState("");
   const [geometry, setGeometry] = useState<__esri.Geometry>();
-  //const [condos, setCondos] = useState<__esri.Graphic[]>();
-  //const condoRef = useRef<__esri.Graphic[]>([]);
   const [selectedProperty, setSelectedProperty] = useState<__esri.Graphic>();
   const loaded = useRef(false);
 
@@ -51,12 +54,13 @@ function Shell() {
   const viewRef = useRef<__esri.MapView>();
 
   const [properties, setProperties] = useState<__esri.Graphic[]>();
-  const [selectDismissed, setSelectDismissed] = useState(true);
-  const [dismissedTool, setDismissedTool] = useState<string>();
+  const [loadedPanels, setLoadedPanels] = useState<string[]>(() => []);
+  const [loadedTools, setLoadedTools] = useState<string[]>(() => []);
 
   useEffect(() => {
     if (properties) {
       setActivePanel("search");
+      setLoadedPanels((loadedPanels) => [...loadedPanels, "search"]);
     }
   }, [properties]);
   useEffect(() => {
@@ -119,21 +123,29 @@ function Shell() {
         activeTool,
         setActiveTool,
         setActivePanel,
-        setSelectDismissed,
         undefined as any,
         undefined as any
       );
     }
   }, []);
-  const activePanelChanged = useCallback((panel: string) => {
-    setActivePanel(panel);
-  }, []);
-  const activeToolChanged = useCallback((tool: string) => {
-    setActiveTool((prevValue) => {
-      setDismissedTool(prevValue);
-      return tool;
-    });
-  }, []);
+  const activePanelChanged = useCallback(
+    (panel: string) => {
+      setActivePanel(panel);
+      if (!loadedPanels.includes(panel)) {
+        setLoadedPanels([...loadedPanels, panel]);
+      }
+    },
+    [loadedPanels]
+  );
+  const activeToolChanged = useCallback(
+    (tool: string) => {
+      setActiveTool(tool);
+      if (!loadedTools.includes(tool)) {
+        setLoadedTools([...loadedTools, tool]);
+      }
+    },
+    [loadedTools]
+  );
   const panelDismissed = useCallback((e: any) => {
     setActivePanel("");
   }, []);
@@ -169,187 +181,90 @@ function Shell() {
             view={view}
             activePanelChanged={activePanelChanged}
             activeToolChanged={activeToolChanged}
-            dismissedTool={dismissedTool}
+            activePanel={activePanel}
             activeTool={activeTool}
             expandable={contentBehind ? true : undefined}
           ></Toolbar>
         )}
-        <CalcitePanel
-          id="search-panel"
-          heading="Property Search"
-          hidden={activePanel !== "search"}
-          closed={activePanel !== "search" ? true : undefined}
-          dismissed={activePanel !== "search" ? true : undefined}
-          dismissible
-          onCalcitePanelDismiss={panelDismissed}
-        >
-          {view && (
-            <Property
-              view={view}
-              geometry={geometry}
-              selected={propertySelected}
-
-            ></Property>
-          )}
-        </CalcitePanel>
-        <CalcitePanel
-          id="location-panel"
-          heading="Location Search"
-          hidden={activePanel !== "location"}
-          closed={activePanel !== "location" ? true : undefined}
-          dismissed={activePanel !== "location" ? true : undefined}
-          dismissible
-          onCalcitePanelDismiss={panelDismissed}
-        >
-          <div id="location-div"></div>
-        </CalcitePanel>
-        <CalcitePanel
-          id="layers-panel"
-          heading="Layers"
-          hidden={activePanel !== "layers"}
-          closed={activePanel !== "layers" ? true : undefined}
-          dismissed={activePanel !== "layers" ? true : undefined}
-          dismissible
-          onCalcitePanelDismiss={panelDismissed}
-        >
-          <div id="layer-div"></div>
-        </CalcitePanel>
-        <CalcitePanel
-          id="legend-panel"
-          data-panel="legend"
-          heading="Legend"
-          hidden={activePanel !== "legend"}
-          closed={activePanel !== "legend" ? true : undefined}
-          dismissed={activePanel !== "legend" ? true : undefined}
-          dismissible
-          onCalcitePanelDismiss={panelDismissed}
-        >
-          {/* {view && <Legend view={view}></Legend>} */}
-          <div id="legend-div"></div>
-        </CalcitePanel>
-        <CalcitePanel
-          id="basemaps-panel"
-          heading="Basemaps"
-          hidden={activePanel !== "basemaps"}
-          closed={activePanel !== "basemaps" ? true : undefined}
-          dismissed={activePanel !== "basemaps" ? true : undefined}
-          dismissible
-          onCalcitePanelDismiss={panelDismissed}
-        >
-          {/* {view && <Basemaps view={view}></Basemaps>} */}
-          <div id="basemaps-div"></div>
-        </CalcitePanel>
+        {view && (
+          <Property
+            view={view}
+            geometry={geometry}
+            selected={propertySelected}
+            isActive={activePanel === "search"}
+            panelDismissed={panelDismissed}
+          ></Property>
+        )}
+        {loadedPanels.includes("location") && (
+          <Location
+            view={view}
+            panelDismissed={panelDismissed}
+            isActive={activePanel === "location"}
+          ></Location>
+        )}
+        {loadedPanels.includes("layers") && (
+          <Layers
+            view={view}
+            panelDismissed={panelDismissed}
+            isActive={activePanel === "layers"}
+          ></Layers>
+        )}
+        {loadedPanels.includes("legend") && (
+          <Legend
+            view={view}
+            panelDismissed={panelDismissed}
+            isActive={activePanel === "legend"}
+          ></Legend>
+        )}
+        {loadedPanels.includes("basemaps") && (
+          <Basemaps
+            view={view}
+            panelDismissed={panelDismissed}
+            isActive={activePanel === "basemaps"}
+          ></Basemaps>
+        )}
       </CalciteShellPanel>
       <div className={`tools esri-component`}>
-        <CalcitePanel
-          id="select-panel"
-          heading="Select"
-          hidden={activeTool !== "select"}
-          closed={activeTool !== "select" ? true : undefined}
-          dismissed={activeTool !== "select" ? true : undefined}
-          dismissible
-          data-panel="select"
-          onCalcitePanelDismiss={() => {
-            setActiveTool("");
-            setSelectDismissed(true);
-          }}
-        >
-          <CalciteAction
-            icon="chevron-up"
-            text=""
-            slot="header-actions-end"
-            onClick={collapsePanel}
-          ></CalciteAction>
-          {view && (
-            <Select
-              view={view}
-              selectedProperty={selectedProperty}
-              geometrySet={geometryCallback}
-              selectDismissed={selectDismissed}
-            ></Select>
-          )}
-        </CalcitePanel>
-        <CalcitePanel
-          id="measure-panel"
-          data-panel="measure"
-          heading="Measure"
-          hidden={activeTool !== "measure"}
-          closed={activeTool !== "measure" ? true : undefined}
-          dismissed={activeTool !== "measure" ? true : undefined}
-          dismissible
-          onCalcitePanelDismiss={toolDismissed}
-        >
-          <CalciteAction
-            icon="chevron-up"
-            text=""
-            slot="header-actions-end"
-            onClick={collapsePanel}
-          ></CalciteAction>
-          <div id="measure-div"></div>
-        </CalcitePanel>
-        <CalcitePanel
-          id="sketch-panel"
-          data-panel="sketch"
-          heading="Sketch"
-          hidden={activeTool !== "sketch"}
-          closed={activeTool !== "sketch" ? true : undefined}
-          dismissed={activeTool !== "sketch" ? true : undefined}
-          dismissible
-          onCalcitePanelDismiss={toolDismissed}
-        >
-          <CalciteAction
-            icon="chevron-up"
-            text=""
-            slot="header-actions-end"
-            onClick={collapsePanel}
-          ></CalciteAction>
-          <div id="sketch-div"></div>
-        </CalcitePanel>
-        <CalcitePanel
-          id="bookmarks-panel"
-          heading="Bookmarks"
-          data-panel="bookmarks"
-          hidden={activeTool !== "bookmarks"}
-          closed={activeTool !== "bookmarks" ? true : undefined}
-          dismissed={activeTool !== "bookmarks" ? true : undefined}
-          dismissible
-          onCalcitePanelDismiss={toolDismissed}
-        >
-          <CalciteAction
-            icon="chevron-up"
-            text=""
-            slot="header-actions-end"
-            onClick={collapsePanel}
-          ></CalciteAction>
-          {/* {view && <Bookmarks view={view}></Bookmarks>} */}
-          <div id="bookmarks-div"></div>
-        </CalcitePanel>
-        <CalcitePanel
-          id="print-panel"
-          heading="Print"
-          data-panel="print"
-          hidden={activeTool !== "print"}
-          closed={activeTool !== "print" ? true : undefined}
-          dismissed={activeTool !== "print" ? true : undefined}
-          dismissible
-          onCalcitePanelDismiss={toolDismissed}
-        >
-          <CalciteAction
-            icon="chevron-up"
-            text=""
-            slot="header-actions-end"
-            onClick={collapsePanel}
-          ></CalciteAction>
-          {view && (
-            <Print
-              view={view}
-              exportUrl="https://indoors.raleighnc.gov/arcgis/rest/services/ExportWebMap/GPServer/Export%20Web%20Map"
-              selectedProperty={selectedProperty}
-            ></Print>
-          )}
-        </CalcitePanel>
+        {loadedTools.includes("select") && (
+          <Select
+            view={view}
+            selectedProperty={selectedProperty}
+            geometrySet={geometryCallback}
+            toolDismissed={toolDismissed}
+            isActive={activeTool === "select"}
+          ></Select>
+        )}
+        {loadedTools.includes("measure") && (
+          <Measure
+            view={view}
+            toolDismissed={toolDismissed}
+            isActive={activeTool === "measure"}
+          ></Measure>
+        )}
+        {loadedTools.includes("sketch") && (
+          <Sketch
+            view={view}
+            toolDismissed={toolDismissed}
+            isActive={activeTool === "sketch"}
+          ></Sketch>
+        )}
+        {loadedTools.includes("bookmarks") && (
+          <Bookmarks
+            view={view}
+            toolDismissed={toolDismissed}
+            isActive={activeTool === "bookmarks"}
+          ></Bookmarks>
+        )}
+        {loadedTools.includes("print") && (
+          <Print
+            view={view}
+            exportUrl="https://indoors.raleighnc.gov/arcgis/rest/services/ExportWebMap/GPServer/Export%20Web%20Map"
+            selectedProperty={selectedProperty}
+            toolDismissed={toolDismissed}
+            isActive={activeTool === "print"}
+          ></Print>
+        )}
       </div>
-
       <WebMap
         mapId="95092428774c4b1fb6a3b6f5fed9fbc4"
         mapViewSet={mapCallback}

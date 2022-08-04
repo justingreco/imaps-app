@@ -1,6 +1,4 @@
-import {
-  CalcitePanel,
-} from "@esri/calcite-components-react";
+import { CalcitePanel } from "@esri/calcite-components-react";
 import React, { useEffect, useState } from "react";
 import "./Sketch.css";
 

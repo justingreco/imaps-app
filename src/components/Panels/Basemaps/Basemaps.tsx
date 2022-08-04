@@ -10,8 +10,9 @@ import {
   CalciteTabNav,
   CalciteTabs,
   CalciteTabTitle,
+  CalcitePanel,
 } from "@esri/calcite-components-react";
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import MapView from "@arcgis/core/views/MapView";
 import Blend from "./Blend/Blend";
 import {
@@ -27,6 +28,7 @@ function Basemaps(args: any) {
     from: "",
     to: "",
   });
+  const [isActive, setIsActive] = useState(false);
 
   const loaded = useRef(false);
   const basemapRef = useRef(null);
@@ -48,44 +50,59 @@ function Basemaps(args: any) {
       initializeEsriMaps(args.view, esriRef.current as any);
     }
   }, [args.view]);
-
+  useEffect(() => {
+    setIsActive(args.isActive);
+  }, [args.isActive]);
+  const panelDismissed = useCallback((e: any) => {
+    args.panelDismissed();
+  }, []);
   return (
-    <div className="basemaps">
-      <CalciteTabs position="below" layout="center" scale="m">
-        <CalciteTabNav slot="tab-nav">
-          <CalciteTabTitle>Maps</CalciteTabTitle>
-          <CalciteTabTitle>Images</CalciteTabTitle>
-          <CalciteTabTitle>Esri</CalciteTabTitle>
-          <CalciteTabTitle>Blend</CalciteTabTitle>
-        </CalciteTabNav>
-        <CalciteTab>
-          <div ref={basemapRef}></div>
-        </CalciteTab>
-        <CalciteTab>
-          <div ref={imagesRef}></div>
-        </CalciteTab>
-        <CalciteTab>
-          <div ref={esriRef}></div>
-        </CalciteTab>
-        <CalciteTab>
-          <Blend
-            view={view}
-            mapGroup={mapGroup}
-            imageGroup={imageGroup}
-          ></Blend>
-        </CalciteTab>
-      </CalciteTabs>
-      <CalciteAlert
-        active={showAlert.show === true ? true : undefined}
-        autoDismiss
-        autoDismissDuration="medium"
-        color="yellow"
-        label="Imagery Year Changed"
-      >
-        <div slot="title">Imagery Not Available</div>
-        <div slot="message">{`Imagery for ${showAlert.from} only available inside Raleigh, base map has changed to ${showAlert.to}`}</div>
-      </CalciteAlert>
-    </div>
+    <CalcitePanel
+      id="basemaps-panel"
+      heading="Basemaps"
+      hidden={!isActive}
+      closed={!isActive ? true : undefined}
+      dismissed={!isActive ? true : undefined}
+      dismissible
+      onCalcitePanelDismiss={panelDismissed}
+    >
+      <div className="basemaps">
+        <CalciteTabs position="below" layout="center" scale="m">
+          <CalciteTabNav slot="tab-nav">
+            <CalciteTabTitle>Maps</CalciteTabTitle>
+            <CalciteTabTitle>Images</CalciteTabTitle>
+            <CalciteTabTitle>Esri</CalciteTabTitle>
+            <CalciteTabTitle>Blend</CalciteTabTitle>
+          </CalciteTabNav>
+          <CalciteTab>
+            <div ref={basemapRef}></div>
+          </CalciteTab>
+          <CalciteTab>
+            <div ref={imagesRef}></div>
+          </CalciteTab>
+          <CalciteTab>
+            <div ref={esriRef}></div>
+          </CalciteTab>
+          <CalciteTab>
+            <Blend
+              view={view}
+              mapGroup={mapGroup}
+              imageGroup={imageGroup}
+            ></Blend>
+          </CalciteTab>
+        </CalciteTabs>
+        <CalciteAlert
+          active={showAlert.show === true ? true : undefined}
+          autoDismiss
+          autoDismissDuration="medium"
+          color="yellow"
+          label="Imagery Year Changed"
+        >
+          <div slot="title">Imagery Not Available</div>
+          <div slot="message">{`Imagery for ${showAlert.from} only available inside Raleigh, base map has changed to ${showAlert.to}`}</div>
+        </CalciteAlert>
+      </div>
+    </CalcitePanel>
   );
 }
 

@@ -3,38 +3,16 @@ import {
   CalciteActionBar,
   CalciteActionGroup,
 } from "@esri/calcite-components-react";
-import React, {
-  lazy,
-  Suspense,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
-import { createRoot } from "react-dom/client";
+import React, { useEffect, useState } from "react";
 import { panelSelected, toolSelected } from "./utils/shell";
-const Layers = lazy(() => import("../Panels/Layers/Layers"));
-const Legend = lazy(() => import("../Panels/Legend/Legend"));
-const Location = lazy(() => import("../Panels/Location/Location"));
-
-const Sketch = lazy(() => import("../Tools/Sketch/Sketch"));
-const Bookmarks = lazy(() => import("../Tools/Bookmarks/Bookmarks"));
-const Measure = lazy(() => import("../Tools/Measure/Measure"));
-
-const Basemaps = lazy(() => import("../Panels/Basemaps/Basemaps"));
 
 function Toolbar(args: any) {
   const [activePanel, setActivePanel] = useState("search");
   const [activeTool, setActiveTool] = useState("");
-  const [view, setView] = useState<__esri.MapView>();
-  const [selectDismissed, setSelectDismissed] = useState(true);
 
   useEffect(() => {
-    if (args.view) {
-      setView(args.view);
-    }
-  }, []);
-
+    setActivePanel(args.activePanel);
+  }, [args.activePanel]);
   useEffect(() => {
     setActiveTool(args.activeTool);
   }, [args.activeTool]);
@@ -65,17 +43,6 @@ function Toolbar(args: any) {
           text="Location Search"
           active={activePanel === "location" ? true : undefined}
           onClick={() => {
-            if (view?.map) {
-              const container = document.getElementById("location-div");
-              if (!container?.hasChildNodes()) {
-                const root = createRoot(container as HTMLDivElement);
-                root.render(
-                  <Suspense fallback={""}>
-                    <Location view={view} />
-                  </Suspense>
-                );
-              }
-            }
             panelSelected(
               "location",
               activePanel,
@@ -99,17 +66,6 @@ function Toolbar(args: any) {
               args.activePanelChanged,
               args.activeToolChanged
             );
-            if (view?.map) {
-              const container = document.getElementById("layer-div");
-              if (!container?.hasChildNodes()) {
-                const root = createRoot(container as HTMLDivElement);
-                root.render(
-                  <Suspense fallback={""}>
-                    <Layers view={view} />
-                  </Suspense>
-                );
-              }
-            }
           }}
         ></CalciteAction>
         <CalciteAction
@@ -125,23 +81,12 @@ function Toolbar(args: any) {
               args.activePanelChanged,
               args.activeToolChanged
             );
-            if (view?.map) {
-              const container = document.getElementById("legend-div");
-              if (!container?.hasChildNodes()) {
-                const root = createRoot(container as HTMLDivElement);
-                root.render(
-                  <Suspense fallback={""}>
-                    <Legend view={view} />
-                  </Suspense>
-                );
-              }
-            }
           }}
         ></CalciteAction>
         <CalciteAction
           icon="basemap"
           text="Basemaps"
-          active={activePanel === "basemap" ? true : undefined}
+          active={activePanel === "basemaps" ? true : undefined}
           onClick={() => {
             panelSelected(
               "basemaps",
@@ -151,17 +96,6 @@ function Toolbar(args: any) {
               args.activePanelChanged,
               args.activeToolChanged
             );
-            if (view?.map) {
-              const container = document.getElementById("basemaps-div");
-              if (!container?.hasChildNodes()) {
-                const root = createRoot(container as HTMLDivElement);
-                root.render(
-                  <Suspense fallback={""}>
-                    <Basemaps view={view} />
-                  </Suspense>
-                );
-              }
-            }
           }}
         ></CalciteAction>
       </CalciteActionGroup>
@@ -176,7 +110,6 @@ function Toolbar(args: any) {
               activeTool,
               setActiveTool,
               setActivePanel,
-              setSelectDismissed,
               args.activePanelChanged,
               args.activeToolChanged
             )
@@ -192,21 +125,9 @@ function Toolbar(args: any) {
               activeTool,
               setActiveTool,
               setActivePanel,
-              setSelectDismissed,
               args.activePanelChanged,
               args.activeToolChanged
             );
-            if (view?.map) {
-              const container = document.getElementById("measure-div");
-              if (!container?.hasChildNodes()) {
-                const root = createRoot(container as HTMLDivElement);
-                root.render(
-                  <Suspense fallback={""}>
-                    <Measure view={view} />
-                  </Suspense>
-                );
-              }
-            }
           }}
         ></CalciteAction>
         <CalciteAction
@@ -219,21 +140,9 @@ function Toolbar(args: any) {
               activeTool,
               setActiveTool,
               setActivePanel,
-              setSelectDismissed,
               args.activePanelChanged,
               args.activeToolChanged
             );
-            if (view?.map) {
-              const container = document.getElementById("sketch-div");
-              if (!container?.hasChildNodes()) {
-                const root = createRoot(container as HTMLDivElement);
-                root.render(
-                  <Suspense fallback={""}>
-                    <Sketch view={view} />
-                  </Suspense>
-                );
-              }
-            }
           }}
         ></CalciteAction>
         <CalciteAction
@@ -246,21 +155,9 @@ function Toolbar(args: any) {
               activeTool,
               setActiveTool,
               setActivePanel,
-              setSelectDismissed,
               args.activePanelChanged,
               args.activeToolChanged
             );
-            if (view?.map) {
-              const container = document.getElementById("bookmarks-div");
-              if (!container?.hasChildNodes()) {
-                const root = createRoot(container as HTMLDivElement);
-                root.render(
-                  <Suspense fallback={""}>
-                    <Bookmarks view={view} />
-                  </Suspense>
-                );
-              }
-            }
           }}
         ></CalciteAction>
         <CalciteAction
@@ -273,7 +170,6 @@ function Toolbar(args: any) {
               activeTool,
               setActiveTool,
               setActivePanel,
-              setSelectDismissed,
               args.activePanelChanged,
               args.activeToolChanged
             )
