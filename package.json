@@ -1,6 +1,6 @@
 {
   "name": "imaps-app",
-  "version": "0.1.0",
+  "version": "4.1.0",
   "private": true,
   "homepage": "https://justingreco.github.io/imaps-app",
   "dependencies": {
