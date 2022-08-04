@@ -1,5 +1,3 @@
-import "@esri/calcite-components/dist/components/calcite-action";
-import "@esri/calcite-components/dist/components/calcite-input";
 import {
   CalciteAction,
   CalciteInput,

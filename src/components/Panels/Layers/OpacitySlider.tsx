@@ -1,4 +1,3 @@
-import "@esri/calcite-components/dist/components/calcite-slider";
 import { CalciteSlider } from "@esri/calcite-components-react";
 import React, { useEffect, useState } from "react";
 export const OpacitySlider = (args: any) => {

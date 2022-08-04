@@ -1,9 +1,3 @@
-import "@esri/calcite-components/dist/components/calcite-tab";
-import "@esri/calcite-components/dist/components/calcite-tabs";
-import "@esri/calcite-components/dist/components/calcite-tab-nav";
-import "@esri/calcite-components/dist/components/calcite-tab-title";
-import "@esri/calcite-components/dist/components/calcite-panel";
-
 import {
   CalciteScrim,
   CalciteTab,

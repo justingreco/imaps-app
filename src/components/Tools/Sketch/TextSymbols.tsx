@@ -1,5 +1,3 @@
-import "@esri/calcite-components/dist/components/calcite-input";
-import "@esri/calcite-components/dist/components/calcite-label";
 import Color from "@arcgis/core/Color";
 import {
   CalciteInput,

@@ -1,9 +1,3 @@
-import "@esri/calcite-components/dist/components/calcite-stepper";
-import "@esri/calcite-components/dist/components/calcite-stepper-item";
-import "@esri/calcite-components/dist/components/calcite-combobox";
-import "@esri/calcite-components/dist/components/calcite-combobox-item";
-import "@esri/calcite-components/dist/components/calcite-slider";
-
 import React, { useEffect, useState, useRef } from "react";
 import MapView from "@arcgis/core/views/MapView";
 import Portal from "@arcgis/core/portal/Portal";

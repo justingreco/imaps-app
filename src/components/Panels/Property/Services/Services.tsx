@@ -1,7 +1,3 @@
-import "@esri/calcite-components/dist/components/calcite-accordion";
-import "@esri/calcite-components/dist/components/calcite-accordion-item";
-import "@esri/calcite-components/dist/components/calcite-scrim";
-
 import {
   CalciteAccordion,
   CalciteAccordionItem,

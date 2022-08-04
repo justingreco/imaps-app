@@ -1,11 +1,3 @@
-import "@esri/calcite-components/dist/components/calcite-color-picker-swatch";
-import "@esri/calcite-components/dist/components/calcite-button";
-import "@esri/calcite-components/dist/components/calcite-popover";
-import "@esri/calcite-components/dist/components/calcite-color-picker";
-import "@esri/calcite-components/dist/components/calcite-slider";
-import "@esri/calcite-components/dist/components/calcite-input";
-import "@esri/calcite-components/dist/components/calcite-label";
-
 import "./Sketch.css";
 import Color from "@arcgis/core/Color";
 import {

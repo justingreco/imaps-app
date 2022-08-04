@@ -1,6 +1,3 @@
-import "@esri/calcite-components/dist/components/calcite-action";
-import "@esri/calcite-components/dist/components/calcite-action-pad";
-
 import { CalciteAction, CalcitePanel } from "@esri/calcite-components-react";
 import React, { useCallback } from "react";
 import { useEffect, useRef, useState } from "react";

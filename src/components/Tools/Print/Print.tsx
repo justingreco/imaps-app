@@ -1,13 +1,3 @@
-import "@esri/calcite-components/dist/components/calcite-label";
-import "@esri/calcite-components/dist/components/calcite-input";
-import "@esri/calcite-components/dist/components/calcite-select";
-import "@esri/calcite-components/dist/components/calcite-radio-button";
-import "@esri/calcite-components/dist/components/calcite-radio-button-group";
-import "@esri/calcite-components/dist/components/calcite-checkbox";
-import "@esri/calcite-components/dist/components/calcite-button";
-import "@esri/calcite-components/dist/components/calcite-loader";
-import "@esri/calcite-components/dist/components/calcite-link";
-
 import {
   CalciteButton,
   CalciteCheckbox,

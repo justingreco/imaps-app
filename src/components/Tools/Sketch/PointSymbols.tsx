@@ -1,4 +1,3 @@
-import "@esri/calcite-components/dist/components/calcite-flow";
 import {
   CalciteFlow,
   CalciteInput,

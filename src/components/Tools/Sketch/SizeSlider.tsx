@@ -1,6 +1,3 @@
-import "@esri/calcite-components/dist/components/calcite-slider";
-import "@esri/calcite-components/dist/components/calcite-input";
-import "@esri/calcite-components/dist/components/calcite-label";
 import {
   CalciteInput,
   CalciteLabel,

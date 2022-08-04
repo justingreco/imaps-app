@@ -1,8 +1,3 @@
-import "@esri/calcite-components/dist/components/calcite-action";
-import "@esri/calcite-components/dist/components/calcite-button";
-import "@esri/calcite-components/dist/components/calcite-label";
-import "@esri/calcite-components/dist/components/calcite-input";
-
 import {
   CalcitePanel,
   CalciteAction,

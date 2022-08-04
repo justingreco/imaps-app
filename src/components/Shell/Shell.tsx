@@ -1,13 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import "@esri/calcite-components/dist/components/calcite-action";
-import "@esri/calcite-components/dist/components/calcite-action-bar";
-import "@esri/calcite-components/dist/components/calcite-action-group";
-import "@esri/calcite-components/dist/components/calcite-shell";
-import "@esri/calcite-components/dist/components/calcite-shell-panel";
-import "@esri/calcite-components/dist/components/calcite-panel";
-import "@esri/calcite-components/dist/components/calcite-loader";
-import "@esri/calcite-components/dist/components/calcite-scrim";
-import "@esri/calcite-components/dist/components/calcite-alert";
+
 
 import {
   CalciteAlert,
@@ -26,7 +18,6 @@ import {
 } from "./utils/shell";
 import { Select } from "../Tools/Select/Select";
 
-// import Basemaps from "../Panels/Basemaps/Basemaps";
 import Print from "../Tools/Print/Print";
 import Property from "../Panels/Property/Property";
 import Location from "../Panels/Location/Location";
@@ -54,7 +45,7 @@ function Shell() {
   const viewRef = useRef<__esri.MapView>();
 
   const [properties, setProperties] = useState<__esri.Graphic[]>();
-  const [loadedPanels, setLoadedPanels] = useState<string[]>(() => []);
+  const [loadedPanels, setLoadedPanels] = useState<string[]>(() => ["search"]);
   const [loadedTools, setLoadedTools] = useState<string[]>(() => []);
 
   useEffect(() => {
@@ -155,7 +146,6 @@ function Shell() {
   const propertySelected = useCallback(
     (feature: __esri.Graphic, condos: __esri.Graphic[]) => {
       setSelectedProperty(feature);
-
       setProperties(getDistinctProperties(feature, condos));
     },
     []
@@ -186,7 +176,7 @@ function Shell() {
             expandable={contentBehind ? true : undefined}
           ></Toolbar>
         )}
-        {view && (
+        {view && loadedPanels.includes("search") && (
           <Property
             view={view}
             geometry={geometry}

@@ -1,12 +1,3 @@
-import "@esri/calcite-components/dist/components/calcite-label";
-import "@esri/calcite-components/dist/components/calcite-switch";
-import "@esri/calcite-components/dist/components/calcite-dropdown";
-import "@esri/calcite-components/dist/components/calcite-dropdown-group";
-import "@esri/calcite-components/dist/components/calcite-dropdown-item";
-import "@esri/calcite-components/dist/components/calcite-button";
-import "@esri/calcite-components/dist/components/calcite-icon";
-import "@esri/calcite-components/dist/components/calcite-modal";
-
 import {
   CalciteButton,
   CalciteDropdown,

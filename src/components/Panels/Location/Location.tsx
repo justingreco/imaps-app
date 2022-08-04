@@ -1,5 +1,3 @@
-import "@esri/calcite-components/dist/components/calcite-combobox";
-import "@esri/calcite-components/dist/components/calcite-combobox-item";
 import {
   CalciteCombobox,
   CalciteComboboxItem,
