@@ -26,7 +26,7 @@ import PointSymbols from "./PointSymbols";
 import { collapsePanel } from "../../Shell/utils/shell";
 function Sketch(args: any) {
   const loaded = useRef(false);
-  const [activeTool, setActiveTool] = useState("");
+  const [activeSketchTool, setActiveSketchTool] = useState("");
   const [isActive, setIsActive] = useState(false);
 
   const [selectedGraphics, setSelectedGraphics] = useState<__esri.Graphic[]>(
@@ -37,7 +37,7 @@ function Sketch(args: any) {
     if (!loaded.current) {
       initializeSketchViewModel(
         args.view,
-        setActiveTool,
+        setActiveSketchTool,
         selectedGraphics,
         setSelectedGraphics
       );
@@ -49,7 +49,7 @@ function Sketch(args: any) {
   const toolDismissed = useCallback((e: any) => {
     args.toolDismissed();
     cancelSketch();
-    setActiveTool("");
+    setActiveSketchTool("");
   }, []);
   return (
     <CalcitePanel
@@ -72,74 +72,74 @@ function Sketch(args: any) {
         <div className="sticky">
           <CalciteActionGroup layout="horizontal">
             <CalciteAction
-              active={activeTool === "point" ? true : undefined}
+              active={activeSketchTool === "point" ? true : undefined}
               icon="pin"
               text={""}
-              onClick={() => toolSelected("point", activeTool, setActiveTool)}
+              onClick={() => toolSelected("point", activeSketchTool, setActiveSketchTool)}
             ></CalciteAction>
             <CalciteAction
-              active={activeTool === "polyline" ? true : undefined}
+              active={activeSketchTool === "polyline" ? true : undefined}
               icon="line"
               text={""}
               onClick={() =>
-                toolSelected("polyline", activeTool, setActiveTool)
+                toolSelected("polyline", activeSketchTool, setActiveSketchTool)
               }
             ></CalciteAction>
             <CalciteAction
-              active={activeTool === "polygon" ? true : undefined}
+              active={activeSketchTool === "polygon" ? true : undefined}
               icon="polygon"
               text={""}
-              onClick={() => toolSelected("polygon", activeTool, setActiveTool)}
+              onClick={() => toolSelected("polygon", activeSketchTool, setActiveSketchTool)}
             ></CalciteAction>
             <CalciteAction
-              active={activeTool === "rectangle" ? true : undefined}
+              active={activeSketchTool === "rectangle" ? true : undefined}
               icon="rectangle"
               text={""}
               onClick={() =>
-                toolSelected("rectangle", activeTool, setActiveTool)
+                toolSelected("rectangle", activeSketchTool, setActiveSketchTool)
               }
             ></CalciteAction>
             <CalciteAction
-              active={activeTool === "circle" ? true : undefined}
+              active={activeSketchTool === "circle" ? true : undefined}
               icon="circle"
               text={""}
-              onClick={() => toolSelected("circle", activeTool, setActiveTool)}
+              onClick={() => toolSelected("circle", activeSketchTool, setActiveSketchTool)}
             ></CalciteAction>
             <CalciteAction
-              active={activeTool === "text" ? true : undefined}
+              active={activeSketchTool === "text" ? true : undefined}
               icon="text"
               text={""}
-              onClick={() => toolSelected("text", activeTool, setActiveTool)}
+              onClick={() => toolSelected("text", activeSketchTool, setActiveSketchTool)}
             ></CalciteAction>
           </CalciteActionGroup>
           <CalciteActionGroup layout="horizontal">
             <CalciteAction
               icon="cursor"
               text={""}
-              active={activeTool === "select" ? true : undefined}
+              active={activeSketchTool === "select" ? true : undefined}
               onClick={() => {
                 stopSketching();
-                toolSelected("select", activeTool, setActiveTool);
+                toolSelected("select", activeSketchTool, setActiveSketchTool);
               }}
             ></CalciteAction>
             <CalciteAction
               icon="trash"
               text={""}
-              onClick={() => clearSketch(setActiveTool)}
+              onClick={() => clearSketch(setActiveSketchTool)}
             ></CalciteAction>
           </CalciteActionGroup>
         </div>
         <div
           id="point-symbols"
           className="symbol"
-          hidden={activeTool !== "point" ? true : undefined}
+          hidden={activeSketchTool !== "point" ? true : undefined}
         >
           <PointSymbols pointSymbolUpdated={pointSymbolUpdated}></PointSymbols>
         </div>
         <div
           id="line-symbols"
           className="symbol"
-          hidden={activeTool !== "polyline" ? true : undefined}
+          hidden={activeSketchTool !== "polyline" ? true : undefined}
         >
           <LineSymbols
             polylineSymbolUpdated={polylineSymbolUpdated}
@@ -149,7 +149,7 @@ function Sketch(args: any) {
           id="polygon-symbols"
           className="symbol"
           hidden={
-            !["polygon", "rectangle", "circle"].includes(activeTool)
+            !["polygon", "rectangle", "circle"].includes(activeSketchTool)
               ? true
               : undefined
           }
@@ -161,7 +161,7 @@ function Sketch(args: any) {
         <div
           id="text-symbols"
           className="symbol"
-          hidden={activeTool !== "text" ? true : undefined}
+          hidden={activeSketchTool !== "text" ? true : undefined}
         >
           <TextSymbols textSymbolUpdated={textSymbolUpdated}></TextSymbols>
         </div>

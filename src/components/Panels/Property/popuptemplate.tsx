@@ -724,7 +724,7 @@ export const getPhotos = (
   feature: __esri.Graphic
 ): Promise<__esri.MediaInfo[]> => {
   return new Promise(function (resolve) {
-    const relationship = (feature.layer as FeatureLayer)?.relationships.find(
+      const relationship = (feature.layer as FeatureLayer)?.relationships.find(
       (r) => {
         return r.name === "CONDO_PHOTOS";
       }
@@ -746,6 +746,7 @@ export const getPhotos = (
       })
       .then((result) => {
         for (const key in result) {
+          feature.setAttribute('OBJECTID', key);
           result[key].features.forEach((feature: Graphic) => {
             mediaInfos.push({
               title: "",

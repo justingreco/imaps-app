@@ -1,3 +1,9 @@
+import "@esri/calcite-components/dist/components/calcite-flow";
+import "@esri/calcite-components/dist/components/calcite-input";
+import "@esri/calcite-components/dist/components/calcite-label";
+import "@esri/calcite-components/dist/components/calcite-panel";
+
+
 import {
   CalciteFlow,
   CalciteInput,
@@ -22,7 +28,7 @@ function PointSymbols(args: any) {
     "70ccf6bcbd304773a164be896e76edd3",
   ];
 
-  const [activePanel, setActivePanel] = useState("main");
+  const [activeFlow, setActiveFlow] = useState("main");
   const [pointColor, setPointColor] = useState<Color>(
     new Color([255, 0, 0, 1])
   );
@@ -39,11 +45,11 @@ function PointSymbols(args: any) {
   return (
     <div id="point-symbols">
       {symbols.length && (
-        <CalciteFlow>
-          {activePanel === "main" && (
+        <div>
+          {activeFlow === "main" && (
             <CalcitePanel>
               <IconPicker
-                pickerClicked={() => setActivePanel("icon")}
+                pickerClicked={() => setActiveFlow("icon")}
                 symbol={symbol}
               ></IconPicker>
               <ColorButton
@@ -74,17 +80,17 @@ function PointSymbols(args: any) {
               </CalciteLabel>
             </CalcitePanel>
           )}
-          {activePanel === "icon" && (
+          {activeFlow === "icon" && (
             <IconSelectionPanel
               iconSelected={(icon: any) => {
                 setSymbol(icon);
                 args.pointSymbolUpdated(icon, pointColor, pointSize);
               }}
-              backClicked={() => setActivePanel("main")}
+              backClicked={() => setActiveFlow("main")}
               symbols={symbols}
             ></IconSelectionPanel>
           )}
-        </CalciteFlow>
+        </div>
       )}
     </div>
   );

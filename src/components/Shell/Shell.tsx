@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { lazy, Suspense, useCallback, useEffect, useRef, useState } from "react";
 
 
 import {
@@ -16,19 +16,21 @@ import {
   toolSelected,
   widgetActivated,
 } from "./utils/shell";
-import { Select } from "../Tools/Select/Select";
 
-import Print from "../Tools/Print/Print";
 import Property from "../Panels/Property/Property";
-import Location from "../Panels/Location/Location";
-import Layers from "../Panels/Layers/Layers";
 
 import Toolbar from "./Toolbar";
-import Legend from "../Panels/Legend/Legend";
-import Basemaps from "../Panels/Basemaps/Basemaps";
-import Bookmarks from "../Tools/Bookmarks/Bookmarks";
-import Sketch from "../Tools/Sketch/Sketch";
-import Measure from "../Tools/Measure/Measure";
+
+const Location = lazy(() => import("../Panels/Location/Location"));
+const Layers = lazy(() => import("../Panels/Layers/Layers"));
+const Legend = lazy(() => import("../Panels/Legend/Legend"));
+const Basemaps = lazy(() => import("../Panels/Basemaps/Basemaps"));
+const Select = lazy(() => import("../Tools/Select/Select"));
+const Measure = lazy(() => import("../Tools/Measure/Measure"));
+const Sketch = lazy(() => import("../Tools/Sketch/Sketch"));
+const Bookmarks = lazy(() => import("../Tools/Bookmarks/Bookmarks"));
+const Print = lazy(() => import("../Tools/Print/Print"));
+
 function Shell() {
   const [activePanel, setActivePanel] = useState("search");
   const [activeTool, setActiveTool] = useState("");
@@ -186,36 +188,45 @@ function Shell() {
           ></Property>
         )}
         {loadedPanels.includes("location") && (
+          <Suspense fallback={null}>           
           <Location
             view={view}
             panelDismissed={panelDismissed}
             isActive={activePanel === "location"}
           ></Location>
+          </Suspense>
         )}
         {loadedPanels.includes("layers") && (
+        <Suspense fallback={null}> 
           <Layers
             view={view}
             panelDismissed={panelDismissed}
             isActive={activePanel === "layers"}
           ></Layers>
+          </Suspense>
         )}
         {loadedPanels.includes("legend") && (
+        <Suspense fallback={null}>    
           <Legend
             view={view}
             panelDismissed={panelDismissed}
             isActive={activePanel === "legend"}
           ></Legend>
+          </Suspense>
         )}
         {loadedPanels.includes("basemaps") && (
+        <Suspense fallback={null}>              
           <Basemaps
             view={view}
             panelDismissed={panelDismissed}
             isActive={activePanel === "basemaps"}
           ></Basemaps>
+          </Suspense>
         )}
       </CalciteShellPanel>
       <div className={`tools esri-component`}>
         {loadedTools.includes("select") && (
+        <Suspense fallback={null}>    
           <Select
             view={view}
             selectedProperty={selectedProperty}
@@ -223,29 +234,37 @@ function Shell() {
             toolDismissed={toolDismissed}
             isActive={activeTool === "select"}
           ></Select>
+          </Suspense>      
         )}
         {loadedTools.includes("measure") && (
+        <Suspense fallback={null}>    
           <Measure
             view={view}
             toolDismissed={toolDismissed}
             isActive={activeTool === "measure"}
           ></Measure>
+          </Suspense>      
         )}
         {loadedTools.includes("sketch") && (
-          <Sketch
-            view={view}
-            toolDismissed={toolDismissed}
-            isActive={activeTool === "sketch"}
-          ></Sketch>
+          <Suspense fallback={null}>
+            <Sketch
+              view={view}
+              toolDismissed={toolDismissed}
+              isActive={activeTool === "sketch"}
+            ></Sketch>
+          </Suspense>
         )}
         {loadedTools.includes("bookmarks") && (
-          <Bookmarks
-            view={view}
-            toolDismissed={toolDismissed}
-            isActive={activeTool === "bookmarks"}
-          ></Bookmarks>
+          <Suspense fallback={null}>
+            <Bookmarks
+              view={view}
+              toolDismissed={toolDismissed}
+              isActive={activeTool === "bookmarks"}
+            ></Bookmarks>
+          </Suspense>
         )}
         {loadedTools.includes("print") && (
+        <Suspense fallback={null}>
           <Print
             view={view}
             exportUrl="https://indoors.raleighnc.gov/arcgis/rest/services/ExportWebMap/GPServer/Export%20Web%20Map"
@@ -253,6 +272,7 @@ function Shell() {
             toolDismissed={toolDismissed}
             isActive={activeTool === "print"}
           ></Print>
+        </Suspense>          
         )}
       </div>
       <WebMap

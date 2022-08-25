@@ -59,7 +59,7 @@ let highlights: any;
 let highlightedGraphic: Graphic;
 export function initializeSketchViewModel(
   view: MapView,
-  setActiveTool: Function,
+  setActiveSketchTool: Function,
   selectedGraphics: Graphic[],
   setSelectedGraphics: Function
 ) {
@@ -96,8 +96,8 @@ export function initializeSketchViewModel(
   ];
   viewModels.forEach((viewModel) => {
     viewModel?.on("create", (e) => {
-      if (e.state === "cancel" && viewModel.activeTool === null) {
-        setActiveTool("select");
+      if (e.state === "cancel" && viewModel.activeTool !== null) {
+        setActiveSketchTool("select");
         if (highlights) {
           highlights.remove();
         }
@@ -163,12 +163,12 @@ function addGraphic(e: any) {
 
 export function toolSelected(
   tool: string,
-  activeTool: string,
-  setActiveTool: Function
+  activeSketchTool: string,
+  setActiveSketchTool: Function
 ) {
   selectedTool = tool;
-  tool === activeTool ? setActiveTool("") : setActiveTool(tool);
-  if (activeTool === "") {
+  tool === activeSketchTool ? setActiveSketchTool("") : setActiveSketchTool(tool);
+  if (activeSketchTool === "") {
     cancelSketch();
   }
   if (["polygon", "rectangle", "circle"].includes(tool)) {
@@ -301,7 +301,7 @@ export function cancelSketch() {
   textSketchViewModel.cancel();
 }
 
-export function clearSketch(setActiveTool: Function) {
+export function clearSketch(setActiveSketchTool: Function) {
   sketchLayer.polygonLayer.graphics.removeAll();
   sketchLayer.pointLayer.graphics.removeAll();
   sketchLayer.polylineLayer.graphics.removeAll();
