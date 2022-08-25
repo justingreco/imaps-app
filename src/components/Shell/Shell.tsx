@@ -267,7 +267,7 @@ function Shell() {
         <Suspense fallback={null}>
           <Print
             view={view}
-            exportUrl="https://indoors.raleighnc.gov/arcgis/rest/services/ExportWebMap/GPServer/Export%20Web%20Map"
+            exportUrl="https://maps.raleighnc.gov/arcgis/rest/services/Geoprocessing/ExportWebMapPro/GPServer/Export%20Web%20Map"
             selectedProperty={selectedProperty}
             toolDismissed={toolDismissed}
             isActive={activeTool === "print"}
