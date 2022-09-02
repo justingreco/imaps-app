@@ -5,6 +5,7 @@ import LegendLayer from "@arcgis/core/rest/support/LegendLayer";
 import PrintParameters from "@arcgis/core/rest/support/PrintParameters";
 import PrintTemplate from "@arcgis/core/rest/support/PrintTemplate";
 
+import TileInfo from "@arcgis/core/layers/support/TileInfo";
 import Graphic from "@arcgis/core/Graphic";
 import { printTemplates } from "./templates";
 
@@ -83,7 +84,7 @@ const roundScale = (mapScale: number): number => {
   return 0;
 };
 export const getScales = (view: __esri.MapView): MapScale[] => {
-  const scales = (view.constraints as any)._defaultLODs
+  const scales = TileInfo.create().lods
     .filter((lod: any) => {
       return lod.scale >= 300 && lod.scale < 614400;
     })
@@ -95,7 +96,7 @@ export const getScales = (view: __esri.MapView): MapScale[] => {
       };
     })
     ?.reverse();
-  scales.push({ scale: "custom", label: "User Defined" });
+  scales.push({ scale: "custom", label: "User Defined" } as any);
   return scales;
 };
 

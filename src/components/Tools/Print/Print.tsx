@@ -52,7 +52,7 @@ function Print(args: any) {
     if (!loaded.current) {
       loaded.current = true;
       setView(args.view);
-      getLayouts().then((layouts) => {
+      getLayouts().then((layouts: any) => {
         setLayouts(layouts);
         setSelectedLayout(layouts[0]);
       });
