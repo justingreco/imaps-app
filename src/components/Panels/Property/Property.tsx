@@ -1,95 +1,29 @@
-import {
-  CalciteScrim,
+
+import {  CalciteScrim,
   CalciteTab,
   CalciteTabNav,
   CalciteTabs,
   CalciteTabTitle,
   CalcitePanel,
 } from "@esri/calcite-components-react";
-import React, { useEffect, useState, useRef, useCallback } from "react";
+import React from "react";
 import "./Property.css";
 import PropertySearch from "./PropertySearch/PropertySearch";
-import MapView from "@arcgis/core/views/MapView";
 import PropertyTable from "./PropertyTable/PropertyTable";
-import { getPropertyByGeometry } from "./utils/property";
 import PropertyInfo from "./PropertyInfo/PropertyInfo";
+import useProperty from "./utils/useProperty";
 function Property(args: any) {
-  const [view, setView] = useState<MapView>();
-  const [condos, setCondos] = useState<__esri.Graphic[]>();
-  const condoRef = useRef<__esri.Graphic[]>();
-
-  const [feature, setFeature] = useState<__esri.Graphic>();
-
-  const loaded = useRef(false);
-  const [infoDisabled, setInfoDisabled] = useState(true);
-  const [searching, setSearching] = useState(false);
-  const [activeTab, setActiveTab] = useState("list");
-  const [isActive, setIsActive] = useState(false);
-
-  useEffect(() => {
-    setView(args.view);
-    if (!loaded.current) {
-      loaded.current = true;
-    }
-  }, [args.view]);
-
-  useEffect(() => {
-    if (args.geometry && view) {
-      getPropertyByGeometry(args.geometry, view as MapView).then(
-        (result: any) => {
-          setCondos(result.features);
-          condoRef.current = result.features;
-          if (result.features.length === 1) {
-            setInfoDisabled(false);
-            setActiveTab("info");
-            setFeature(result.features[0]);
-            args.selected(result.features[0], result.features);
-          } else {
-            setInfoDisabled(true);
-            setActiveTab("list");
-            setFeature(undefined);
-            args.selected(undefined, result.features);
-          }
-        }
-      );
-    }
-  }, [args.geometry]);
-  const condosSelected = useCallback(
-    (selectedCondos: __esri.Graphic[]) => {
-      setCondos(selectedCondos);
-      condoRef.current = selectedCondos;
-      if (selectedCondos.length === 1) {
-        setInfoDisabled(false);
-        setActiveTab("info");
-        setFeature(selectedCondos[0]);
-        args.selected(selectedCondos[0], selectedCondos);
-      } else {
-        setInfoDisabled(true);
-        setActiveTab("list");
-        setFeature(undefined);
-        args.selected(undefined, selectedCondos);
-      }
-    },
-    [condoRef.current, condos, args.selected]
-  );
-
-  const featureSelected = useCallback(
-    (selectedFeature: __esri.Graphic) => {
-      setFeature(selectedFeature);
-      //args.featureSelected(feature);
-      args.selected(selectedFeature, condoRef.current);
-      setActiveTab("info");
-      setInfoDisabled(false);
-    },
-    [args.selected, feature]
-  );
-
-  useEffect(() => {
-    setIsActive(args.isActive);
-  }, [args.isActive]);
-  const panelDismissed = useCallback((e: any) => {
-    args.panelDismissed();
-  }, []);
+  const { 
+    condos,
+    feature,
+    infoDisabled,
+    searching,
+    setSearching,
+    activeTab,
+    isActive,
+    condosSelected,
+    featureSelected,
+    panelDismissed  } = useProperty(args);
 
   return (
     <CalcitePanel
@@ -102,9 +36,9 @@ function Property(args: any) {
       onCalcitePanelDismiss={panelDismissed}
     >
       <div className="property">
-        {view && (
+        {args.view && (
           <PropertySearch
-            view={view}
+            view={args.view}
             searchingChanged={(isSearching: boolean) =>
               setSearching(isSearching)
             }
@@ -124,17 +58,17 @@ function Property(args: any) {
             </CalciteTabTitle>
           </CalciteTabNav>
           <CalciteTab>
-            {view && (
+            {args.view && (
               <PropertyTable
-                view={view}
+                view={args.view}
                 condos={condos}
                 featureSelected={featureSelected}
               ></PropertyTable>
             )}
           </CalciteTab>
           <CalciteTab>
-            {view && (
-              <PropertyInfo view={view} feature={feature}></PropertyInfo>
+            {args.view && (
+              <PropertyInfo view={args.view} feature={feature}></PropertyInfo>
             )}
           </CalciteTab>
           <CalciteScrim

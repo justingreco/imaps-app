@@ -73,6 +73,8 @@ function initializeGrid(featureTable: FeatureTable) {
     const grid = (featureTable.container as HTMLElement).querySelector(
       "vaadin-grid"
     ) as any;
+    //set tabpanel to 100% in shadowRoot
+    (featureTable.container as HTMLElement).parentElement?.shadowRoot?.querySelector('[role="tabpanel"]')?.setAttribute('style', 'height: 100%');
     grid?.addEventListener("cell-activate", (e: any) => {
       featureTable.clearSelection();
       const feature = e.detail.model.item.feature;

@@ -15,8 +15,6 @@ import {
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import "./Print.css";
 import {
-  getFormats,
-  getLayouts,
   getPrintScale,
   getScales,
   getPrintTemplate,
@@ -24,51 +22,15 @@ import {
   getCustomElements,
   exportMap,
 } from "./utils/print";
+
 import { collapsePanel } from "../../Shell/utils/shell";
+import usePrint from "./utils/usePrint";
 function Print(args: any) {
-  const loaded = useRef(false);
-  const [isActive, setIsActive] = useState(false);
-
-  const customScaleSelect = useRef(null);
-
-  const attributes = useRef<HTMLCalciteCheckboxElement>(null);
-  const legend = useRef<HTMLCalciteCheckboxElement>(null);
-
-  const userDefined = useRef<HTMLCalciteInputElement>(null);
-  const title = useRef<HTMLCalciteInputElement>(null);
-  const jobRef = useRef<any[]>([]);
-
-  const [layouts, setLayouts] = useState<any[]>([]);
-  const [formats, setFormats] = useState<any[]>([]);
-  const [view, setView] = useState<__esri.MapView>();
-  const [scaleType, setScaleType] = useState("current");
-  const [customScale, setCustomScale] = useState<any>();
-  const [selectedProperty, setSelectedProperty] = useState<__esri.Graphic>();
-  const [selectedLayout, setSelectedLayout] = useState<any>();
-  const [selectedFormat, setSelectedFormat] = useState<string>();
-  const [jobs, setJobs] = useState<any[]>([]);
-
-  useEffect(() => {
-    if (!loaded.current) {
-      loaded.current = true;
-      setView(args.view);
-      getLayouts().then((layouts: any) => {
-        setLayouts(layouts);
-        setSelectedLayout(layouts[0]);
-      });
-      getFormats(args.exportUrl).then((formats) => {
-        setFormats(formats);
-        setSelectedFormat(formats[0]);
-      });
-    }
-  }, []);
-
-  useEffect(() => {
-    setSelectedProperty(args.selectedProperty);
-  }, [args.selectedProperty]);
-  useEffect(() => {
-    setIsActive(args.isActive);
-  }, [args.isActive]);
+  const { isActive, title, setSelectedLayout, layouts,  selectedFormat,
+    setSelectedFormat, formats, setScaleType,
+    scaleType, customScaleSelect, setCustomScale,
+    customScale, userDefined, selectedProperty,
+    selectedLayout, attributes, legend, setJobs, jobs, jobRef } = usePrint(args);
   const toolDismissed = useCallback((e: any) => {
     args.toolDismissed();
   }, []);
@@ -163,8 +125,8 @@ function Print(args: any) {
                 setCustomScale(e.target.selectedOption.value)
               }
             >
-              {view &&
-                getScales(view).map((scale, i) => {
+              {args?.view &&
+                getScales(args?.view).map((scale, i) => {
                   return (
                     <CalciteOption
                       key={i}
@@ -206,19 +168,19 @@ function Print(args: any) {
         <CalciteButton
           width="full"
           onClick={() => {
-            // let scale = scaleType === 'current' ? view?.scale;
+            // let scale = scaleType === 'current' ? args?.view?.scale;
             // scale = scaleType === 'custom' ?
             // userDefined.current.value;
-            if (view) {
+            if (args?.view) {
               const scale: number = getPrintScale(
                 scaleType,
-                view?.scale,
+                args?.view?.scale,
                 customScale,
                 userDefined?.current
                   ? parseInt(userDefined.current.value)
                   : undefined
               );
-              //exportMap(args.exportUrl, view, view.scale);
+              //exportMap(args.exportUrl, args?.view, args?.view.scale);
               const customElements: any[] = getCustomElements(
                 selectedLayout.size,
                 scale,
@@ -236,7 +198,7 @@ function Print(args: any) {
                 selectedFormat,
                 title?.current?.value,
                 customElements,
-                view,
+                args?.view,
                 template
               );
               const job = {
@@ -247,15 +209,15 @@ function Print(args: any) {
               };
               setJobs([...jobs, job]);
               jobRef.current = [...jobRef.current, job];
-              const oldScale = view.scale;
-              if (printTemplate.outScale !== view.scale) {
-                view.scale = printTemplate.outScale;
+              const oldScale = args?.view.scale;
+              if (printTemplate.outScale !== args?.view.scale) {
+                args.view.scale = printTemplate.outScale;
               }
               setTimeout(() => {
                 exportMap(
                   args.exportUrl,
                   printTemplate,
-                  view,
+                  args?.view,
                   oldScale,
                   selectedFormat as string
                 )
@@ -338,3 +300,9 @@ function Print(args: any) {
 }
 
 export default React.memo(Print);
+
+
+function setPrint(args: any): any {
+  throw new Error("Function not implemented.");
+}
+

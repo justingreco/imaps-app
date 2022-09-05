@@ -52,14 +52,15 @@ const appHeight = () => {
   doc.style.setProperty("--app-height", `${window.innerHeight}px`);
 };
 window.addEventListener("resize", appHeight);
+
 appHeight();
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 root.render(
-  <React.StrictMode>
+  // <React.StrictMode>
     <App />
-  </React.StrictMode>
+  // </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function

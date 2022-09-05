@@ -1,25 +1,9 @@
-import React, { useEffect, useRef } from "react";
-import MapView from "@arcgis/core/views/MapView";
+import React from "react";
 
 import "./WebMap.css";
-import { initializeOverview } from "./utils/overview";
+import useOverview from "./utils/useOverview";
 function Overview(args: any) {
-  const ref = useRef() as any;
-  const loaded = useRef(false);
-  const overview = useRef<MapView | null>(null);
-  const view = useRef<MapView | null>(null);
-
-  useEffect(() => {
-    if (!loaded.current && args.view) {
-      loaded.current = true;
-      const mapView = initializeOverview(ref.current, args.view);
-      overview.current = mapView;
-      view.current = args.view;
-    }
-    return () => {
-      overview.current && overview.current?.destroy();
-    };
-  }, []);
+  const { ref } = useOverview(args)
 
   return <div id="overview-map" ref={ref}></div>;
 }

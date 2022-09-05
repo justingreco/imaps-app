@@ -6,6 +6,10 @@
   height: 100vh;
 }
 
+.property calcite-tab[role='tabpanel'] {
+  height: 100%;
+}
+
 @media only screen and (max-height: 400px) {
   .property calcite-tabs {
     height: calc(var(--app-height) - 34px - 59.8438px);

@@ -49,6 +49,8 @@ const addWatches = (view: __esri.MapView, overview: __esri.MapView) => {
       );
     }
   });
+
+  view.map.watch('basemap', basemap => overview.map.basemap = basemap);
   extentHandle = view.watch("extent", () => {
     overview.graphics.removeAll();
     overview.graphics.add(
