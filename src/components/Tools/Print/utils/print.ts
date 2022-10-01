@@ -8,6 +8,7 @@ import PrintTemplate from "@arcgis/core/rest/support/PrintTemplate";
 import TileInfo from "@arcgis/core/layers/support/TileInfo";
 import Graphic from "@arcgis/core/Graphic";
 import { printTemplates } from "./templates";
+import MapView from "@arcgis/core/views/MapView";
 
 type MapScale = {
   scale: number;
@@ -249,7 +250,99 @@ export const getCustomElements = (
   return customElements;
 };
 
-export const exportMap = (
+export const exportClicked = (view: MapView, 
+  exportUrl: string, 
+  scaleType: string, 
+  customScale: string, 
+  userDefined: any, 
+  selectedLayout: any,
+  selectedFormat: any,
+  selectedProperty: __esri.Graphic | undefined,
+  title: string | undefined,
+  showAttributes: boolean | undefined,
+  showLegend: boolean | undefined,
+  jobRef: any,
+  jobs: any[],
+  setJobs: Function) => {
+  // let scale = scaleType === 'current' ? args?.view?.scale;
+  // scale = scaleType === 'custom' ?
+  // userDefined.current.value;
+  if (view) {
+    const scale: number = getPrintScale(
+      scaleType,
+      view?.scale,
+      customScale,
+      userDefined
+        ? parseInt(userDefined.value)
+        : undefined
+    );
+    //exportMap(args.exportUrl, args?.view, args?.view.scale);
+    const customElements: any[] = getCustomElements(
+      selectedLayout.size,
+      scale,
+      showAttributes,
+      selectedProperty
+    );
+    const template = getTemplateName(
+      selectedLayout,
+      showAttributes,
+      showLegend
+    );
+
+    const printTemplate = getPrintTemplate(
+      scale,
+      selectedFormat,
+      title,
+      customElements,
+      view,
+      template
+    );
+    const job = {
+      title: title,
+      loading: true,
+      submitted: new Date().getTime().toString(),
+      href: null,
+    };
+    setJobs([...jobs, job]);
+    jobRef.current = [...jobRef, job];
+    const oldScale = view.scale;
+    if (printTemplate.outScale !== view.scale) {
+      view.scale = printTemplate.outScale;
+    }
+    setTimeout(() => {
+      exportMap(
+        exportUrl,
+        printTemplate,
+        view,
+        oldScale,
+        selectedFormat as string
+      )
+        .then((result) => {
+          setTimeout(() => {
+            //graphics.visible = true;
+            const index = jobRef.current.indexOf(job);
+            jobRef.current[index] = {
+              ...jobRef.current[index],
+              ...{ url: result.url, loading: false },
+            };
+            setJobs([...jobRef.current]);
+          });
+        })
+        .catch((reason) => {
+          console.log(reason);
+          //graphics.visible = true;
+          const index = jobRef.current.indexOf(job);
+          jobRef.current[index] = {
+            ...jobRef.current[index],
+            ...{ error: true, loading: false },
+          };
+          setJobs([...jobRef.current]);
+        });
+    }, 1000);
+  }
+}
+
+const exportMap = (
   url: string,
   template: PrintTemplate,
   view: __esri.MapView,

@@ -11,11 +11,17 @@ export function addBasemap(
   setActiveStep: Function,
   view: MapView
 ) {
-  if (index === 0) {
+  if (index === 0 ) {
     //basemap = new Basemap({ baseLayers: []})
     view.map.basemap.baseLayers.removeAll();
   }
-
+  if (index === 1 ) {
+    //basemap = new Basemap({ baseLayers: []})
+    const images = view.map.basemap.baseLayers.filter(layer => {
+      return layer.type.includes('image');
+    })
+    view.map.basemap.baseLayers.removeMany(images);
+  }
   const id = evt?.detail?.selectedItems[0]?.value;
   if (id) {
     const item = items.find((item) => {
@@ -27,8 +33,12 @@ export function addBasemap(
         webmap.loadAll().then((m: WebMap) => {
           setTimeout(() => {
             m?.basemap.baseLayers.forEach((layer: __esri.Layer) => {
-              if (index === 0) {
-                (layer as any).blendMode = "multiply";
+              // if (index === 0) {
+              //   (layer as any).blendMode = "multiply";
+              // }
+              console.log(layer.type);
+              if (!layer.type.includes('image')) {
+                layer.opacity = 0.5;
               }
               basemap.baseLayers.add(layer, 0);
             });
@@ -37,7 +47,7 @@ export function addBasemap(
             setActiveStep(nextStep);
             if (nextStep === "opacity") {
               //view.map.basemap.baseLayers.removeAll();
-              // view.map.basemap.baseLayers.addMany(basemap.baseLayers);
+              //view.map.basemap.baseLayers.addMany(basemap.baseLayers);
 
               view.map.basemap = basemap;
             }

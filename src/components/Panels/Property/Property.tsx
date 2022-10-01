@@ -5,6 +5,7 @@ import {  CalciteScrim,
   CalciteTabs,
   CalciteTabTitle,
   CalcitePanel,
+  CalciteButton,
 } from "@esri/calcite-components-react";
 import React from "react";
 import "./Property.css";
@@ -23,7 +24,9 @@ function Property(args: any) {
     isActive,
     condosSelected,
     featureSelected,
-    panelDismissed  } = useProperty(args);
+    panelDismissed,
+    clearSearch
+  } = useProperty(args);
 
   return (
     <CalcitePanel
@@ -37,13 +40,19 @@ function Property(args: any) {
     >
       <div className="property">
         {args.view && (
-          <PropertySearch
+          <div className="row"><PropertySearch
             view={args.view}
             searchingChanged={(isSearching: boolean) =>
               setSearching(isSearching)
             }
             condosSelected={condosSelected}
           ></PropertySearch>
+          <CalciteButton iconEnd="trash" color="neutral" scale="m"
+            onClick={() => {
+              clearSearch();
+            }}
+          ></CalciteButton>
+          </div>
         )}
         <CalciteTabs position="below" layout="center" scale="l">
           <CalciteTabNav slot="tab-nav">

@@ -3,7 +3,7 @@ import { useEffect, useRef } from "react";
 import { displayProperties, initializeMap } from "../utils/map";
 
   
-const useProperty = (args: any) => {
+const useWebMap = (args: any) => {
     const ref = useRef() as any;
     const loaded = useRef(false);
     const view = useRef<MapView | null>(null);
@@ -26,12 +26,11 @@ const useProperty = (args: any) => {
       }
       return () => {
           // clean up the map view
-          if (view.current) {
-            debugger
-            console.log('destroy')
-            view.current.destroy();
-            view.current = null;
-          }
+          // if (view.current) {
+          //   console.log('destroy')
+          //   view.current.destroy();
+          //   view.current = null;
+          // }
       };
     },[]);
     useEffect(() => {
@@ -42,4 +41,4 @@ const useProperty = (args: any) => {
     return {ref, loaded, view}
 };
 
-export default useProperty;
+export default useWebMap;

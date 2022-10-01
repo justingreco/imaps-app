@@ -70,6 +70,16 @@ const useProperty = (args: any) => {
       },
       [args.selected, feature]
     );
+    const clearSearch = useCallback(
+      () => {
+        setFeature(undefined);
+        setCondos([]);
+        setActiveTab('list');
+        setInfoDisabled(true);
+        args.selected(null, []);
+      },
+      []
+    );
   
     useEffect(() => {
       setIsActive(args.isActive);
@@ -88,7 +98,9 @@ const useProperty = (args: any) => {
         isActive,
         condosSelected,
         featureSelected,
-        panelDismissed}
+        panelDismissed,
+        clearSearch
+      }
 };
 
 export default useProperty;

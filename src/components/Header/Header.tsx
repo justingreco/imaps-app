@@ -17,6 +17,7 @@ function Header() {
 
   const disclaimer = useRef<HTMLCalciteModalElement>();
   const [links, setLinks] = useState<any[]>();
+  const [theme, setTheme] = useState('light');
 
   useEffect(() => {
     fetch("./config.json").then((response) => {
@@ -24,11 +25,16 @@ function Header() {
         setLinks(config.links);
       });
     });
+    const theme = window.localStorage.getItem('calcite-imaps-theme');
+    if (theme === 'dark') {
+      toggleTheme(true);
+      setTheme('dark');
+    }
   }, []);
   return (
     <div slot="header" id="header">
       <div>
-        <img ref={logo} alt="imaps" src="logo.svg" className="logo" />
+        <img ref={logo} alt="imaps" src={theme === 'dark' ? 'logo_dark.svg' : 'logo.svg'} className="logo" />
       </div>
       <div id="header-controls">
         <CalciteDropdown
@@ -40,11 +46,10 @@ function Header() {
           onCalciteDropdownOpen={(e: any) => {
             e.target.shadowRoot
               ?.querySelector(".calcite-dropdown-content")
-              .querySelector("div")
-              ?.setAttribute("style", "max-height: calc(100vh - 70px)");
+              ?.setAttribute("style", "min-height: 70vh");
           }}
         >
-          <CalciteButton scale="m" slot="dropdown-trigger">
+          <CalciteButton scale="m" slot="dropdown-trigger" name="Menu" role="button" aria-label="Menu">
             <CalciteIcon icon="hamburger" scale="m"></CalciteIcon>
           </CalciteButton>
           <CalciteDropdownGroup
@@ -85,23 +90,30 @@ function Header() {
                 </CalciteDropdownGroup>
               );
             })}
-          <CalciteDropdownGroup selectionMode="none" group-title="Theme">
+          <CalciteDropdownGroup selectionMode="none" group-title="Settings">
             <CalciteDropdownItem>
               <CalciteLabel layout="inline" className="label-wrapper">
                 Light
                 <CalciteIcon icon="brightness" scale="s"></CalciteIcon>
                 <CalciteSwitch
-                  onCalciteSwitchChange={() => {
-                    const isDark = toggleTheme();
-                    if (logo.current) {
-                      logo.current.src = isDark ? "logo_dark.svg" : "logo.svg";
-                    }
+                  checked={theme === 'dark' ? true : undefined}
+                  onCalciteSwitchChange={(e: any) => {
+                    const isDark = toggleTheme(e.currentTarget.checked);
+                    setTheme(isDark ? 'dark' : 'light');
+                    window.localStorage.setItem('calcite-imaps-theme', isDark ? 'dark' : 'light');
                   }}
                 ></CalciteSwitch>
                 <CalciteIcon icon="moon" scale="s"></CalciteIcon>
                 Dark
               </CalciteLabel>
             </CalciteDropdownItem>
+            <CalciteDropdownItem iconStart="reset" onClick={() => {
+              window.localStorage.setItem('imaps_reset', 'true');
+              window.localStorage.removeItem('imaps_calcite');
+              window.location.reload();
+            }}>
+                Reset To Default
+            </CalciteDropdownItem>            
           </CalciteDropdownGroup>
         </CalciteDropdown>
       </div>

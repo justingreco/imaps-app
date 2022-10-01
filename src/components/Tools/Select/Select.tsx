@@ -5,65 +5,19 @@ import {
   CalciteInput,
   CalciteLabel,
 } from "@esri/calcite-components-react";
-import React, { useCallback } from "react";
-import { useEffect, useRef, useState } from "react";
+import React from "react";
 import "./Select.css";
 import { collapsePanel } from "../../Shell/utils/shell";
 
 import {
   bufferDistanceChanged,
   bufferProperty,
-  cancelSelect,
   createSketch,
-  initializeSelect,
 } from "./utils/select";
-import SketchViewModel from "@arcgis/core/widgets/Sketch/SketchViewModel";
+import useSelect from "./utils/useSelect";
 export const Select = (args: any) => {
-  const ref = useRef() as any;
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const loaded = useRef(false);
-  const [isActive, setIsActive] = useState(false);
-
-  const [selectedTool, setSelectedTool] = useState("");
-  const [distance, setDistance] = useState(0);
-
-  const [sketchVm, setSketchVm] = useState<SketchViewModel>();
-  const [selectedProperty, setSelectedProperty] = useState(undefined) as any;
-
-  useEffect(() => {
-    if (!loaded.current) {
-      loaded.current = true;
-      setSketchVm(
-        initializeSelect(
-          ref.current,
-          args.view,
-          args.geometrySet,
-          setSelectedTool
-        )
-      );
-    }
-    return () => {
-      sketchVm && sketchVm.destroy();
-    };
-  }, []); // only after first render
-  useEffect(() => {
-    if (args.selectedProperty) {
-      setSelectedProperty(args.selectedProperty);
-    }
-  }, [args.selectedProperty]);
-  useEffect(() => {
-    if (sketchVm && args.selectDismissed) {
-      sketchVm.cancel();
-      setSelectedTool("");
-    }
-  }, [args.selectDismissed]);
-  useEffect(() => {
-    setIsActive(args.isActive);
-  }, [args.isActive]);
-  const toolDismissed = useCallback((e: any) => {
-    args.toolDismissed();
-    cancelSelect();
-  }, []);
+  const {isActive, selectedTool, setSelectedTool, sketchVm, distance, setDistance
+    , selectedProperty, toolDismissed} = useSelect(args);
   return (
     <CalcitePanel
       id="select-panel"

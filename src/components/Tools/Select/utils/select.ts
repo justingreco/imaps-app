@@ -17,7 +17,6 @@ export function cancelSelect() {
   layer.removeAll();
 }
 export function initializeSelect(
-  ref: HTMLDivElement,
   view: MapView,
   geometrySet: Function,
   setSelectedTool: Function

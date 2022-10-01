@@ -6,7 +6,6 @@ import LayerList from "@arcgis/core/widgets/LayerList";
 import { lazy, Suspense } from "react";
 import { createRoot } from "react-dom/client";
 import FeatureLayer from "@arcgis/core/layers/FeatureLayer";
-import Color from "@arcgis/core/Color";
 const OpacitySlider = lazy(() => import("../OpacitySlider"));
 
 export function initializeLayers(

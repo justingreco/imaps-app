@@ -8,7 +8,6 @@ import Graphic from "@arcgis/core/Graphic";
 import ButtonMenuItem from "@arcgis/core/widgets/FeatureTable/Grid/support/ButtonMenuItem";
 
 import "../PropertyTable/PropertyTable.css";
-import * as reactiveUtils from "@arcgis/core/core/reactiveUtils";
 let featureTable: FeatureTable;
 export function initializeFeatureTable(
   ref: HTMLDivElement,
@@ -110,12 +109,12 @@ function getTableLayer(view: MapView) {
           displayField: table.displayField,
           id: "feature-table",
         });
-        copyTable.fields.forEach((field) => {
-          field.nullable = true;
-          if (field.name === "DEED_DATE") {
-            field.type = "string";
-          }
-        });
+        // copyTable.fields.forEach((field) => {
+        //   field.nullable = true;
+        //   if (field.name === "DEED_DATE") {
+        //     field.type = "string";
+        //   }
+        // });
         view.map.allTables.add(copyTable);
 
         copyTable

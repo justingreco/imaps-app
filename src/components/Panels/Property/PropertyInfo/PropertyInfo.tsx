@@ -9,7 +9,6 @@ function PropertyInfo(args: any) {
   useEffect(() => {
     if (!loaded.current) {
       loaded.current = true;
-
       setFeature(initializeFeature(ref.current, args.view));
     }
     return () => {
@@ -30,6 +29,10 @@ function PropertyInfo(args: any) {
         table
       );
       updateFeature(feature, args.feature);
+    } else {
+      if (feature) {
+        (feature as any).graphic = null;
+      }
     }
     const url = new URL(window.location as any);
     url.searchParams.delete("pins");

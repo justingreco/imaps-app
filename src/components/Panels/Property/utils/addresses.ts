@@ -239,6 +239,7 @@ const exportTable = (table: FeatureTable): void => {
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
+        
       }
     });
 };

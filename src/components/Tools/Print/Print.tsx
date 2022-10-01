@@ -12,15 +12,11 @@ import {
   CalcitePanel,
   CalciteAction,
 } from "@esri/calcite-components-react";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback } from "react";
 import "./Print.css";
 import {
-  getPrintScale,
   getScales,
-  getPrintTemplate,
-  getTemplateName,
-  getCustomElements,
-  exportMap,
+  exportClicked,
 } from "./utils/print";
 
 import { collapsePanel } from "../../Shell/utils/shell";
@@ -167,84 +163,22 @@ function Print(args: any) {
         </CalciteLabel>
         <CalciteButton
           width="full"
-          onClick={() => {
-            // let scale = scaleType === 'current' ? args?.view?.scale;
-            // scale = scaleType === 'custom' ?
-            // userDefined.current.value;
-            if (args?.view) {
-              const scale: number = getPrintScale(
-                scaleType,
-                args?.view?.scale,
-                customScale,
-                userDefined?.current
-                  ? parseInt(userDefined.current.value)
-                  : undefined
-              );
-              //exportMap(args.exportUrl, args?.view, args?.view.scale);
-              const customElements: any[] = getCustomElements(
-                selectedLayout.size,
-                scale,
-                attributes?.current?.checked,
-                selectedProperty
-              );
-              const template = getTemplateName(
-                selectedLayout,
-                attributes?.current?.checked,
-                legend?.current?.checked
-              );
-
-              const printTemplate = getPrintTemplate(
-                scale,
-                selectedFormat,
-                title?.current?.value,
-                customElements,
-                args?.view,
-                template
-              );
-              const job = {
-                title: title.current?.value,
-                loading: true,
-                submitted: new Date().getTime().toString(),
-                href: null,
-              };
-              setJobs([...jobs, job]);
-              jobRef.current = [...jobRef.current, job];
-              const oldScale = args?.view.scale;
-              if (printTemplate.outScale !== args?.view.scale) {
-                args.view.scale = printTemplate.outScale;
-              }
-              setTimeout(() => {
-                exportMap(
-                  args.exportUrl,
-                  printTemplate,
-                  args?.view,
-                  oldScale,
-                  selectedFormat as string
-                )
-                  .then((result) => {
-                    setTimeout(() => {
-                      //graphics.visible = true;
-                      const index = jobRef.current.indexOf(job);
-                      jobRef.current[index] = {
-                        ...jobRef.current[index],
-                        ...{ url: result.url, loading: false },
-                      };
-                      setJobs([...jobRef.current]);
-                    });
-                  })
-                  .catch((reason) => {
-                    console.log(reason);
-                    //graphics.visible = true;
-                    const index = jobRef.current.indexOf(job);
-                    jobRef.current[index] = {
-                      ...jobRef.current[index],
-                      ...{ error: true, loading: false },
-                    };
-                    setJobs([...jobRef.current]);
-                  });
-              }, 1000);
-            }
-          }}
+          onClick={() => {exportClicked(
+            args.view, 
+            args.exportUrl,
+            scaleType,
+            customScale,
+            userDefined?.current?.value,
+            selectedLayout,
+            selectedFormat,
+            selectedProperty,
+            title.current?.value,
+            attributes.current?.checked,
+            legend.current?.checked,
+            jobRef,
+            jobs,
+            setJobs
+            )}}
         >
           Export
         </CalciteButton>
@@ -302,7 +236,4 @@ function Print(args: any) {
 export default React.memo(Print);
 
 
-function setPrint(args: any): any {
-  throw new Error("Function not implemented.");
-}
 

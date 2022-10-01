@@ -41,9 +41,9 @@ export function initializeMap(
             }
           });
         });
-      // setTimeout(() => {
-      //   handlePolygonLabels(view);
-      // }, 5000);
+      setTimeout(() => {
+        handlePolygonLabels(view);
+      }, 5000);
     });
   });
   document.addEventListener(
@@ -121,6 +121,9 @@ function removeGraphicsLayers(view: MapView) {
   );
 }
 const saveMap = (view: MapView) => {
+  if (localStorage.getItem('imaps_reset')) {
+    localStorage.removeItem('imaps_reset');
+  }  else {
   if (view && view?.ready) {
     const groups = view.map.allLayers
       .filter((layer) => {
@@ -156,6 +159,7 @@ const saveMap = (view: MapView) => {
     window.localStorage.setItem("imaps_calcite", JSON.stringify(json));
     //window.localStorage.removeItem('imaps_calcite');
   }
+}
 };
 const clusterConfig = {
   type: "cluster",

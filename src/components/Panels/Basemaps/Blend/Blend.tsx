@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useRef } from "react";
-import MapView from "@arcgis/core/views/MapView";
 import Portal from "@arcgis/core/portal/Portal";
 import PortalGroup from "@arcgis/core/portal/PortalGroup";
 import PortalItem from "@arcgis/core/portal/PortalItem";
@@ -17,15 +16,14 @@ import { addBasemap } from "./utils/blend";
 import "./Blend.css";
 
 function Blend(args: any) {
-  const [view, setView] = useState<MapView>();
   const loaded = useRef(false);
   const [activeStep, setActiveStep] = useState("basemap");
   const [maps, setMaps] = useState<PortalItem[]>([]);
   const [images, setImages] = useState<PortalItem[]>([]);
   const basemap = useRef<Basemap>(new Basemap({ baseLayers: [] }));
   useEffect(() => {
-    setView(args.view);
     if (!loaded.current) {
+       loaded.current = true;
       const portal = new Portal();
       portal
         .queryGroups({
@@ -35,29 +33,36 @@ function Blend(args: any) {
           const group: PortalGroup = result.results[0] as PortalGroup;
           group
             .queryItems({
-              query: "*",
+              query: "Web Map",
             })
             .then((result) => {
+              debugger
               setMaps(result.results);
+              
             });
         });
-      portal
-        .queryGroups({
-          query: `id: ${args.imageGroup}`,
+
+    }
+  }, [args.mapGroup]);
+  useEffect(() => {
+    const portal = new Portal();
+
+    portal
+    .queryGroups({
+      query: `id: ${args.imageGroup}`,
+    })
+    .then((result) => {
+      const group: PortalGroup = result.results[0] as PortalGroup;
+      group
+        .queryItems({
+          query: "*",
         })
         .then((result) => {
-          const group: PortalGroup = result.results[0] as PortalGroup;
-          group
-            .queryItems({
-              query: "*",
-            })
-            .then((result) => {
-              setImages(result.results);
-            });
-        });
-    }
-  }, [args.view, args.mapGroup, args.imageGroup]);
+          setImages(result.results);
 
+        });
+    });  
+  },[args.imageGroup])
   return (
     <div className="blend">
       <CalciteStepper layout="vertical">
@@ -79,7 +84,7 @@ function Blend(args: any) {
                 basemap.current as Basemap,
                 0,
                 setActiveStep,
-                view as __esri.MapView
+                args.view as __esri.MapView
               )
             }
           >
@@ -113,7 +118,7 @@ function Blend(args: any) {
                 basemap.current as Basemap,
                 1,
                 setActiveStep,
-                view as __esri.MapView
+                args.view as __esri.MapView
               )
             }
           >
@@ -136,7 +141,7 @@ function Blend(args: any) {
         <CalciteStepperItem
           active={activeStep === "opacity" ? true : undefined}
           itemTitle="Opacity"
-          description="Set opacity"
+          description="Set base map layer opacity"
           onClick={() => setActiveStep("opacity")}
         >
           <CalciteSlider
@@ -151,8 +156,8 @@ function Blend(args: any) {
             maxLabel="Opaque"
             minLabel="Transparent"
             onCalciteSliderInput={(evt) => {
-              if (view) {
-                view.map.basemap.baseLayers.getItemAt(0).opacity = evt.target
+              if (args.view) {
+                args.view.map.basemap.baseLayers.getItemAt(basemap.current.baseLayers.length - 1).opacity = evt.target
                   .value as number;
               }
             }}

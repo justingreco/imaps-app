@@ -18,6 +18,12 @@ const arcadeExpressionInfos = [
       "When(IsEmpty($feature.ADDR3),$feature.ADDR1 + TextFormatting.NewLine + $feature.ADDR2,$feature.ADDR1 + TextFormatting.NewLine + $feature.ADDR2 + TextFormatting.NewLine + $feature.ADDR3)",
   },
   {
+    name: "site-address",
+    title: "site-address",
+    expression:
+      "When($feature.STMISC == '1/2', replace($feature.SITE_ADDRESS, ' ', ' 1/2 ', false), $feature.SITE_ADDRESS)",
+  },  
+  {
     name: "property-values",
     title: "property-values",
     expression:
@@ -132,7 +138,7 @@ export const createTemplate = (
     content: [
       {
         type: "text",
-        text: "<h1>{SITE_ADDRESS}</h1>",
+        text: "<h2>{expression/site-address}</h2>",
       },
       new CustomContent({
         outFields: ["*"],

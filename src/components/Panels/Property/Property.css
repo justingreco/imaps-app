@@ -10,6 +10,14 @@
   height: 100%;
 }
 
+.esri-search__suggestions-menu {
+  z-index: 1000 !important;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+}
 @media only screen and (max-height: 400px) {
   .property calcite-tabs {
     height: calc(var(--app-height) - 34px - 59.8438px);

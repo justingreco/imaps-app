@@ -90,8 +90,8 @@ const useShell = () => {
           activeTool,
           setActiveTool,
           setActivePanel,
-          undefined as any,
-          undefined as any
+          activePanelChanged as any,
+          activeToolChanged as any
         );
       }
     }, []);
