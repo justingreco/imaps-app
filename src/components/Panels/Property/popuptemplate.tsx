@@ -749,11 +749,12 @@ export const getPhotos = (
         relationshipId: relationship?.id,
         objectIds: [feature.getAttribute("OBJECTID")],
         outFields: ["*"],
+        where: `STATUS = 'A'`
       })
       .then((result) => {
         for (const key in result) {
           feature.setAttribute('OBJECTID', key);
-          result[key].features.forEach((feature: Graphic) => {
+          result[key].features.reverse().forEach((feature: Graphic) => {
             mediaInfos.push({
               title: "",
               type: "image",

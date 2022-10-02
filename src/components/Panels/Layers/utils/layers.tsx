@@ -325,7 +325,13 @@ export const filterLayers = (
 };
 
 export const resetLayers = (list: __esri.LayerList) => {
-  list?.operationalItems.forEach((item) => {
-    item.visible = item.title === "Property";
-  });
+  const groups: Collection<__esri.GroupLayer> = list?.view.map.allLayers.filter(layer => {
+    return layer.type === 'group';
+  }) as Collection<__esri.GroupLayer>;
+  groups.forEach((group) => {
+    group.visible = group.title === 'Property';
+    group.layers.forEach(layer => {
+      layer.visible = layer.title === "Property";
+    })
+  });  
 };

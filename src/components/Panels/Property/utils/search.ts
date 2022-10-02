@@ -266,7 +266,7 @@ function checkPin(searchTerm: string): string {
 }
 
 function searchComplete(event: __esri.SearchSearchCompleteEvent): Promise<any> {
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     if (!search.viewModel.selectedSuggestion) {
       let searchFields: string[] = [];
       if (search.activeSource) {
@@ -276,8 +276,13 @@ function searchComplete(event: __esri.SearchSearchCompleteEvent): Promise<any> {
         .toUpperCase()
         .replace(/'/g, "''")
         .replace(/[\u2018\u2019]/g, "''");
-      const where = getWildcardSearchWhere(searchFields, term);
-      resolve(wildcardSearch(where, condos));
+      if (term.length > 2) {
+        const where = getWildcardSearchWhere(searchFields, term);
+        resolve(wildcardSearch(where, condos));
+      } else {
+        reject('search term must be 3 or more characters');
+      }
+
     }
     if (event.numResults) {
       searchResultSelected(
