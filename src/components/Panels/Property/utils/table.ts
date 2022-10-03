@@ -23,6 +23,9 @@ export function initializeFeatureTable(
         multiSortEnabled: true,
         visibleElements: {
           selectionColumn: false,
+          menuItems: {
+            refreshData: false
+          }
         },
         menuConfig: {
           items: [
