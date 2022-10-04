@@ -27,8 +27,10 @@ function Header() {
     });
     const theme = window.localStorage.getItem('calcite-imaps-theme');
     if (theme === 'dark') {
-      toggleTheme(true);
-      setTheme('dark');
+      requestAnimationFrame(() => {
+        toggleTheme(true);
+        setTheme('dark');
+      });
     }
   }, []);
   return (
