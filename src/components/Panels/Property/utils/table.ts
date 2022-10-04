@@ -23,9 +23,6 @@ export function initializeFeatureTable(
         multiSortEnabled: true,
         visibleElements: {
           selectionColumn: false,
-          menuItems: {
-            refreshData: false
-          }
         },
         menuConfig: {
           items: [
@@ -41,7 +38,20 @@ export function initializeFeatureTable(
         tableTemplate: getTableTemplate(table),
         layer: table,
       });
+      // document.addEventListener(
+      //   "visibilitychange",
+      //   (e) => {
 
+      //     if (document.hidden) {
+      //       const visibleFields = featureTable.columns.filter((column: any) => {
+      //         return !column.hidden;
+      //       }).map((column: any) => {return column.field.name});
+      //       window.localStorage.setItem('imaps_table_template', JSON.stringify(visibleFields));
+  
+      //     }
+      //   },
+      //   false
+      // );
       featureTable?.when(() => {
         resolve(featureTable);
         initializeGrid(featureTable);
@@ -146,9 +156,10 @@ function getTableTemplate(layer: __esri.FeatureLayer): TableTemplate {
   const tableTemplate: TableTemplate = new TableTemplate({
     columnTemplates: [],
   });
-
+  //const storedFields = JSON.parse(window.localStorage.getItem('imaps_table_template') as string);
   const ignoreFields = ["OBJECTID", "PARCELPK", "GlobalID"];
   const showColumns = ["SITE_ADDRESS", "OWNER", "REID", "PIN_NUM", "PIN_EXT"];
+  //const showColumns: string[] = storedFields ? storedFields : ["SITE_ADDRESS", "OWNER", "REID", "PIN_NUM", "PIN_EXT"];
   showColumns.forEach((columnName) => {
     const field = layer.popupTemplate.fieldInfos.find((column) => {
       return column.fieldName === columnName;
@@ -164,6 +175,9 @@ function getTableTemplate(layer: __esri.FeatureLayer): TableTemplate {
       initialSortPriority: setSortPriority(field.fieldName),
       direction: "asc",
     } as any);
+    columnTemplate.watch('visible', (e) => {
+      console.log(e);
+    })
     tableTemplate.columnTemplates.push(columnTemplate);
   });
   layer.popupTemplate.fieldInfos.forEach((field) => {

@@ -45,6 +45,10 @@ export function addWidgets(view: MapView, widgetActivated: Function) {
       streetviewClick?.remove();
       document.querySelector(".identify-widget")?.classList.remove("active");
       document.querySelector(".streetview-widget")?.classList.remove("active");
+    } else {
+      view.popup.autoOpenEnabled = true;
+      document.querySelector(".identify-widget")?.classList.add("active");
+
     }
   });
 }
