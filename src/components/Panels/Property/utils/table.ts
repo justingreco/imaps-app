@@ -38,20 +38,20 @@ export function initializeFeatureTable(
         tableTemplate: getTableTemplate(table),
         layer: table,
       });
-      // document.addEventListener(
-      //   "visibilitychange",
-      //   (e) => {
+      document.addEventListener(
+        "visibilitychange",
+        (e) => {
 
-      //     if (document.hidden) {
-      //       const visibleFields = featureTable.columns.filter((column: any) => {
-      //         return !column.hidden;
-      //       }).map((column: any) => {return column.field.name});
-      //       window.localStorage.setItem('imaps_table_template', JSON.stringify(visibleFields));
+          if (document.hidden) {
+            const visibleFields = featureTable.columns.filter((column: any) => {
+              return !column.hidden;
+            }).map((column: any) => {return column.field.name});
+            window.localStorage.setItem('imaps_table_template', JSON.stringify(visibleFields));
   
-      //     }
-      //   },
-      //   false
-      // );
+          }
+        },
+        false
+      );
       featureTable?.when(() => {
         resolve(featureTable);
         initializeGrid(featureTable);
@@ -156,7 +156,7 @@ function getTableTemplate(layer: __esri.FeatureLayer): TableTemplate {
   const tableTemplate: TableTemplate = new TableTemplate({
     columnTemplates: [],
   });
-  //const storedFields = JSON.parse(window.localStorage.getItem('imaps_table_template') as string);
+  const storedFields = JSON.parse(window.localStorage.getItem('imaps_table_template') as string);
   const ignoreFields = ["OBJECTID", "PARCELPK", "GlobalID"];
   const showColumns = ["SITE_ADDRESS", "OWNER", "REID", "PIN_NUM", "PIN_EXT"];
   //const showColumns: string[] = storedFields ? storedFields : ["SITE_ADDRESS", "OWNER", "REID", "PIN_NUM", "PIN_EXT"];
@@ -170,7 +170,7 @@ function getTableTemplate(layer: __esri.FeatureLayer): TableTemplate {
     const columnTemplate = new FieldColumnTemplate({
       label: field.label,
       fieldName: field.fieldName,
-      visible: showColumns.includes(field.fieldName),
+      visible: storedFields.includes(field.fieldName),
       editable: false,
       initialSortPriority: setSortPriority(field.fieldName),
       direction: "asc",
