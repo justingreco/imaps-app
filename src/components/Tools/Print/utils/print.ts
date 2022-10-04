@@ -304,7 +304,7 @@ export const exportClicked = (view: MapView,
       href: null,
     };
     setJobs([...jobs, job]);
-    jobRef.current = [...jobRef, job];
+    jobRef.current = [...jobRef.current, job];
     const oldScale = view.scale;
     if (printTemplate.outScale !== view.scale) {
       view.scale = printTemplate.outScale;
