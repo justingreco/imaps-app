@@ -4,41 +4,20 @@ import {
   CalciteScrim,
   CalcitePanel,
 } from "@esri/calcite-components-react";
-import React, { useCallback } from "react";
-import { useEffect, useRef, useState } from "react";
-import { filterLayers, initializeLayers, resetLayers } from "./utils/layers";
+import React from "react";
+import { filterLayers, resetLayers } from "./utils/layers";
 import "./Layers.css";
+import useLayers from "./utils/useLayers";
 export const Layers = (args: any) => {
-  const ref = useRef() as any;
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const loaded = useRef(false);
-  const [layerList, setLayerList] = useState<__esri.LayerList>();
-  const [isLoading, setIsLoading] = useState(true);
-  const [isActive, setIsActive] = useState(false);
-
-  useEffect(() => {
-    if (!loaded.current) {
-      loaded.current = true;
-      initializeLayers(ref.current, args.view).then(
-        (layerList: __esri.LayerList) => {
-          setLayerList(layerList);
-          layerList.when(() => {
-            setIsLoading(false);
-          });
-        }
-      );
-    }
-    return () => {
-      layerList && layerList?.destroy();
-    };
-  }, []); // only after first render
-
-  useEffect(() => {
-    setIsActive(args.isActive);
-  }, [args.isActive]);
-  const panelDismissed = useCallback((e: any) => {
-    args.panelDismissed();
-  }, []);
+  
+  const { 
+    ref,
+    layerList,
+    isLoading,
+    isActive,
+    panelDismissed,
+    tipsClicked      
+  } = useLayers(args);
 
   return (
     <CalcitePanel
@@ -50,6 +29,7 @@ export const Layers = (args: any) => {
       dismissible
       onCalcitePanelDismiss={panelDismissed}
     >
+      <CalciteAction icon="lightbulb"  text="Tips" slot="header-actions-end" onClick={tipsClicked}></CalciteAction>
       <div className="layers">
         {layerList && (
           <div className="row sticky">

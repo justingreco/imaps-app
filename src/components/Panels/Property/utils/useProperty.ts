@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import MapView from "@arcgis/core/views/MapView";
-import { getPropertyByGeometry } from "../utils/property";
+import { clearAddressPoints, getPropertyByGeometry } from "../utils/property";
+import { tips } from "./tips";
 
   
 const useProperty = (args: any) => {
@@ -71,12 +72,13 @@ const useProperty = (args: any) => {
       [args.selected, feature]
     );
     const clearSearch = useCallback(
-      () => {
+      (view: __esri.MapView) => {
         setFeature(undefined);
         setCondos([]);
         setActiveTab('list');
         setInfoDisabled(true);
         args.selected(null, []);
+        clearAddressPoints(view)
       },
       []
     );
@@ -87,6 +89,9 @@ const useProperty = (args: any) => {
     const panelDismissed = useCallback((e: any) => {
       args.panelDismissed();
     }, []);
+    const tipsClicked = useCallback((e: any) => {
+      args.showTips(tips);
+    }, []);    
   
       return {
         condos,
@@ -99,7 +104,8 @@ const useProperty = (args: any) => {
         condosSelected,
         featureSelected,
         panelDismissed,
-        clearSearch
+        clearSearch,
+        tipsClicked        
       }
 };
 

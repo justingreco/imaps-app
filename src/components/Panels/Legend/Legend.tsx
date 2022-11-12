@@ -1,28 +1,14 @@
-import React, { useCallback } from "react";
-import { useEffect, useRef, useState } from "react";
-import { initializeLegend } from "./utils/legend";
-import { CalcitePanel } from "@esri/calcite-components-react";
-export const Legend = (args: any) => {
-  const ref = useRef() as any;
-  const loaded = useRef(false);
-  const [legend, setLegend] = useState<__esri.Legend>();
-  const [isActive, setIsActive] = useState(false);
+import React, { } from "react";
 
-  useEffect(() => {
-    if (!loaded.current) {
-      loaded.current = true;
-      setLegend(initializeLegend(ref.current, args.view));
-    }
-    return () => {
-      legend && legend?.destroy();
-    };
-  }, []);
-  useEffect(() => {
-    setIsActive(args.isActive);
-  }, [args.isActive]);
-  const panelDismissed = useCallback((e: any) => {
-    args.panelDismissed();
-  }, []);
+import { CalciteAction, CalcitePanel } from "@esri/calcite-components-react";
+import useLegend from "./utils/useLegend";
+export const Legend = (args: any) => {
+  const { 
+    ref,
+    isActive,
+    panelDismissed,
+    tipsClicked    
+  } = useLegend(args);
 
   return (
     <CalcitePanel
@@ -34,6 +20,7 @@ export const Legend = (args: any) => {
       dismissible
       onCalcitePanelDismiss={panelDismissed}
     >
+      <CalciteAction icon="lightbulb"  text="Tips" slot="header-actions-end" onClick={tipsClicked}></CalciteAction>
       <div ref={ref}></div>;
     </CalcitePanel>
   );

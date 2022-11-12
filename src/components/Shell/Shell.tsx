@@ -1,11 +1,12 @@
 import React, { lazy, Suspense } from "react";
-
-
 import {
   CalciteAlert,
   CalciteScrim,
   CalciteShell,
   CalciteShellPanel,
+  CalciteTip,
+  CalciteTipGroup,
+  CalciteTipManager,
 } from "@esri/calcite-components-react";
 import WebMap from "../WebMap/WebMap";
 import Header from "../Header/Header";
@@ -27,7 +28,7 @@ const Bookmarks = lazy(() => import("../Tools/Bookmarks/Bookmarks"));
 const Print = lazy(() => import("../Tools/Print/Print"));
 
 function Shell() {
-  const { activePanel,activeTool, contentBehind, view, activePanelChanged, activeToolChanged, geometry, propertySelected, loadedPanels, panelDismissed ,loadedTools, toolDismissed, loading,showAlert,selectedProperty,mapCallback, geometryCallback, properties, widgetCallback, alert  } = useShell();
+  const { activePanel,activeTool, contentBehind, view, activePanelChanged, activeToolChanged, geometry, propertySelected, loadedPanels, panelDismissed ,loadedTools, toolDismissed, loading,showAlert,selectedProperty,mapCallback, geometryCallback, properties, widgetCallback, alert, tipsCallback, tips, tipsHidden } = useShell();
   return (
     <CalciteShell contentBehind={contentBehind ? true : undefined}>
       <Header></Header>
@@ -61,6 +62,7 @@ function Shell() {
             selected={propertySelected}
             isActive={activePanel === "search"}
             panelDismissed={panelDismissed}
+            showTips={tipsCallback}
           ></Property>
         )}
         {loadedPanels.includes("location") && (
@@ -69,6 +71,7 @@ function Shell() {
             view={view}
             panelDismissed={panelDismissed}
             isActive={activePanel === "location"}
+            showTips={tipsCallback}
           ></Location>
           </Suspense>
         )}
@@ -78,6 +81,7 @@ function Shell() {
             view={view}
             panelDismissed={panelDismissed}
             isActive={activePanel === "layers"}
+            showTips={tipsCallback}            
           ></Layers>
           </Suspense>
         )}
@@ -87,6 +91,7 @@ function Shell() {
             view={view}
             panelDismissed={panelDismissed}
             isActive={activePanel === "legend"}
+            showTips={tipsCallback}            
           ></Legend>
           </Suspense>
         )}
@@ -96,6 +101,7 @@ function Shell() {
             view={view}
             panelDismissed={panelDismissed}
             isActive={activePanel === "basemaps"}
+            showTips={tipsCallback}            
           ></Basemaps>
           </Suspense>
         )}
@@ -109,6 +115,7 @@ function Shell() {
             geometrySet={geometryCallback}
             toolDismissed={toolDismissed}
             isActive={activeTool === "select"}
+            showTips={tipsCallback}
           ></Select>
           </Suspense>      
         )}
@@ -118,6 +125,7 @@ function Shell() {
             view={view}
             toolDismissed={toolDismissed}
             isActive={activeTool === "measure"}
+            showTips={tipsCallback}
           ></Measure>
           </Suspense>      
         )}
@@ -127,6 +135,7 @@ function Shell() {
               view={view}
               toolDismissed={toolDismissed}
               isActive={activeTool === "sketch"}
+              showTips={tipsCallback}
             ></Sketch>
           </Suspense>
         )}
@@ -136,6 +145,7 @@ function Shell() {
               view={view}
               toolDismissed={toolDismissed}
               isActive={activeTool === "bookmarks"}
+              showTips={tipsCallback}
             ></Bookmarks>
           </Suspense>
         )}
@@ -147,6 +157,7 @@ function Shell() {
             selectedProperty={selectedProperty}
             toolDismissed={toolDismissed}
             isActive={activeTool === "print"}
+            showTips={tipsCallback}
           ></Print>
         </Suspense>          
         )}
@@ -174,6 +185,13 @@ function Shell() {
           </a>
         )}
       </CalciteAlert>
+      <CalciteTipManager closed={tipsHidden ? true : undefined}>
+        <CalciteTipGroup group-title={tips?.title}>
+          {tips?.tips.map((tip: any) => {
+          return <CalciteTip title={tip.title} key={tip.title}>{tip.text}</CalciteTip>
+        })}
+        </CalciteTipGroup>
+      </CalciteTipManager>
     </CalciteShell>
   );
 }

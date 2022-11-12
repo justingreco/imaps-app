@@ -1,8 +1,9 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
     getFormats,
     getLayouts,
   } from "../utils/print";
+import { tips } from "./tips";
   
 const usePrint = (args: any) => {
 
@@ -40,19 +41,21 @@ const usePrint = (args: any) => {
         });
       }
     }, []);
-  
+    const tipsClicked = useCallback((e: any) => {
+      args.showTips(tips);
+      }, []);      
     useEffect(() => {
       setSelectedProperty(args.selectedProperty);
     }, [args.selectedProperty]);
     useEffect(() => {
       setIsActive(args.isActive);
-    }, [args.isActive]);    
+    }, [args.isActive]);        
     return {isActive, title, setSelectedLayout, layouts, 
         selectedFormat,
         setSelectedFormat, formats, setScaleType,
         scaleType, customScaleSelect, setCustomScale,
         customScale, userDefined, selectedProperty,
-        selectedLayout, attributes, legend, setJobs, jobs, jobRef};
+        selectedLayout, attributes, legend, setJobs, jobs, jobRef, tipsClicked};
 };
 
 export default usePrint;

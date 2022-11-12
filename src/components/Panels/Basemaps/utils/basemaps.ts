@@ -47,7 +47,7 @@ export function initializeImageMaps(
       getBoundary(view).then((boundary: Polygon) => {
         imageryBoundary = boundary;
         inRaleigh = checkBoundary(view.extent);
-        images.source.refresh();
+        (images.source as PortalBasemapsSource).refresh();
       });
     }
     view.watch("extent", (extent: __esri.Extent) =>
@@ -109,7 +109,7 @@ const viewExtentChanged = (
     wasRaleigh = inRaleigh;
     inRaleigh = checkBoundary(view.extent);
     if (wasRaleigh !== inRaleigh) {
-      images.source.refresh();
+      (images.source as PortalBasemapsSource).refresh();
       setTimeout(() => {
         const match = images.source.basemaps.find(
           (basemap) => view.map.basemap.title === basemap.title

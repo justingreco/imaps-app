@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { } from "react";
 
 import {
   CalciteAction,
@@ -8,10 +8,8 @@ import {
 } from "@esri/calcite-components-react";
 import "./Sketch.css";
 import {
-  cancelSketch,
   clearSketch,
   deleteSelectedGraphics,
-  initializeSketchViewModel,
   pointSymbolUpdated,
   polygonSymbolUpdated,
   polylineSymbolUpdated,
@@ -24,33 +22,18 @@ import PolygonSymbols from "./PolygonSymbols";
 import TextSymbols from "./TextSymbols";
 import PointSymbols from "./PointSymbols";
 import { collapsePanel } from "../../Shell/utils/shell";
+import useSketch from "./utils/useSketch";
 function Sketch(args: any) {
-  const loaded = useRef(false);
-  const [activeSketchTool, setActiveSketchTool] = useState("");
-  const [isActive, setIsActive] = useState(false);
-
-  const [selectedGraphics, setSelectedGraphics] = useState<__esri.Graphic[]>(
-    []
-  );
-
-  useEffect(() => {
-    if (!loaded.current) {
-      initializeSketchViewModel(
-        args.view,
-        setActiveSketchTool,
-        selectedGraphics,
-        setSelectedGraphics
-      );
-    }
-  }, []);
-  useEffect(() => {
-    setIsActive(args.isActive);
-  }, [args.isActive]);
-  const toolDismissed = useCallback((e: any) => {
-    args.toolDismissed();
-    cancelSketch();
-    setActiveSketchTool("");
-  }, []);
+  const { 
+    activeSketchTool, 
+    setActiveSketchTool, 
+    selectedGraphics, 
+    setSelectedGraphics, 
+    isActive, 
+    toolDismissed, 
+    tipsClicked
+ 
+  } = useSketch(args);  
   return (
     <CalcitePanel
       id="sketch-panel"
@@ -62,6 +45,7 @@ function Sketch(args: any) {
       dismissible
       onCalcitePanelDismiss={toolDismissed}
     >
+      <CalciteAction icon="lightbulb"  text="Tips" slot="header-actions-end" onClick={tipsClicked}></CalciteAction>
       <CalciteAction
         icon="chevron-up"
         text=""

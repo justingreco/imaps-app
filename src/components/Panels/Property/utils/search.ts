@@ -299,7 +299,7 @@ function searchComplete(event: __esri.SearchSearchCompleteEvent): Promise<any> {
 
 function getWildcardSearchWhere(searchFields: string[], term: string): string {
   let where = "";
-  if (!searchFields.length) {
+  if (!searchFields?.length) {
     where = `SITE_ADDRESS like '%${term}%' OR FULL_STREET_NAME like '%${term}%' OR OWNER like '%${term}%' OR REID like '${term}%' OR PIN_NUM like '${term}%'`;
   } else {
     if (searchFields.includes("OWNER")) {

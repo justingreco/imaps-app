@@ -5,51 +5,27 @@ import {
   CalciteTabs,
   CalciteTabTitle,
   CalcitePanel,
+  CalciteAction,
 } from "@esri/calcite-components-react";
-import React, { useEffect, useState, useRef, useCallback } from "react";
-import MapView from "@arcgis/core/views/MapView";
+import React, {  } from "react";
 import Blend from "./Blend/Blend";
-import {
-  initializeBasemaps,
-  initializeEsriMaps,
-  initializeImageMaps,
-} from "./utils/basemaps";
-import "./Basemaps.css";
-function Basemaps(args: any) {
-  const [view, setView] = useState<MapView>();
-  const [showAlert, setShowAlert] = useState<any>({
-    show: false,
-    from: "",
-    to: "",
-  });
-  const [isActive, setIsActive] = useState(false);
 
-  const loaded = useRef(false);
-  const basemapRef = useRef(null);
-  const imagesRef = useRef(null);
-  const esriRef = useRef(null);
-  const mapGroup = "f6329364e80c438a958ce74aadc3a89f";
-  const imageGroup = "492386759d264d49948bf7f83957ddb9";
-  useEffect(() => {
-    setView(args.view);
-    if (!loaded.current) {
-      loaded.current = true;
-      initializeBasemaps(args.view, basemapRef.current as any, mapGroup);
-      initializeImageMaps(
-        args.view,
-        imagesRef.current as any,
-        imageGroup,
-        setShowAlert
-      );
-      initializeEsriMaps(args.view, esriRef.current as any);
-    }
-  }, [args.view]);
-  useEffect(() => {
-    setIsActive(args.isActive);
-  }, [args.isActive]);
-  const panelDismissed = useCallback((e: any) => {
-    args.panelDismissed();
-  }, []);
+import "./Basemaps.css";
+import useBasemaps from "./utils/useBasemaps";
+function Basemaps(args: any) {
+    
+  const { 
+    basemapRef,
+    imagesRef,
+    esriRef,
+    mapGroup,
+    imageGroup,
+    view,
+    showAlert,
+    isActive,
+    panelDismissed,
+    tipsClicked  
+  } = useBasemaps(args);
   return (
     <CalcitePanel
       id="basemaps-panel"
@@ -60,6 +36,8 @@ function Basemaps(args: any) {
       dismissible
       onCalcitePanelDismiss={panelDismissed}
     >
+      <CalciteAction icon="lightbulb"  text="Tips" slot="header-actions-end" onClick={tipsClicked}></CalciteAction>
+
       <div className="basemaps">
         <CalciteTabs position="below" layout="center" scale="m">
           <CalciteTabNav slot="tab-nav">

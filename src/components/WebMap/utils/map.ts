@@ -12,6 +12,7 @@ import * as reactiveUtils from "@arcgis/core/core/reactiveUtils";
 import Basemap from "@arcgis/core/Basemap";
 import Color from "@arcgis/core/Color";
 import IdentityManager from "@arcgis/core/identity/IdentityManager";
+import Collection from "@arcgis/core/core/Collection";
 
 export function initializeMap(
   ref: HTMLDivElement,
@@ -32,6 +33,12 @@ export function initializeMap(
       removeGraphicsLayers(view);
       view.map.add(selectionLayer);
       view.map.add(selectionCluster);
+      customizePopup(view);
+      view.popup.on('trigger-action', (event) => {
+        if (event.action.title === 'Select') {
+          geometrySet(view.popup.location);
+        }
+      });        
       reactiveUtils
         .whenOnce(() => view.map.basemap.loaded)
         .then((loaded) => {
@@ -41,9 +48,9 @@ export function initializeMap(
             }
           });
         });
-      setTimeout(() => {
-        handlePolygonLabels(view);
-      }, 5000);
+      // setTimeout(() => {
+      //   handlePolygonLabels(view);
+      // }, 5000);
     });
   });
   document.addEventListener(
@@ -366,4 +373,25 @@ function hideLogin() {
 
     observer.observe(container as Node, { childList: true });
   });
+}
+
+const customizePopup = (view: __esri.MapView) => {
+  const propertyLayer = view.map.allLayers.find((layer) => {
+    return layer.type === 'feature' && layer.title.startsWith('Property');
+  }) as __esri.FeatureLayer;
+  view.whenLayerView(propertyLayer).then(() => {
+    if (propertyLayer) {
+      if (propertyLayer.popupTemplate) {
+        propertyLayer.popupTemplate.actions = new Collection([
+          {
+            title: 'Select',
+            id: 'property-select',
+            className: 'esri-icon-search',
+          } as __esri.ActionButton,
+        ]);
+        
+      }
+    }
+  });
+
 }

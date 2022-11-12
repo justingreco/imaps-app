@@ -2,6 +2,7 @@
 :root {
   --app-height: 100%;
 }
+
 body,
 html,
 #root,
@@ -19,6 +20,7 @@ html,
 
 select,
 textarea,
+calcite-input,
 input,
 input:focus {
   font-size: 16px !important;
@@ -26,4 +28,11 @@ input:focus {
 
 calcite-shell[content-behind] .esri-view {
   width: calc(100% - 50px);
+}
+
+.measure-container {
+  background-color: var(--calcite-ui-foreground-1);
+}
+.select-container {
+  background-color: var(--calcite-ui-foreground-1);
 }

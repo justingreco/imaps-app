@@ -1,58 +1,30 @@
 import {
+  CalciteAction,
   CalciteCombobox,
   CalciteComboboxItem,
   CalciteLabel,
   CalcitePanel,
 } from "@esri/calcite-components-react";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, {  } from "react";
 import {
-  addSearchEvents,
   intersectingStreetSelected,
-  intializeLocationFeature,
-  intializeLocationSearch,
 } from "./utils/location";
 import "./Location.css";
+import useLocation from "./utils/useLocation";
 function Location(args: any) {
-  const searchDiv = useRef(null);
-  const featureDiv = useRef<HTMLDivElement>(null);
+   
+  const { 
+    searchDiv,
+    featureDiv,
+    search,
+    isIntersection,
+    intersections,
+    searchTerm,
+    isActive,
+    panelDismissed,
+    tipsClicked    
+  } = useLocation(args);
 
-  const loaded = useRef(false);
-  const search = useRef<__esri.widgetsSearch>();
-  const feature = useRef<__esri.Feature>();
-
-  const [isIntersection, setIsIntersection] = useState(false);
-  const [intersections, setIntersections] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [isActive, setIsActive] = useState(false);
-
-  useEffect(() => {
-    if (!loaded.current && searchDiv.current) {
-      loaded.current = true;
-      intializeLocationSearch(args.view, searchDiv.current).then(
-        (searchWidget: __esri.widgetsSearch) => {
-          search.current = searchWidget;
-          addSearchEvents(
-            searchWidget,
-            args.view,
-            setIsIntersection,
-            setIntersections,
-            setSearchTerm,
-            feature.current as __esri.Feature
-          );
-        }
-      );
-      feature.current = intializeLocationFeature(
-        args.view,
-        featureDiv.current as HTMLDivElement
-      );
-    }
-  });
-  useEffect(() => {
-    setIsActive(args.isActive);
-  }, [args.isActive]);
-  const panelDismissed = useCallback((e: any) => {
-    args.panelDismissed();
-  }, []);
   return (
     <CalcitePanel
       id="location-panel"
@@ -63,6 +35,7 @@ function Location(args: any) {
       dismissible
       onCalcitePanelDismiss={panelDismissed}
     >
+      <CalciteAction icon="lightbulb"  text="Tips" slot="header-actions-end" onClick={tipsClicked}></CalciteAction>
       <div id="location-search">
         <div ref={searchDiv}></div>
         {isIntersection && (

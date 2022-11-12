@@ -88,3 +88,11 @@ function getRelationshipId(table: __esri.FeatureLayer, name: string) {
     return rel.name === name;
   })?.id;
 }
+
+export function clearAddressPoints(view: MapView) {
+  view.graphics.removeMany(
+    view.graphics.filter((graphic) => {
+      return graphic.getAttribute("type") === "address";
+    })
+  );    
+}

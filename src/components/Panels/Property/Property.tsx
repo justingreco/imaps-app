@@ -6,6 +6,7 @@ import {  CalciteScrim,
   CalciteTabTitle,
   CalcitePanel,
   CalciteButton,
+  CalciteAction,
 } from "@esri/calcite-components-react";
 import React from "react";
 import "./Property.css";
@@ -25,7 +26,8 @@ function Property(args: any) {
     condosSelected,
     featureSelected,
     panelDismissed,
-    clearSearch
+    clearSearch,
+    tipsClicked
   } = useProperty(args);
 
   return (
@@ -38,6 +40,7 @@ function Property(args: any) {
       dismissible
       onCalcitePanelDismiss={panelDismissed}
     >
+      <CalciteAction icon="lightbulb"  text="Tips" slot="header-actions-end" onClick={tipsClicked}></CalciteAction>
       <div className="property">
         {args.view && (
           <div className="row"><PropertySearch
@@ -49,7 +52,7 @@ function Property(args: any) {
           ></PropertySearch>
           <CalciteButton iconEnd="trash" color="neutral" scale="m"
             onClick={() => {
-              clearSearch();
+              clearSearch(args.view);
             }}
           ></CalciteButton>
           </div>

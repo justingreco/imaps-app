@@ -1,46 +1,18 @@
 import { CalciteAction, CalcitePanel } from "@esri/calcite-components-react";
-import React, { useCallback } from "react";
-import { useEffect, useRef, useState } from "react";
-import { initializeMeasure } from "./utils/measure";
-import Measurement from "@arcgis/core/widgets/Measurement";
+import React, { } from "react";
 import "./Measure.css";
 import { collapsePanel } from "../../Shell/utils/shell";
+import useMeasure from "./utils/useMeasure";
 export const Measure = (args: any) => {
-  const measureRef = useRef() as any;
-  const loaded = useRef(false);
-  const [selectedTool, setSelectedTool] = useState("");
-  const [isActive, setIsActive] = useState(false);
-  const [measurement, setMeasurement] = useState<Measurement>();
-  useEffect(() => {
-    if (!loaded.current) {
-      loaded.current = true;
-      const widget = initializeMeasure(measureRef.current, args.view);
-      setMeasurement(widget);
-      widget.watch("activeTool", (activeTool) => {
-        setSelectedTool(activeTool ? activeTool : "");
-        measurement?.clear();
-      });
-      // var panel = document
-      //   .getElementById("measure-tools")
-      //   ?.closest("calcite-panel");
-      // panel?.addEventListener("calcitePanelDismiss", () => {
-      //   (widget as any).activeTool = null;
-      //   measurement?.clear();
-      // });
-    }
-    return () => {
-      measurement && measurement?.destroy();
-    };
-  }, []);
-  useEffect(() => {
-    setIsActive(args.isActive);
-  }, [args.isActive]);
-  const toolDismissed = useCallback((e: any) => {
-    args.toolDismissed();
-    debugger
-    (measurement as any).activeTool = null;
-    measurement?.clear();
-  }, []);
+  const { 
+    measureRef,
+    measurement, 
+    selectedTool, 
+    setSelectedTool, 
+    isActive, 
+    toolDismissed, 
+    tipsClicked
+  } = useMeasure(args);
   return (
     <CalcitePanel
       id="measure-panel"
@@ -52,6 +24,7 @@ export const Measure = (args: any) => {
       dismissible
       onCalcitePanelDismiss={toolDismissed}
     >
+      <CalciteAction icon="lightbulb"  text="Tips" slot="header-actions-end" onClick={tipsClicked}></CalciteAction>
       <CalciteAction
         icon="chevron-up"
         text=""

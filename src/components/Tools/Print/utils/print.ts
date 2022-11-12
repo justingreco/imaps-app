@@ -305,10 +305,10 @@ export const exportClicked = (view: MapView,
     };
     setJobs([...jobs, job]);
     jobRef.current = [...jobRef.current, job];
-    const oldScale = view.scale;
-    if (printTemplate.outScale !== view.scale) {
-      view.scale = printTemplate.outScale;
-    }
+     const oldScale = view.scale;
+    // if (printTemplate.outScale !== view.scale) {
+    //   view.scale = printTemplate.outScale;
+    // }
     setTimeout(() => {
       exportMap(
         exportUrl,
@@ -366,8 +366,8 @@ const exportMap = (
       .catch((reason) => {
         reject(reason);
       });
-    setTimeout(() => {
-      view.scale = oldScale;
-    }, 1000);
+    // setTimeout(() => {
+    //   view.scale = oldScale;
+    // }, 1000);
   });
 };

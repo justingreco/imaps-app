@@ -55,9 +55,9 @@ calcite-action-bar {
   box-shadow: rgb(0 0 0 / 16%) 0px 0px 16px 0px !important;
 }
 
-.tools calcite-panel div {
+/* .tools calcite-panel div {
   background-color: var(--calcite-ui-foreground-1) !important;
-}
+} */
 
 @media only screen and (max-width: 400px) {
   .esri-expand {

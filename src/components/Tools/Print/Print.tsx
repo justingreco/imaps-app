@@ -26,7 +26,7 @@ function Print(args: any) {
     setSelectedFormat, formats, setScaleType,
     scaleType, customScaleSelect, setCustomScale,
     customScale, userDefined, selectedProperty,
-    selectedLayout, attributes, legend, setJobs, jobs, jobRef } = usePrint(args);
+    selectedLayout, attributes, legend, setJobs, jobs, jobRef, tipsClicked } = usePrint(args);
   const toolDismissed = useCallback((e: any) => {
     args.toolDismissed();
   }, []);
@@ -41,6 +41,7 @@ function Print(args: any) {
       dismissible
       onCalcitePanelDismiss={toolDismissed}
     >
+      <CalciteAction icon="lightbulb"  text="Tips" slot="header-actions-end" onClick={tipsClicked}></CalciteAction>
       <CalciteAction
         icon="chevron-up"
         text=""

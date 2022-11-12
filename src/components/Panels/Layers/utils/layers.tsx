@@ -6,6 +6,7 @@ import LayerList from "@arcgis/core/widgets/LayerList";
 import { lazy, Suspense } from "react";
 import { createRoot } from "react-dom/client";
 import FeatureLayer from "@arcgis/core/layers/FeatureLayer";
+import DevPlanFilter from "../DevPlanFilter";
 const OpacitySlider = lazy(() => import("../OpacitySlider"));
 
 export function initializeLayers(
@@ -221,6 +222,23 @@ const addPropertyLabelToggles = (item: any) => {
   }
 };
 
+const addDevPlanFilters = (item: any) => {
+  if (
+    item.layer.title.includes('Development Plans') &&
+    item.layer.type !== "group" &&
+    item.actionsSections.length === 0
+  ) {
+    const filter = document.createElement("filter-container");
+    const root = createRoot(filter as HTMLDivElement);
+    root.render(
+      <Suspense fallback={""}>
+        <DevPlanFilter datefield={'apply_date'} layer={item.layer} />
+      </Suspense>
+    );
+    ((item as __esri.ListItem).panel.content as any[]).push(filter);
+  }
+}
+
 const createPanel = (item: __esri.ListItem) => {
   if (
     item.visible &&
@@ -240,6 +258,8 @@ const createPanel = (item: __esri.ListItem) => {
       content: [slider, "legend"],
       open: false,
     } as __esri.ListItemPanel;
+    addDevPlanFilters(item);
+
   }
 };
 

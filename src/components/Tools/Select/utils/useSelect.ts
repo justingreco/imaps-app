@@ -4,6 +4,7 @@ import {
     initializeSelect,
   } from "../utils/select";
 import SketchViewModel from "@arcgis/core/widgets/Sketch/SketchViewModel";
+import { tips } from "./tips";
   
 const useSelect = (args: any) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -49,8 +50,11 @@ const useSelect = (args: any) => {
       args.toolDismissed();
       cancelSelect();
     }, []);
+    const tipsClicked = useCallback((e: any) => {
+      args.showTips(tips);
+      }, []);      
     return {isActive, selectedTool, setSelectedTool, sketchVm, distance, setDistance
-    , selectedProperty, toolDismissed}
+    , selectedProperty, toolDismissed, tipsClicked}
 };
 
 export default useSelect;

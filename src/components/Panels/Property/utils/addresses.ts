@@ -8,6 +8,7 @@ import Graphic from "@arcgis/core/Graphic";
 import ButtonMenuItem from "@arcgis/core/widgets/FeatureTable/Grid/support/ButtonMenuItem";
 
 import PictureMarkerSymbol from "@arcgis/core/symbols/PictureMarkerSymbol";
+import { clearAddressPoints } from "./property";
 let featureTable: FeatureTable;
 export function initializeFeatureTable(
   ref: HTMLDivElement,
@@ -61,11 +62,8 @@ export function initializeFeatureTable(
                     height: 24,
                     width: 24,
                   });
-                  view.graphics.removeMany(
-                    view.graphics.filter((graphic) => {
-                      return graphic.getAttribute("type") === "address";
-                    })
-                  );
+                  clearAddressPoints(view);
+
 
                   view.graphics.add(feature);
 
@@ -82,18 +80,15 @@ export function initializeFeatureTable(
   });
 }
 function initializeGrid(featureTable: FeatureTable) {
-  (featureTable as any).grid.findColumn("ADDRESS").width = 150;
-  (featureTable as any).grid.findColumn("FEATURETYPE").width = 150;
+  (featureTable.findColumn("ADDRESS") as any).width = 150;  
+  (featureTable.findColumn("FEATURETYPE") as any).width = 150;  
+
   setTimeout(() => {
     const grid = (featureTable.container as HTMLElement).querySelector(
       "vaadin-grid"
     ) as any;
-
-    // (featureTable as any).grid.findColumn("SITE_ADDRESS").width = 130;
-
     grid?.addEventListener("click", (e: any) => {
       if ((e.target as HTMLElement).nodeName === "VAADIN-GRID-CELL-CONTENT") {
-        //grid.selectItem((grid.getEventContext(e) as any)?.item);
 
         featureTable.clearSelection();
         const item = (grid.getEventContext(e) as any)?.item;
@@ -169,11 +164,13 @@ function getTableTemplate(layer: __esri.FeatureLayer): TableTemplate {
 
 export function updateTable(property: Graphic, featureTable: FeatureTable) {
   if (featureTable) {
+    clearAddressPoints(featureTable.view as __esri.MapView);
     addressLayer
       ?.queryFeatures({
         geometry: property.geometry,
         outFields: ["ADDRESS", "FEATURETYPE"],
         returnGeometry: true,
+        where: '1=1'
       })
       .then((featureSet) => {
         (featureTable.layer as __esri.FeatureLayer)

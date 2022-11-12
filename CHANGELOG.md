@@ -8,8 +8,11 @@
 2. Address table now exportable
 3. If more fields are enabled in the property list, those fields will be enabled when you return to iMAPS
 4. Much faster loading of property information when a property is selected
-5. If multiple properties are selected display as clusted points when zoomed out to make it easier to locate
+5. If multiple properties are selected display as clustered points when zoomed out to make it easier to locate
 6. BUG: if user hit enter without type in search box, the first 2000 would be selected.
+7. If property is in Durham County, a button will appear to link user to Durham County's property app
+8. Durham County properties now display the photo that is available from Durham County's app
+9. BUG: Tax Page button was linking to Wake County for Durham County properties, resulting in no information.  Now linking to Durham County's tax page 
 
 ### Layer List
 1. By default only the property layer and the layers visible in previous session are loaded.

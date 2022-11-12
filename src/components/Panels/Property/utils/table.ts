@@ -85,20 +85,13 @@ function initializeGrid(featureTable: FeatureTable) {
     const grid = (featureTable.container as HTMLElement).querySelector(
       "vaadin-grid"
     ) as any;
+    updateTableTitle(grid);
     //set tabpanel to 100% in shadowRoot
     (featureTable.container as HTMLElement).parentElement?.shadowRoot?.querySelector('[role="tabpanel"]')?.setAttribute('style', 'height: 100%');
     grid?.addEventListener("cell-activate", (e: any) => {
       featureTable.clearSelection();
       const feature = e.detail.model.item.feature;
       featureTable.selectRows(feature);
-      requestAnimationFrame(() => {
-        const title = (featureTable.container as HTMLElement).querySelector(
-          ".esri-feature-table__title"
-        );
-        if (title) {
-          title.textContent = "Selected Properties: " + grid?.items?.length;
-        }
-      });
     });
   });
 }
@@ -170,7 +163,7 @@ function getTableTemplate(layer: __esri.FeatureLayer): TableTemplate {
     const columnTemplate = new FieldColumnTemplate({
       label: field.label,
       fieldName: field.fieldName,
-      visible: storedFields.includes(field.fieldName),
+      visible: storedFields ? storedFields.includes(field.fieldName) : showColumns.includes(field.fieldName),
       editable: false,
       initialSortPriority: setSortPriority(field.fieldName),
       direction: "asc",
@@ -189,8 +182,7 @@ function getTableTemplate(layer: __esri.FeatureLayer): TableTemplate {
         new FieldColumnTemplate({
           label: field.label,
           fieldName: field.fieldName,
-          visible: showColumns.includes(field.fieldName),
-          editable: false,
+          visible: storedFields ? storedFields.includes(field.fieldName) : showColumns.includes(field.fieldName),          editable: false,
         } as any)
       );
     }
@@ -200,6 +192,7 @@ function getTableTemplate(layer: __esri.FeatureLayer): TableTemplate {
 
 export function updateTable(features: Graphic[], featureTable: FeatureTable) {
   if (featureTable) {
+ 
     (featureTable.layer as __esri.FeatureLayer)
       .queryFeatures({
         where: "1=1",
@@ -212,7 +205,11 @@ export function updateTable(features: Graphic[], featureTable: FeatureTable) {
             (featureTable.layer as __esri.FeatureLayer)
               .applyEdits({ addFeatures: features })
               .then((result) => {
-                featureTable.refresh();
+                requestAnimationFrame(()=> {
+                  featureTable.refresh();
+                });
+                updateTableTitle((featureTable as any).grid._grid);
+
               })
               .catch((reason) => {
                 console.log(reason);
@@ -225,6 +222,17 @@ export function updateTable(features: Graphic[], featureTable: FeatureTable) {
   }
 }
 
+const updateTableTitle = (grid: any) => {
+  setTimeout(() => {
+    const title = (featureTable.container as HTMLElement).querySelector(
+      ".esri-feature-table__title"
+    );
+    if (title) {
+      title.textContent = "Selected Properties: " + grid?.items?.length;
+    }
+  },100);
+
+}
 const exportTable = (table: FeatureTable): void => {
   (table.layer as FeatureLayer)
     .queryFeatures({ where: "1=1", outFields: ["*"] })

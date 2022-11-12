@@ -17,7 +17,7 @@ import {
 import useSelect from "./utils/useSelect";
 export const Select = (args: any) => {
   const {isActive, selectedTool, setSelectedTool, sketchVm, distance, setDistance
-    , selectedProperty, toolDismissed} = useSelect(args);
+    , selectedProperty, toolDismissed, tipsClicked} = useSelect(args);
   return (
     <CalcitePanel
       id="select-panel"
@@ -29,6 +29,7 @@ export const Select = (args: any) => {
       dismissible
       onCalcitePanelDismiss={toolDismissed}
     >
+      <CalciteAction icon="lightbulb"  text="Tips" slot="header-actions-end" onClick={tipsClicked}></CalciteAction>
       <CalciteAction
         icon="chevron-up"
         text=""

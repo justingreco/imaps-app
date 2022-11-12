@@ -24,6 +24,10 @@ const useShell = () => {
     const [properties, setProperties] = useState<__esri.Graphic[]>();
     const [geometry, setGeometry] = useState<__esri.Geometry>();
     const [selectedProperty, setSelectedProperty] = useState<__esri.Graphic>();
+
+    const [tips, setTips] = useState<any>();
+    const lastTips = useRef<any>();
+    const [tipsHidden, setTipsHidden] = useState<any>(true);
     useEffect(() => {
       if (properties) {
         setActivePanel("search");
@@ -126,7 +130,12 @@ const useShell = () => {
       },
       []
     );
-      return {activePanel,activeTool, contentBehind, view, activePanelChanged, activeToolChanged, geometry, propertySelected, loadedPanels, panelDismissed ,loadedTools, toolDismissed, loading,showAlert,selectedProperty,mapCallback, geometryCallback, properties, widgetCallback, alert}
+    const tipsCallback = (newTips: any) => {
+      setTips(newTips);
+      setTipsHidden(lastTips.current === newTips);
+      lastTips.current = lastTips.current === newTips ? null : newTips;
+    }
+    return {activePanel,activeTool, contentBehind, view, activePanelChanged, activeToolChanged, geometry, propertySelected, loadedPanels, panelDismissed ,loadedTools, toolDismissed, loading,showAlert,selectedProperty,mapCallback, geometryCallback, properties, widgetCallback, alert, tipsCallback, tips, tipsHidden}
 };
 
 export default useShell;

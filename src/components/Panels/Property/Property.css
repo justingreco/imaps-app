@@ -21,8 +21,17 @@
 calcite-tab {
   padding: 0;
 }
+
+.esri-widget calcite-button {
+  margin: 0 1em 0 1em;
+}
+
+.esri-feature__content-element {
+  margin-bottom: 1em;
+}
 @media only screen and (max-height: 400px) {
   .property calcite-tabs {
     height: calc(var(--app-height) - 34px - 59.8438px);
   }
 }
+
