@@ -54,6 +54,15 @@ function addLayersFromWebmap(view: MapView) {
         (group as __esri.GroupLayer).addMany(
           match.layers
             .filter((layer) => {
+              const found = (group as __esri.GroupLayer).findLayerById(layer.id);
+              //attempting to update stored layer if updated in webmap (popup and renderer)
+              if (found !== undefined) {
+                if (found.type === 'feature') {
+                  (found as __esri.FeatureLayer).popupTemplate = (layer as __esri.FeatureLayer).popupTemplate;
+                  (found as __esri.FeatureLayer).renderer = (layer as __esri.FeatureLayer).renderer;
+                }
+              }
+
               return (
                 (group as __esri.GroupLayer).findLayerById(layer.id) ===
                 undefined
