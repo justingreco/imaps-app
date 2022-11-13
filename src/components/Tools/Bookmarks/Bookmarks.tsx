@@ -1,5 +1,5 @@
 import React, { } from "react";
-import { CalcitePanel, CalciteAction } from "@esri/calcite-components-react";
+import { CalcitePanel, CalciteAction, CalciteTooltip } from "@esri/calcite-components-react";
 import "./Bookmarks.css";
 import { collapsePanel } from "../../Shell/utils/shell";
 import useBookmarks from "./utils/useBooksmarks";
@@ -21,13 +21,16 @@ export const Bookmarks = (args: any) => {
       dismissible
       onCalcitePanelDismiss={toolDismissed}
     >
-      <CalciteAction icon="lightbulb"  text="Tips" slot="header-actions-end" onClick={tipsClicked}></CalciteAction>
+      <CalciteAction id="tip" icon="lightbulb"  text="Tips" slot="header-actions-end" onClick={tipsClicked}></CalciteAction>
       <CalciteAction
+        id="collapseTool"
         icon="chevron-up"
         text=""
         slot="header-actions-end"
         onClick={collapsePanel}
       ></CalciteAction>
+      <CalciteTooltip label="Show Tip" referenceElement="tip">Show Tip</CalciteTooltip>
+      <CalciteTooltip label="Collapse" referenceElement="collapseTool">Collapse</CalciteTooltip>         
       <div ref={bookmarkRef}></div>
     </CalcitePanel>
   );

@@ -4,6 +4,7 @@ import {
   CalciteComboboxItem,
   CalciteLabel,
   CalcitePanel,
+  CalciteTooltip,
 } from "@esri/calcite-components-react";
 import React, {  } from "react";
 import {
@@ -35,7 +36,8 @@ function Location(args: any) {
       dismissible
       onCalcitePanelDismiss={panelDismissed}
     >
-      <CalciteAction icon="lightbulb"  text="Tips" slot="header-actions-end" onClick={tipsClicked}></CalciteAction>
+      <CalciteAction id="tip" icon="lightbulb"  text="Tips" slot="header-actions-end" onClick={tipsClicked}></CalciteAction>
+      <CalciteTooltip label="Show Tip" referenceElement="tip">Show Tip</CalciteTooltip>
       <div id="location-search">
         <div ref={searchDiv}></div>
         {isIntersection && (

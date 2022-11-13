@@ -1,4 +1,4 @@
-import { CalciteAction, CalcitePanel } from "@esri/calcite-components-react";
+import { CalciteAction, CalcitePanel, CalciteTooltip } from "@esri/calcite-components-react";
 import React, { } from "react";
 import "./Measure.css";
 import { collapsePanel } from "../../Shell/utils/shell";
@@ -24,13 +24,16 @@ export const Measure = (args: any) => {
       dismissible
       onCalcitePanelDismiss={toolDismissed}
     >
-      <CalciteAction icon="lightbulb"  text="Tips" slot="header-actions-end" onClick={tipsClicked}></CalciteAction>
+      <CalciteAction id="tip" icon="lightbulb"  text="Tips" slot="header-actions-end" onClick={tipsClicked}></CalciteAction>
       <CalciteAction
+        id="collapseTool"
         icon="chevron-up"
         text=""
         slot="header-actions-end"
         onClick={collapsePanel}
       ></CalciteAction>
+     <CalciteTooltip label="Show Tip" referenceElement="tip">Show Tip</CalciteTooltip>
+      <CalciteTooltip label="Collapse" referenceElement="collapseTool">Collapse</CalciteTooltip>             
       <div id="measure-tools">
         <div className="measure-container">
           <CalciteAction

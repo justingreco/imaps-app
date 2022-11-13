@@ -5,6 +5,7 @@ import {
   CalciteActionGroup,
   CalciteButton,
   CalcitePanel,
+  CalciteTooltip,
 } from "@esri/calcite-components-react";
 import "./Sketch.css";
 import {
@@ -45,23 +46,30 @@ function Sketch(args: any) {
       dismissible
       onCalcitePanelDismiss={toolDismissed}
     >
-      <CalciteAction icon="lightbulb"  text="Tips" slot="header-actions-end" onClick={tipsClicked}></CalciteAction>
+      <CalciteAction id="tip" icon="lightbulb"  text="Tips" slot="header-actions-end" onClick={tipsClicked}></CalciteAction>
       <CalciteAction
+        id="collapseTool"
         icon="chevron-up"
         text=""
         slot="header-actions-end"
         onClick={collapsePanel}
       ></CalciteAction>
+      <CalciteTooltip label="Show Tip" referenceElement="tip">Show Tip</CalciteTooltip>
+      <CalciteTooltip label="Collapse" referenceElement="collapseTool">Collapse</CalciteTooltip>      
       <div id="sketch-tools">
         <div className="sticky">
           <CalciteActionGroup layout="horizontal">
             <CalciteAction
+              id="point"
               active={activeSketchTool === "point" ? true : undefined}
               icon="pin"
               text={""}
               onClick={() => toolSelected("point", activeSketchTool, setActiveSketchTool)}
             ></CalciteAction>
+            <CalciteTooltip label="Point" referenceElement="point">Point</CalciteTooltip>
+
             <CalciteAction
+              id="line"
               active={activeSketchTool === "polyline" ? true : undefined}
               icon="line"
               text={""}
@@ -69,13 +77,17 @@ function Sketch(args: any) {
                 toolSelected("polyline", activeSketchTool, setActiveSketchTool)
               }
             ></CalciteAction>
+            <CalciteTooltip label="Line" referenceElement="line">Line</CalciteTooltip>
             <CalciteAction
+              id="polygon"
               active={activeSketchTool === "polygon" ? true : undefined}
               icon="polygon"
               text={""}
               onClick={() => toolSelected("polygon", activeSketchTool, setActiveSketchTool)}
             ></CalciteAction>
+            <CalciteTooltip label="Polygon" referenceElement="polygon">Polygon</CalciteTooltip>
             <CalciteAction
+              id="rectangle"
               active={activeSketchTool === "rectangle" ? true : undefined}
               icon="rectangle"
               text={""}
@@ -83,21 +95,27 @@ function Sketch(args: any) {
                 toolSelected("rectangle", activeSketchTool, setActiveSketchTool)
               }
             ></CalciteAction>
+            <CalciteTooltip label="Rectangle" referenceElement="rectangle">Rectangle</CalciteTooltip>
             <CalciteAction
+              id="circle"
               active={activeSketchTool === "circle" ? true : undefined}
               icon="circle"
               text={""}
               onClick={() => toolSelected("circle", activeSketchTool, setActiveSketchTool)}
             ></CalciteAction>
+            <CalciteTooltip label="Circle" referenceElement="circle">Circle</CalciteTooltip>
             <CalciteAction
+              id="text"
               active={activeSketchTool === "text" ? true : undefined}
               icon="text"
               text={""}
               onClick={() => toolSelected("text", activeSketchTool, setActiveSketchTool)}
             ></CalciteAction>
+            <CalciteTooltip label="Text" referenceElement="text">Text</CalciteTooltip>
           </CalciteActionGroup>
           <CalciteActionGroup layout="horizontal">
             <CalciteAction
+              id="selectSketch"
               icon="cursor"
               text={""}
               active={activeSketchTool === "select" ? true : undefined}
@@ -106,11 +124,14 @@ function Sketch(args: any) {
                 toolSelected("select", activeSketchTool, setActiveSketchTool);
               }}
             ></CalciteAction>
+            <CalciteTooltip label="Select Sketch" referenceElement="selectSketch">Select Sketch</CalciteTooltip>
             <CalciteAction
+              id="clearSketch"
               icon="trash"
               text={""}
               onClick={() => clearSketch(setActiveSketchTool)}
             ></CalciteAction>
+            <CalciteTooltip label="Clear Sketches" referenceElement="clearSketch">Clear Sketches</CalciteTooltip>            
           </CalciteActionGroup>
         </div>
         <div

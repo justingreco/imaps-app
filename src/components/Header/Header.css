@@ -23,9 +23,9 @@ calcite-switch {
   margin: 0.5em;
 }
 
-:host .calcite-dropdown-wrapper {
+/* :host .calcite-dropdown-wrapper {
   max-height: 100px;
-}
+} */
 
 @media only screen and (max-height: 400px) {
   #header {

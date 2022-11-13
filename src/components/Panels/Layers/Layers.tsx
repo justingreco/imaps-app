@@ -3,6 +3,7 @@ import {
   CalciteInput,
   CalciteScrim,
   CalcitePanel,
+  CalciteTooltip,
 } from "@esri/calcite-components-react";
 import React from "react";
 import { filterLayers, resetLayers } from "./utils/layers";
@@ -29,7 +30,8 @@ export const Layers = (args: any) => {
       dismissible
       onCalcitePanelDismiss={panelDismissed}
     >
-      <CalciteAction icon="lightbulb"  text="Tips" slot="header-actions-end" onClick={tipsClicked}></CalciteAction>
+      <CalciteAction id="tip" icon="lightbulb"  text="Tips" slot="header-actions-end" onClick={tipsClicked}></CalciteAction>
+      <CalciteTooltip label="Show Tip" referenceElement="tip">Show Tip</CalciteTooltip>
       <div className="layers">
         {layerList && (
           <div className="row sticky">

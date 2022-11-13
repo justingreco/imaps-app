@@ -11,6 +11,7 @@ import {
   CalciteSelect,
   CalcitePanel,
   CalciteAction,
+  CalciteTooltip,
 } from "@esri/calcite-components-react";
 import React, { useCallback } from "react";
 import "./Print.css";
@@ -41,13 +42,16 @@ function Print(args: any) {
       dismissible
       onCalcitePanelDismiss={toolDismissed}
     >
-      <CalciteAction icon="lightbulb"  text="Tips" slot="header-actions-end" onClick={tipsClicked}></CalciteAction>
+      <CalciteAction id="tip" icon="lightbulb"  text="Tips" slot="header-actions-end" onClick={tipsClicked}></CalciteAction>
       <CalciteAction
+        id="collapseTool"
         icon="chevron-up"
         text=""
         slot="header-actions-end"
         onClick={collapsePanel}
       ></CalciteAction>
+      <CalciteTooltip label="Show Tip" referenceElement="tip">Show Tip</CalciteTooltip>
+      <CalciteTooltip label="Collapse" referenceElement="collapseTool">Collapse</CalciteTooltip>         
       <div id="print-container">
         <CalciteLabel>
           Title

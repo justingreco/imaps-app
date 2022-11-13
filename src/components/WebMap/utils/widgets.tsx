@@ -9,16 +9,42 @@ import React, { lazy, Suspense } from "react";
 
 import { createRoot } from "react-dom/client";
 import * as reactiveUtils from "@arcgis/core/core/reactiveUtils";
+import SpatialReference from "@arcgis/core/geometry/SpatialReference";
+import Format from '@arcgis/core/widgets/CoordinateConversion/support/Format';
+import Point from '@arcgis/core/geometry/Point';
+import PictureMarkerSymbol from "@arcgis/core/symbols/PictureMarkerSymbol";
+import Conversion from '@arcgis/core/widgets/CoordinateConversion/support/Conversion';
+
 const Overview = lazy(() => import("../Overview"));
 
 let streetviewClick: IHandle | null = null;
 
 export function addWidgets(view: MapView, widgetActivated: Function) {
   const coordinates = new CoordinateConversion({ view: view });
+  const stateplane = getStateplaneConversion()
+  coordinates.formats.add(stateplane);
+  coordinates.viewModel.locationSymbol = new PictureMarkerSymbol({ url: 'assets/pin.svg', height: 36, width: 36 });    
+  coordinates.conversions.splice(
+    0,
+    0,
+    new Conversion({
+      format: stateplane,
+    }),
+  );  
+  coordinates.when(() => {
+    coordinates.formats = coordinates.formats.filter((format) => {
+      return !['basemap', 'dd', 'ddm'].includes(format.name);
+    });
+    coordinates.formats.find((format) => {
+      return format.name === 'xy';
+    }).name = 'Decimal Degrees';
+  });  
   const coordinateExpand = new Expand({
     content: coordinates,
     expandIconClass: "esri-icon-pan",
     mode: "floating",
+    collapseTooltip: "Coordinates",
+    expandTooltip: "Coordinates",    
   });
   view.ui.add(coordinateExpand, "bottom-left");
   view.ui.add(
@@ -60,6 +86,9 @@ const addOverview = (view: __esri.MapView) => {
     expandIconClass: "esri-icon-overview-arrow-top-left",
     collapseIconClass: "esri-icon-overview-arrow-bottom-right",
     mode: "floating",
+    label: "Overview Map",
+    collapseTooltip: "Overview Map",
+    expandTooltip: "Overview Map",
     id: "overview",
   });
   view.ui.add(overviewExpand, "bottom-right");
@@ -164,3 +193,37 @@ export const createIdentifyButton = (
   });
   return infoButton;
 };
+
+const getStateplaneConversion = () => {
+  const numberSearchPattern = /-?\d+[\.]?\d*/;
+
+  const stateplane = new Format({
+    name: 'Stateplane Feet',
+    conversionInfo: {
+      spatialReference: new SpatialReference({ wkid: 2264 }),
+      reverseConvert: function (string: string) {
+        const parts = string.split(',');
+        return new Point({
+          x: parseFloat(parts[0]),
+          y: parseFloat(parts[1]),
+          spatialReference: { wkid: 2264 },
+        });
+      },
+    } as any,
+    coordinateSegments: [
+      {
+        alias: 'X',
+        description: 'easting',
+        searchPattern: numberSearchPattern,
+      },
+      {
+        alias: 'Y',
+        description: 'northing',
+        searchPattern: numberSearchPattern,
+      },
+    ],
+    defaultPattern: 'X, Y',
+  });
+  return stateplane;
+}
+

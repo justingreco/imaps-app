@@ -6,6 +6,7 @@ import {
   CalciteTabTitle,
   CalcitePanel,
   CalciteAction,
+  CalciteTooltip,
 } from "@esri/calcite-components-react";
 import React, {  } from "react";
 import Blend from "./Blend/Blend";
@@ -36,8 +37,8 @@ function Basemaps(args: any) {
       dismissible
       onCalcitePanelDismiss={panelDismissed}
     >
-      <CalciteAction icon="lightbulb"  text="Tips" slot="header-actions-end" onClick={tipsClicked}></CalciteAction>
-
+      <CalciteAction id="tip" icon="lightbulb"  text="Tips" slot="header-actions-end" onClick={tipsClicked}></CalciteAction>
+      <CalciteTooltip label="Show Tip" referenceElement="tip">Show Tip</CalciteTooltip>
       <div className="basemaps">
         <CalciteTabs position="below" layout="center" scale="m">
           <CalciteTabNav slot="tab-nav">

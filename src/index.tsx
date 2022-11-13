@@ -48,6 +48,7 @@ import "@esri/calcite-components/dist/components/calcite-input-date-picker";
 import "@esri/calcite-components/dist/components/calcite-tip-manager";
 import "@esri/calcite-components/dist/components/calcite-tip";
 import "@esri/calcite-components/dist/components/calcite-tip-group";
+import "@esri/calcite-components/dist/components/calcite-tooltip";
 
 
 // Local assets

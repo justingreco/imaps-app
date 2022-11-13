@@ -7,6 +7,7 @@ import {
   CalciteLabel,
   CalciteModal,
   CalciteSwitch,
+  CalciteTooltip,
 } from "@esri/calcite-components-react";
 import React, { useEffect, useRef, useState } from "react";
 import "./Header.css";
@@ -51,9 +52,10 @@ function Header() {
               ?.setAttribute("style", "min-height: 70vh");
           }}
         >
-          <CalciteButton scale="m" slot="dropdown-trigger" name="Menu" role="button" aria-label="Menu">
+          <CalciteButton id="menuButton" scale="m" slot="dropdown-trigger" name="Menu" role="button" aria-label="Menu">
             <CalciteIcon icon="hamburger" scale="m"></CalciteIcon>
           </CalciteButton>
+          <CalciteTooltip label="Menu" referenceElement="menuButton">Menu</CalciteTooltip>
           <CalciteDropdownGroup
             selection-mode="none"
             group-title="About"

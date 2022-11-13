@@ -4,6 +4,7 @@ import {
   CalciteButton,
   CalciteInput,
   CalciteLabel,
+  CalciteTooltip,
 } from "@esri/calcite-components-react";
 import React from "react";
 import "./Select.css";
@@ -29,16 +30,20 @@ export const Select = (args: any) => {
       dismissible
       onCalcitePanelDismiss={toolDismissed}
     >
-      <CalciteAction icon="lightbulb"  text="Tips" slot="header-actions-end" onClick={tipsClicked}></CalciteAction>
+      <CalciteAction id="tip" icon="lightbulb"  text="Tips" slot="header-actions-end" onClick={tipsClicked}></CalciteAction>
       <CalciteAction
+        id="collapseTool"
         icon="chevron-up"
         text=""
         slot="header-actions-end"
         onClick={collapsePanel}
       ></CalciteAction>
+      <CalciteTooltip label="Show Tip" referenceElement="tip">Show Tip</CalciteTooltip>
+      <CalciteTooltip label="Collapse" referenceElement="collapseTool">Collapse</CalciteTooltip>
       <div id="select-tools">
         <div className="select-container">
           <CalciteAction
+            id="selectPoint"
             icon="pin"
             text="Point"
             active={selectedTool === "point" ? true : undefined}
@@ -49,7 +54,9 @@ export const Select = (args: any) => {
               }
             }}
           ></CalciteAction>
+          <CalciteTooltip label="Select by Point" referenceElement="selectPoint">Select by Point</CalciteTooltip>
           <CalciteAction
+            id="selectLine"
             icon="line"
             text="Line"
             active={selectedTool === "line" ? true : undefined}
@@ -60,7 +67,9 @@ export const Select = (args: any) => {
               }
             }}
           ></CalciteAction>
+          <CalciteTooltip label="Select by Line" referenceElement="selectLine">Select by Line</CalciteTooltip>
           <CalciteAction
+            id="selectPolygon"
             icon="polygon"
             text="Polygon"
             active={selectedTool === "polygon" ? true : undefined}
@@ -71,7 +80,9 @@ export const Select = (args: any) => {
               }
             }}
           ></CalciteAction>
+          <CalciteTooltip label="Select by Polygon" referenceElement="selectPolygon">Select by Polygon</CalciteTooltip>
           <CalciteAction
+            id="selectMultipoint"
             icon="pins"
             text="Multi-Point"
             active={selectedTool === "multipoint" ? true : undefined}
@@ -82,7 +93,9 @@ export const Select = (args: any) => {
               }
             }}
           ></CalciteAction>
-          <CalciteAction icon="trash" text="Clear"></CalciteAction>
+          <CalciteTooltip label="Select by Multi-Point" referenceElement="selectMultipoint">Select by Multi-point</CalciteTooltip>
+          <CalciteAction id="clearSelection" icon="trash" text="Clear"></CalciteAction>
+          <CalciteTooltip label="Clear Selection" referenceElement="clearSelection">Clear selection</CalciteTooltip>
         </div>
         <div className="buffer-container">
           <CalciteLabel>
