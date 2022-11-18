@@ -4,6 +4,7 @@ import * as print from "@arcgis/core/rest/print";
 import LegendLayer from "@arcgis/core/rest/support/LegendLayer";
 import PrintParameters from "@arcgis/core/rest/support/PrintParameters";
 import PrintTemplate from "@arcgis/core/rest/support/PrintTemplate";
+import Print from "@arcgis/core/widgets/Print";
 
 import TileInfo from "@arcgis/core/layers/support/TileInfo";
 import Graphic from "@arcgis/core/Graphic";
@@ -180,7 +181,7 @@ export const getPrintTemplate = (
   selectedTemplate: string
 ): __esri.PrintTemplate => {
   return new PrintTemplate({
-    attributionVisible: false,
+    attributionVisible: true,
     outScale: mapScale,
     showLabels: true,
     format: format,
@@ -192,32 +193,28 @@ export const getPrintTemplate = (
       titleText: title,
       scalebarUnit: "Feet",
       customTextElements: customElements,
-      legendLayers: view.map.allLayers
-        .filter((layer) => {
-          return layer.type !== "imagery" && layer.type !== "imagery-tile" && layer.id !== "selection-layer";
-        })
-        .map((layer) => {
-          return new LegendLayer({ layerId: layer.id, title: layer.title });
-        }) as any,
+      legendLayers: [],
     },
     layout: selectedTemplate as any,
   });
 };
 
 const formatAttributes = (selectedFeature: __esri.Graphic): string => {
-  let text = "";
-  (selectedFeature.layer as __esri.FeatureLayer).fields.forEach((field) => {
+  let text = '';
+  (selectedFeature.layer as __esri.FeatureLayer).popupTemplate.fieldInfos.forEach((field) => {
     if (
-      !["OBJECTID"].includes(field.name) &&
-      selectedFeature.getAttribute(field.name)
+      !['OBJECTID', 'PARCEL_PK', 'PARCEL_STATUS'].includes(field.fieldName) &&
+      selectedFeature.getAttribute(field.fieldName)
     ) {
-      if (field.type === "date") {
-        const date = new Date(selectedFeature.getAttribute(field.name));
-        text += `${field.alias}: ${
-          date.getUTCMonth() + 1
-        }/${date.getUTCDate()}/${date.getUTCFullYear()}\n`;
-      } else {
-        text += `${field.alias}: ${selectedFeature.getAttribute(field.name)}\n`;
+      if (selectedFeature.getAttribute(field.fieldName) !== null) {
+        if (field.fieldName.includes('DATE')) {
+          const date = new Date(selectedFeature.getAttribute(field.fieldName));
+          text += `${field.label}: ${date.getUTCMonth() + 1}/${date.getUTCDate()}/${date.getUTCFullYear()}\n`;
+        } else if (field.fieldName.includes('PRICE') || field.fieldName.includes('VAL')) {
+          text += `${field.label}: $${selectedFeature.getAttribute(field.fieldName)}\n`;
+        } else {
+          text += `${field.label}: ${selectedFeature.getAttribute(field.fieldName)}\n`;
+        }
       }
     }
   });
@@ -351,6 +348,7 @@ const exportMap = (
 ): Promise<__esri.PrintResponse> => {
   template.format = format as any;
   return new Promise((resolve, reject) => {
+    
     print
       .execute(
         url,
@@ -358,7 +356,8 @@ const exportMap = (
           template: template,
           view: view,
           outSpatialReference: new SpatialReference({ wkid: 3632 }),
-        })
+        }),
+        { timeout: 120000, headers: {'Content-Type': 'application/json;charset=UTF-8'} }
       )
       .then((result: __esri.PrintResponse) => {
         resolve(result);
@@ -371,3 +370,9 @@ const exportMap = (
     // }, 1000);
   });
 };
+
+
+export const setPrintWidget = (view: __esri.MapView, container: any, url: string) => {
+  const p = new Print({printServiceUrl: url, container: container, view: view});
+
+}

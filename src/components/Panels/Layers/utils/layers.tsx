@@ -51,25 +51,35 @@ function addLayersFromWebmap(view: MapView) {
           return layer.type === "group" && layer.title === group.title;
         }) as __esri.GroupLayer;
 
-        (group as __esri.GroupLayer).addMany(
-          match.layers
-            .filter((layer) => {
-              const found = (group as __esri.GroupLayer).findLayerById(layer.id);
-              //attempting to update stored layer if updated in webmap (popup and renderer)
-              if (found !== undefined) {
-                if (found.type === 'feature') {
-                  (found as __esri.FeatureLayer).popupTemplate = (layer as __esri.FeatureLayer).popupTemplate;
-                  (found as __esri.FeatureLayer).renderer = (layer as __esri.FeatureLayer).renderer;
-                }
-              }
+        // match.layers.forEach((layer,i) => {
+        //   console.log(layer.title, (group as __esri.GroupLayer).findLayerById(layer.id));
+        //   if ((group as __esri.GroupLayer).findLayerById(layer.id) ===
+        //   undefined) {
+        //     (group as __esri.GroupLayer).add(layer, i);
+        //   }
+        // });
+        (group as __esri.GroupLayer).removeAll();
+        (group as __esri.GroupLayer).addMany(match?.layers.toArray());
 
-              return (
-                (group as __esri.GroupLayer).findLayerById(layer.id) ===
-                undefined
-              );
-            })
-            .toArray()
-        );
+        // (group as __esri.GroupLayer).addMany(
+        //   match.layers
+        //     .filter((layer) => {
+        //       // const found = (group as __esri.GroupLayer).findLayerById(layer.id);
+        //       // //attempting to update stored layer if updated in webmap (popup and renderer)
+        //       // if (found !== undefined) {
+        //       //   if (found.type === 'feature') {
+        //       //     (found as __esri.FeatureLayer).popupTemplate = (layer as __esri.FeatureLayer).popupTemplate;
+        //       //     (found as __esri.FeatureLayer).renderer = (layer as __esri.FeatureLayer).renderer;
+        //       //   }
+        //       // }
+
+        //       return (
+        //         (group as __esri.GroupLayer).findLayerById(layer.id) ===
+        //         undefined
+        //       );
+        //     })
+        //     .toArray()
+        // );
       });
       resolve(true);
     });

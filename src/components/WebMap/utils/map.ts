@@ -7,7 +7,7 @@ import UniqueValueRenderer from "@arcgis/core/renderers/UniqueValueRenderer";
 import FeatureLayer from "@arcgis/core/layers/FeatureLayer";
 import FeatureSet from "@arcgis/core/rest/support/FeatureSet";
 import { addWidgets } from "./widgets";
-import { handlePolygonLabels } from "./labeling";
+// import { handlePolygonLabels } from "./labeling";
 import * as reactiveUtils from "@arcgis/core/core/reactiveUtils";
 import Basemap from "@arcgis/core/Basemap";
 import Color from "@arcgis/core/Color";
