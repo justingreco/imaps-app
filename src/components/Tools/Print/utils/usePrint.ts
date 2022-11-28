@@ -1,8 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
     getFormats,
-    getLayouts,
-    setPrintWidget
+    getLayouts
   } from "../utils/print";
 import { tips } from "./tips";
   
@@ -28,11 +27,9 @@ const usePrint = (args: any) => {
     const [selectedLayout, setSelectedLayout] = useState<any>();
     const [selectedFormat, setSelectedFormat] = useState<string>();
     const [jobs, setJobs] = useState<any[]>([]);
-    const printRef = useRef(null);
     useEffect(() => {
       if (!loaded.current) {
         loaded.current = true;
-        setPrintWidget(args.view, printRef?.current, args.exportUrl);
         getLayouts().then((layouts: any) => {
           setLayouts(layouts);
           setSelectedLayout(layouts[0]);
@@ -57,7 +54,7 @@ const usePrint = (args: any) => {
         setSelectedFormat, formats, setScaleType,
         scaleType, customScaleSelect, setCustomScale,
         customScale, userDefined, selectedProperty,
-        selectedLayout, attributes, legend, setJobs, jobs, jobRef, tipsClicked, printRef};
+        selectedLayout, attributes, legend, setJobs, jobs, jobRef, tipsClicked};
 };
 
 export default usePrint;

@@ -90,11 +90,11 @@ function initializeGrid(featureTable: FeatureTable) {
     grid?.addEventListener("click", (e: any) => {
       if ((e.target as HTMLElement).nodeName === "VAADIN-GRID-CELL-CONTENT") {
 
-        featureTable.clearSelection();
+        featureTable.highlightIds.removeAll();
         const item = (grid.getEventContext(e) as any)?.item;
         const feature = item.feature;
         //            featureTable.view.goTo(feature);
-        featureTable.selectRows(feature);
+        featureTable.highlightIds.add(feature.getAttribute('OBJECTID'));
       }
     });
   }, 2000);

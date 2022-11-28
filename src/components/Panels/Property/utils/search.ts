@@ -465,7 +465,7 @@ const searchRelatedCondos = (oids: number[], layer: __esri.FeatureLayer) => {
     });
   });
 };
-const getProperty = (oids: number[]): Promise<__esri.Graphic[]> => {
+export const getProperty = (oids: number[]): Promise<__esri.Graphic[]> => {
   return new Promise((resolve) => {
     const relationship = condos.relationships.find((r) => {
       return r.name === "CONDO_PROPERTY";

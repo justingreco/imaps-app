@@ -40,7 +40,8 @@ function addLayersFromWebmap(view: MapView) {
         id: "95092428774c4b1fb6a3b6f5fed9fbc4",
       },
     });
-    map.load().then(() => {
+
+    map.loadAll().then(() => {
       const groups = view.map.allLayers
         .filter((layer) => {
           return layer.type === "group";
@@ -52,34 +53,40 @@ function addLayersFromWebmap(view: MapView) {
         }) as __esri.GroupLayer;
 
         // match.layers.forEach((layer,i) => {
-        //   console.log(layer.title, (group as __esri.GroupLayer).findLayerById(layer.id));
         //   if ((group as __esri.GroupLayer).findLayerById(layer.id) ===
         //   undefined) {
         //     (group as __esri.GroupLayer).add(layer, i);
         //   }
         // });
-        (group as __esri.GroupLayer).removeAll();
-        (group as __esri.GroupLayer).addMany(match?.layers.toArray());
+        console.log(match.title, match.layers.length);
+        const matchlayers = match.allLayers.slice();
+        const layers = match.layers.filter((layer) => {
+          const found = (group as __esri.GroupLayer).findLayerById(layer.id);
+          //attempting to update stored layer if updated in webmap (popup and renderer)
+          if (found !== undefined) {
+            if (found.type === 'feature') {
+              (found as __esri.FeatureLayer).popupTemplate = (layer as __esri.FeatureLayer).popupTemplate;
+              (found as __esri.FeatureLayer).renderer = (layer as __esri.FeatureLayer).renderer;
+            }
+          }
 
-        // (group as __esri.GroupLayer).addMany(
-        //   match.layers
-        //     .filter((layer) => {
-        //       // const found = (group as __esri.GroupLayer).findLayerById(layer.id);
-        //       // //attempting to update stored layer if updated in webmap (popup and renderer)
-        //       // if (found !== undefined) {
-        //       //   if (found.type === 'feature') {
-        //       //     (found as __esri.FeatureLayer).popupTemplate = (layer as __esri.FeatureLayer).popupTemplate;
-        //       //     (found as __esri.FeatureLayer).renderer = (layer as __esri.FeatureLayer).renderer;
-        //       //   }
-        //       // }
+          return (
+            (group as __esri.GroupLayer).findLayerById(layer.id) ===
+            undefined
+          );
+        });
+        (group as __esri.GroupLayer).addMany(
 
-        //       return (
-        //         (group as __esri.GroupLayer).findLayerById(layer.id) ===
-        //         undefined
-        //       );
-        //     })
-        //     .toArray()
-        // );
+            layers.toArray()
+        );
+
+        (group as __esri.GroupLayer).allLayers.forEach(layer1 => {
+          let index = matchlayers.findIndex(layer2 => {
+            return layer1.id === layer2.id;
+          });
+          (group as __esri.GroupLayer).reorder(layer1, index);
+        });
+        matchlayers.destroy();
       });
       resolve(true);
     });

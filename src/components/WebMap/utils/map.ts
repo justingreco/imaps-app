@@ -53,15 +53,38 @@ export function initializeMap(
       // }, 5000);
     });
   });
-  document.addEventListener(
-    "visibilitychange",
-    (e) => {
-      if (document.hidden) {
-        saveMap(view);
-      }
-    },
-    false
-  );
+  const getMobileOS = () => {
+    const ua = navigator.userAgent
+    if (/android/i.test(ua)) {
+      return "Android"
+    }
+    else if(/iPad|iPhone|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)){
+      return "iOS"
+    }
+    return "Other"
+  }
+    if (getMobileOS() !== 'iOS') {
+    window.addEventListener(
+      "beforeunload",
+      (e) => {
+        //if (document.hidden === undefined) {
+          saveMap(view);
+       // }
+      },
+      false
+    );
+  } else {
+    document.addEventListener(
+      "visibilitychange",
+      (e) => {
+        if (!document.hidden) {
+          saveMap(view);
+        }
+      },
+      false
+    );
+  }  
+
 
   view.on("hold", (event) => {
     geometrySet(event.mapPoint);
@@ -144,7 +167,8 @@ const saveMap = (view: MapView) => {
             return (
               !layer.visible &&
               !layer.title.includes("Property") &&
-              !isSearchable(layer, view.map)
+              !isSearchable(layer, view.map) &&
+              layer.type !== 'group'
             );
           })
           .toArray()

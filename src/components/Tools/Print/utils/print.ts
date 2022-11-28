@@ -370,9 +370,3 @@ const exportMap = (
     // }, 1000);
   });
 };
-
-
-export const setPrintWidget = (view: __esri.MapView, container: any, url: string) => {
-  const p = new Print({printServiceUrl: url, container: container, view: view});
-
-}

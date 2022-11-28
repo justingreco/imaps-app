@@ -8,6 +8,7 @@ import Graphic from "@arcgis/core/Graphic";
 import ButtonMenuItem from "@arcgis/core/widgets/FeatureTable/Grid/support/ButtonMenuItem";
 
 import "../PropertyTable/PropertyTable.css";
+import { getProperty } from "./search";
 let featureTable: FeatureTable;
 export function initializeFeatureTable(
   ref: HTMLDivElement,
@@ -57,17 +58,32 @@ export function initializeFeatureTable(
         initializeGrid(featureTable);
         featureTable.on("selection-change", (e) => {
           if (e.added.length) {
+            const condoTable = (
+              view.map.allTables.find((table: __esri.Layer) => {
+                return table.title.includes("Condo");
+              }) as __esri.FeatureLayer
+            );
             (featureTable.layer as __esri.FeatureLayer)
-              .queryFeatures({
-                objectIds: [e.added[0].feature.getObjectId()],
-                returnGeometry: true,
+              condoTable.queryFeatures({
+                where: `REID = '${e.added[0].feature.getAttribute('REID')}'`,
+                outFields: ['*'],
+                returnGeometry: false,
               })
               .then((featureSet) => {
                 if (featureSet.features.length) {
-                  view.goTo(featureSet.features[0]);
-                  featureSelected(featureSet.features[0]);
+                  const oid = featureSet.features[0].getAttribute('OBJECTID');
+                  getProperty([oid]).then(properties => {
+                    if (properties.length) {
+                      featureSet.features[0].geometry = properties[0].geometry;
+                      view.goTo(featureSet.features[0]);
+                      featureSelected(featureSet.features[0]);                      
+                    }
+                  })
+                  //view.goTo(featureSet.features[0]);
+                  //featureSelected(featureSet.features[0]);
                 }
               });
+              featureTable.highlightIds.removeAll();
           }
         });
       });
@@ -89,9 +105,10 @@ function initializeGrid(featureTable: FeatureTable) {
     //set tabpanel to 100% in shadowRoot
     (featureTable.container as HTMLElement).parentElement?.shadowRoot?.querySelector('[role="tabpanel"]')?.setAttribute('style', 'height: 100%');
     grid?.addEventListener("cell-activate", (e: any) => {
-      featureTable.clearSelection();
+      featureTable.highlightIds.removeAll();
       const feature = e.detail.model.item.feature;
-      featureTable.selectRows(feature);
+      debugger
+      featureTable.highlightIds.add(feature.getAttribute('OBJECTID'));
     });
   });
 }

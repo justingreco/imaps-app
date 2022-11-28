@@ -27,7 +27,7 @@ function Print(args: any) {
     setSelectedFormat, formats, setScaleType,
     scaleType, customScaleSelect, setCustomScale,
     customScale, userDefined, selectedProperty,
-    selectedLayout, attributes, legend, setJobs, jobs, jobRef, tipsClicked, printRef } = usePrint(args);
+    selectedLayout, attributes, legend, setJobs, jobs, jobRef, tipsClicked } = usePrint(args);
   const toolDismissed = useCallback((e: any) => {
     args.toolDismissed();
   }, []);
@@ -52,7 +52,6 @@ function Print(args: any) {
       ></CalciteAction>
       <CalciteTooltip label="Show Tip" referenceElement="tip">Show Tip</CalciteTooltip>
       <CalciteTooltip label="Collapse" referenceElement="collapseTool">Collapse</CalciteTooltip>      
-      <div ref={printRef}></div>
       <div id="print-container">
         <CalciteLabel>
           Title
