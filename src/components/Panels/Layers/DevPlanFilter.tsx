@@ -1,7 +1,7 @@
 import {
     CalciteSlider,
   } from "@esri/calcite-components-react";
-  import React, { useCallback } from "react";
+  import React from "react";
   import { useEffect, useRef, useState } from "react";
   import "./Layers.css";
   export const DevPlanFilter = (args: any) => {

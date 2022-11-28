@@ -7,7 +7,6 @@ import {
   CalciteTip,
   CalciteTipGroup,
   CalciteTipManager,
-  CalciteTooltip,
 } from "@esri/calcite-components-react";
 import WebMap from "../WebMap/WebMap";
 import Header from "../Header/Header";

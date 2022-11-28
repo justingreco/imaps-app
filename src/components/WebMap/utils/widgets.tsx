@@ -135,8 +135,7 @@ const createStreetviewButton = (
 
     view.popup.autoOpenEnabled = false;
     if (
-      document.querySelector(".streetview-widget")?.classList.contains("active")
-    ) {
+      document.querySelector(".streetview-widget")?.classList.contains("active")) {
       document.querySelector(".streetview-widget")?.classList.remove("active");
       streetviewClick?.remove();
     } else {
@@ -195,8 +194,7 @@ export const createIdentifyButton = (
 };
 
 const getStateplaneConversion = () => {
-  const numberSearchPattern = /-?\d+[\.]?\d*/;
-
+  const numberSearchPattern = /-?\d+[.]?\d*/;
   const stateplane = new Format({
     name: 'Stateplane Feet',
     conversionInfo: {

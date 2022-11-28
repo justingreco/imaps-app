@@ -1,10 +1,8 @@
 import request from "@arcgis/core/request";
 import SpatialReference from "@arcgis/core/geometry/SpatialReference";
 import * as print from "@arcgis/core/rest/print";
-import LegendLayer from "@arcgis/core/rest/support/LegendLayer";
 import PrintParameters from "@arcgis/core/rest/support/PrintParameters";
 import PrintTemplate from "@arcgis/core/rest/support/PrintTemplate";
-import Print from "@arcgis/core/widgets/Print";
 
 import TileInfo from "@arcgis/core/layers/support/TileInfo";
 import Graphic from "@arcgis/core/Graphic";
