@@ -26,7 +26,8 @@ function PropertyInfo(args: any) {
       args.feature.layer = table;
       args.feature.popupTemplate = createTemplate(
         feature?.view as __esri.MapView,
-        table
+        table,
+        args.feature
       );
       updateFeature(feature, args.feature);
     } else {

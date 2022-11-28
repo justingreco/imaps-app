@@ -8,7 +8,8 @@ import { arcadeExpressionInfos } from "./utils/arcadeExpressions";
 
 export const createTemplate = (
   view: __esri.MapView | __esri.SceneView,
-  condoTable: FeatureLayer
+  condoTable: FeatureLayer,
+  feature: Graphic
 ): PopupTemplate => {
   const popupTemplate = new PopupTemplate({
     expressionInfos: arcadeExpressionInfos,
@@ -156,10 +157,15 @@ export const createTemplate = (
         ],
       },
       createDeedButtons(),
+      feature.getAttribute('HEATEDAREA')  ? 
       {
         type: "text",
         text: "<h2>Building</h1>",
+      } :{
+        type: "text",
+        text: "",
       },
+      feature.getAttribute('HEATEDAREA') ?       
       {
         type: "fields",
         fieldInfos: [
@@ -194,6 +200,9 @@ export const createTemplate = (
             label: "Total Units",
           },
         ],
+      }:{
+        type: "text",
+        text: "",
       },
       {
         type: "media",

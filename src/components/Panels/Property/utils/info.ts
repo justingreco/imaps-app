@@ -15,7 +15,8 @@ export function updateFeature(feature: Feature, graphic: Graphic) {
   getPhotos(graphic).then((mediaInfos: __esri.MediaInfo[]) => {
     graphic.popupTemplate = createTemplate(
       feature.view,
-      graphic.layer as __esri.FeatureLayer
+      graphic.layer as __esri.FeatureLayer,
+      graphic
     );
     const media = (graphic.popupTemplate.content as __esri.Content[]).find(
       (content: __esri.Content) => {
