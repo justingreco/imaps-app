@@ -59,7 +59,7 @@ function addLayersFromWebmap(view: MapView) {
         //   }
         // });
         console.log(match.title, match.layers.length);
-        const matchlayers = match.allLayers.slice();
+        const matchlayers = match.layers.slice();
         const layers = match.layers.filter((layer) => {
           const found = (group as __esri.GroupLayer).findLayerById(layer.id);
           //attempting to update stored layer if updated in webmap (popup and renderer)
@@ -80,10 +80,11 @@ function addLayersFromWebmap(view: MapView) {
             layers.toArray()
         );
 
-        (group as __esri.GroupLayer).allLayers.forEach(layer1 => {
+        (group as __esri.GroupLayer).layers.forEach(layer1 => {
           let index = matchlayers.findIndex(layer2 => {
             return layer1.id === layer2.id;
           });
+          console.log(layer1.title, index);
           (group as __esri.GroupLayer).reorder(layer1, index);
         });
         matchlayers.destroy();
