@@ -14,13 +14,23 @@ export function initializeBasemaps(
   ref: HTMLDivElement,
   id: string
 ) {
-  new BasemapGallery({
+  const gallery = new BasemapGallery({
     container: ref,
     view: view,
     source: {
       query: `id: ${id}`,
     },
   });
+  reactiveUtils.whenOnce(
+    () => gallery.source.basemaps.length > 0)
+    .then(() => {
+      const basemap = gallery.source.basemaps.find(basemap => {
+        return basemap.portalItem.title === view.map.basemap.title;
+      });
+      if (basemap) {
+        gallery.activeBasemap = basemap;
+      }
+    });
 }
 
 let images: BasemapGallery;
@@ -41,6 +51,17 @@ export function initializeImageMaps(
       },
     }),
   });
+  reactiveUtils.whenOnce(
+    () => images.source.basemaps.length > 0)
+    .then(() => {
+      const basemap = images.source.basemaps.find(basemap => {
+        debugger
+        return basemap.portalItem.title === view.map.basemap.title;
+      });
+      if (basemap) {
+        images.activeBasemap = basemap;
+      }
+    });  
   images.when(() => {
     images.source.basemaps.reverse();
     if (!imageryBoundary) {
@@ -62,10 +83,20 @@ export function initializeImageMaps(
 }
 
 export function initializeEsriMaps(view: MapView, ref: HTMLDivElement) {
-  new BasemapGallery({
+  const esri = new BasemapGallery({
     container: ref,
     view: view,
   });
+  reactiveUtils.whenOnce(
+    () => esri.source.basemaps.length > 0)
+    .then(() => {
+      const basemap = esri.source.basemaps.find(basemap => {
+        return basemap.portalItem.title === view.map.basemap.title;
+      });
+      if (basemap) {
+        esri.activeBasemap = basemap;
+      }
+    });    
 }
 
 let imageryBoundary: Polygon;

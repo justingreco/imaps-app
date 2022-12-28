@@ -28,7 +28,7 @@ const useBookmarks = (args: any) => {
     }, [args.isActive]);
     const toolDismissed = useCallback((e: any) => {
       args.toolDismissed();
-      debugger
+      
       (measurement as any).activeTool = null;
       measurement?.clear();
     }, []);

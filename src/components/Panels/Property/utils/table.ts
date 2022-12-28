@@ -107,7 +107,7 @@ function initializeGrid(featureTable: FeatureTable) {
     grid?.addEventListener("cell-activate", (e: any) => {
       featureTable.highlightIds.removeAll();
       const feature = e.detail.model.item.feature;
-      debugger
+      
       featureTable.highlightIds.add(feature.getAttribute('OBJECTID'));
     });
   });

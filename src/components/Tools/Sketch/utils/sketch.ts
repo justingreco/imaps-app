@@ -183,6 +183,12 @@ export function toolSelected(
   if (tool === "point") {
     polylineSketchViewModel.create("point");
   }
+  if (tool === "select") {
+    if(highlights) {
+      highlights.remove();
+
+    }
+  }
 }
 let updatingPolygonSymbol = false;
 export function polygonSymbolUpdated(

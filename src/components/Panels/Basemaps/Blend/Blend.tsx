@@ -36,7 +36,6 @@ function Blend(args: any) {
               query: "Web Map",
             })
             .then((result) => {
-              debugger
               setMaps(result.results);
               
             });
