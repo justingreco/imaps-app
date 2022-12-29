@@ -32,9 +32,8 @@ function Location(args: any) {
       heading="Location Search"
       hidden={!isActive}
       closed={!isActive ? true : undefined}
-      dismissed={!isActive ? true : undefined}
-      dismissible
-      onCalcitePanelDismiss={panelDismissed}
+      closable
+      onCalcitePanelClose={panelDismissed}
     >
       <CalciteAction id="tip" icon="lightbulb"  text="Tips" slot="header-actions-end" onClick={tipsClicked}></CalciteAction>
       <CalciteTooltip label="Show Tip" referenceElement="tip">Show Tip</CalciteTooltip>

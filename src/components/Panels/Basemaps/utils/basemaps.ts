@@ -55,7 +55,6 @@ export function initializeImageMaps(
     () => images.source.basemaps.length > 0)
     .then(() => {
       const basemap = images.source.basemaps.find(basemap => {
-        debugger
         return basemap.portalItem.title === view.map.basemap.title;
       });
       if (basemap) {

@@ -104,6 +104,7 @@ export function initializeSketchViewModel(
       }
     });
     viewModel?.on("update", (e) => {
+      console.log('update', e.graphics)
       if (e.state === "start" || e.state === "active") {
         setSelectedGraphics([...e.graphics]);
       }
@@ -183,12 +184,11 @@ export function toolSelected(
   if (tool === "point") {
     polylineSketchViewModel.create("point");
   }
-  if (tool === "select") {
+  //if (tool === "select") {
     if(highlights) {
       highlights.remove();
-
     }
-  }
+ // }
 }
 let updatingPolygonSymbol = false;
 export function polygonSymbolUpdated(

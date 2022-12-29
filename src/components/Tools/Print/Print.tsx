@@ -38,9 +38,8 @@ function Print(args: any) {
       data-panel="print"
       hidden={!isActive}
       closed={!isActive ? true : undefined}
-      dismissed={!isActive ? true : undefined}
-      dismissible
-      onCalcitePanelDismiss={toolDismissed}
+      closable
+      onCalcitePanelClose={toolDismissed}
     >
       <CalciteAction id="tip" icon="lightbulb"  text="Tips" slot="header-actions-end" onClick={tipsClicked}></CalciteAction>
       <CalciteAction

@@ -7,7 +7,6 @@ const useSketch = (args: any) => {
 const loaded = useRef(false);
   const [activeSketchTool, setActiveSketchTool] = useState("");
   const [isActive, setIsActive] = useState(false);
-
   const [selectedGraphics, setSelectedGraphics] = useState<__esri.Graphic[]>(
     []
   );
