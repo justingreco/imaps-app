@@ -18,6 +18,9 @@ const useProperty = (args: any) => {
     useEffect(() => {
       if (!loaded.current) {
         loaded.current = true;
+        setTimeout(() => {
+          document.querySelector('.property calcite-tab-nav')?.shadowRoot?.querySelector('.tab-nav')?.setAttribute('style', 'overflow: hidden');
+        },100);        
       }
     }, [args.view]);
   

@@ -1,5 +1,5 @@
 .property calcite-tabs {
-  height: calc(var(--app-height) - 49px - 34px - 59.8438px);
+  height: calc(var(--app-height) - 49px - 34px - 40px);
 }
 
 .property calcite-tab {
@@ -31,7 +31,7 @@ calcite-tab {
 }
 @media only screen and (max-height: 400px) {
   .property calcite-tabs {
-    height: calc(var(--app-height) - 34px - 59.8438px);
+    height: calc(var(--app-height) - 34px - 40px);
   }
 }
 

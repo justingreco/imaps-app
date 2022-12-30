@@ -33,6 +33,9 @@ const useBasemaps = (args: any) => {
           setShowAlert
         );
         initializeEsriMaps(args.view, esriRef.current as any);
+        setTimeout(() => {
+          document.querySelector('.basemaps calcite-tab-nav')?.shadowRoot?.querySelector('.tab-nav')?.setAttribute('style', 'overflow: hidden');
+        },100);
       }
     }, [args.view]);
     useEffect(() => {

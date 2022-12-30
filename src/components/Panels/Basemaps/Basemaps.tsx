@@ -46,7 +46,7 @@ function Basemaps(args: any) {
       <CalciteAction id="tip" icon="lightbulb"  text="Tips" slot="header-actions-end" onClick={tipsClicked}></CalciteAction>
       <CalciteTooltip label="Show Tip" referenceElement="tip">Show Tip</CalciteTooltip>
       <div className="basemaps">
-        <CalciteTabs position="below" layout="center" scale="m">
+        <CalciteTabs position="below" layout="center" scale="l">
           <CalciteTabNav slot="tab-nav">
             <CalciteTabTitle>Maps</CalciteTabTitle>
             <CalciteTabTitle>Images</CalciteTabTitle>
@@ -57,6 +57,7 @@ function Basemaps(args: any) {
             <div ref={basemapRef}></div>
           </CalciteTab>
           <CalciteTab>
+            <br/>
             <CalciteLabel layout="inline" alignment="end">
               <CalciteSwitch onCalciteSwitchChange={blendUpdated}></CalciteSwitch>
               Blend
