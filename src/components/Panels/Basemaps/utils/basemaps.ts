@@ -159,7 +159,7 @@ const viewExtentChanged = (
 };
 
 export const updateBlendOpacity = (opacityValue: number, view: __esri.MapView, streetMapId: string, opacity: number) => {
-  const layer = view.map.basemap.referenceLayers.find(layer => {
+  const layer = view.map.basemap.baseLayers.find(layer => {
     if (layer.type === 'vector-tile') {
       return (layer as VectorTileLayer).portalItem.id === streetMapId
     } else {
@@ -175,10 +175,10 @@ export const blendBasemap = (switched: boolean, view: __esri.MapView, streetMapI
  const streetMap = new VectorTileLayer({portalItem: {id: streetMapId}});
  if (switched) {
   streetMap.opacity = opacity;
-  view.map.basemap.referenceLayers.add(streetMap);
+  view.map.basemap.baseLayers.add(streetMap);
  } else {
-  view.map.basemap.referenceLayers.remove(streetMap);
-  const layer = view.map.basemap.referenceLayers.find(layer => {
+  view.map.basemap.baseLayers.remove(streetMap);
+  const layer = view.map.basemap.baseLayers.find(layer => {
     if (layer.type === 'vector-tile') {
       return (layer as VectorTileLayer).portalItem.id === streetMap.portalItem.id;
     } else {
@@ -187,13 +187,13 @@ export const blendBasemap = (switched: boolean, view: __esri.MapView, streetMapI
   });
   
   if (layer) {
-    view.map.basemap.referenceLayers.remove(layer);
+    view.map.basemap.baseLayers.remove(layer);
   }
  }
  images.watch('activeBasemap', activeBasemap => {
   console.log(activeBasemap, switched, opacity);
   if (switched) {
-    const layer = activeBasemap.referenceLayers.find((layer: __esri.Layer) => {
+    const layer = activeBasemap.baseLayers.find((layer: __esri.Layer) => {
       if (layer.type === 'vector-tile') {
         return (layer as VectorTileLayer).portalItem.id === streetMap.portalItem.id;
       } else {
@@ -201,7 +201,7 @@ export const blendBasemap = (switched: boolean, view: __esri.MapView, streetMapI
       }
     });
     if (!layer) {
-     activeBasemap.referenceLayers.add(streetMap);
+     activeBasemap.baseLayers.add(streetMap);
     }
   }
  });
