@@ -1,6 +1,6 @@
 import MapView from "@arcgis/core/views/MapView";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { initializeBasemaps, initializeEsriMaps, initializeImageMaps } from "./basemaps";
+import { blendBasemap, initializeBasemaps, initializeEsriMaps, initializeImageMaps, updateBlendOpacity } from "./basemaps";
 import { tips } from "./tips";
 
 const useBasemaps = (args: any) => {
@@ -11,13 +11,16 @@ const useBasemaps = (args: any) => {
       to: "",
     });
     const [isActive, setIsActive] = useState(false);
-  
+    const [blendActive, setBlendActive] = useState(false);
+
     const loaded = useRef(false);
     const basemapRef = useRef(null);
     const imagesRef = useRef(null);
     const esriRef = useRef(null);
+    const opacity = useRef(0.5);
     const mapGroup = "f6329364e80c438a958ce74aadc3a89f";
     const imageGroup = "492386759d264d49948bf7f83957ddb9";
+    const streetMapId = '02d50d24991747538e218e0a5806e9b3';
     useEffect(() => {
       setView(args.view);
       if (!loaded.current) {
@@ -40,7 +43,16 @@ const useBasemaps = (args: any) => {
     }, []);    
     const tipsClicked = useCallback((e: any) => {
         args.showTips(tips);
-        }, []);    
+        }, []);  
+      const blendUpdated = useCallback((e: any) => {
+        debugger
+        setBlendActive(e.detail.switched);
+       blendBasemap(e.detail.switched, args.view, streetMapId, opacity.current);
+      }, []);        
+      const blendOpacityChanged = useCallback((e: any) => {
+        opacity.current = 1 - e.target.value/100;
+        updateBlendOpacity(e.target.value/100, args.view, streetMapId, opacity.current);
+       }, []);              
     return {
         basemapRef,
         imagesRef,
@@ -51,7 +63,10 @@ const useBasemaps = (args: any) => {
         showAlert,
         isActive,
         panelDismissed,
-        tipsClicked        
+        tipsClicked  ,
+        blendUpdated ,
+        blendOpacityChanged,
+        blendActive
         }        
 }
 export default useBasemaps;

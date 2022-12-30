@@ -45,8 +45,12 @@ const useSelect = (args: any) => {
     }, [args.selectDismissed]);
     useEffect(() => {
       setIsActive(args.isActive);
+      if (!args.isActive) {
+        cancelSelect();
+      }
     }, [args.isActive]);
     const toolDismissed = useCallback((e: any) => {
+      debugger
       args.toolDismissed();
       cancelSelect();
     }, []);

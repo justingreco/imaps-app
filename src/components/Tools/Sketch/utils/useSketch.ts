@@ -20,19 +20,42 @@ const loaded = useRef(false);
         setSelectedGraphics
       );
     }
+    
   }, []);
   useEffect(() => {
     setIsActive(args.isActive);
+    if (!args.isActive) {
+      args.toolDismissed();
+      cancelSketch();
+      setActiveSketchTool("");
+      args.view.highlightOptions = {fillOpacity: 0.25, color: '#00ffff', haloColor: '#00ffff', haloOpacity: 1} as any;
+    } 
   }, [args.isActive]);
-  const toolDismissed = useCallback((e: any) => {
+  const toolDismissed = useCallback(() => {
     args.toolDismissed();
     cancelSketch();
     setActiveSketchTool("");
+    args.view.highlightOptions = {fillOpacity: 0.25, color: '#00ffff', haloColor: '#00ffff', haloOpacity: 1} as any;
   }, []);
   const tipsClicked = useCallback((e: any) => {
     args.showTips(tips);
-    }, []);      
-  return {activeSketchTool, setActiveSketchTool, selectedGraphics, setSelectedGraphics, isActive, toolDismissed, tipsClicked}
+    }, []);
+  const checkGeometryType = (selectedGraphics: __esri.Graphic[], geometryType: string) => {
+    const geometryTypes = selectedGraphics.map(graphic => {
+      return graphic.geometry.type;
+    });
+    const uniqueTypes = geometryTypes.filter((t, index) => {
+      return geometryTypes.indexOf(t) === index;
+    });
+    console.log(uniqueTypes);
+    if (uniqueTypes.length > 1 || uniqueTypes.length < 1 || selectedGraphics.length !== 1) {
+      return false;
+    }
+    if (uniqueTypes.length === 1 && uniqueTypes[0] === geometryType) {
+      return true;
+    }
+  }
+  return {activeSketchTool, setActiveSketchTool, selectedGraphics, setSelectedGraphics, isActive, toolDismissed, tipsClicked,checkGeometryType}
 };
 
 export default useSketch;

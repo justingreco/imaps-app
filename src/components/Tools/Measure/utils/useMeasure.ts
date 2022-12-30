@@ -25,6 +25,10 @@ const useBookmarks = (args: any) => {
     }, []);
     useEffect(() => {
       setIsActive(args.isActive);
+      if (!args.isActive) {
+        (measurement as any).activeTool = null;
+        measurement?.clear();
+      }
     }, [args.isActive]);
     const toolDismissed = useCallback((e: any) => {
       args.toolDismissed();

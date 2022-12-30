@@ -8,6 +8,7 @@ import Basemap from "@arcgis/core/Basemap";
 import Color from "@arcgis/core/Color";
 import * as reactiveUtils from "@arcgis/core/core/reactiveUtils";
 import FeatureLayer from "@arcgis/core/layers/FeatureLayer";
+import VectorTileLayer from "@arcgis/core/layers/VectorTileLayer";
 
 export function initializeBasemaps(
   view: MapView,
@@ -156,6 +157,55 @@ const viewExtentChanged = (
     }
   }
 };
+
+export const updateBlendOpacity = (opacityValue: number, view: __esri.MapView, streetMapId: string, opacity: number) => {
+  const layer = view.map.basemap.referenceLayers.find(layer => {
+    if (layer.type === 'vector-tile') {
+      return (layer as VectorTileLayer).portalItem.id === streetMapId
+    } else {
+      return false;
+    }
+  });
+  
+  if (layer) {
+    layer.opacity = opacity;
+  }
+}
+export const blendBasemap = (switched: boolean, view: __esri.MapView, streetMapId: string, opacity: number) => {
+ const streetMap = new VectorTileLayer({portalItem: {id: streetMapId}});
+ if (switched) {
+  streetMap.opacity = opacity;
+  view.map.basemap.referenceLayers.add(streetMap);
+ } else {
+  view.map.basemap.referenceLayers.remove(streetMap);
+  const layer = view.map.basemap.referenceLayers.find(layer => {
+    if (layer.type === 'vector-tile') {
+      return (layer as VectorTileLayer).portalItem.id === streetMap.portalItem.id;
+    } else {
+      return false;
+    }
+  });
+  
+  if (layer) {
+    view.map.basemap.referenceLayers.remove(layer);
+  }
+ }
+ images.watch('activeBasemap', activeBasemap => {
+  console.log(activeBasemap, switched, opacity);
+  if (switched) {
+    const layer = activeBasemap.referenceLayers.find((layer: __esri.Layer) => {
+      if (layer.type === 'vector-tile') {
+        return (layer as VectorTileLayer).portalItem.id === streetMap.portalItem.id;
+      } else {
+        return false;
+      }
+    });
+    if (!layer) {
+     activeBasemap.referenceLayers.add(streetMap);
+    }
+  }
+ });
+}
 
 const checkBasemapTheme = (
   basemap: Basemap,

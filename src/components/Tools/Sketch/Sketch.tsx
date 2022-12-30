@@ -32,7 +32,8 @@ function Sketch(args: any) {
     setSelectedGraphics, 
     isActive, 
     toolDismissed, 
-    tipsClicked
+    tipsClicked,
+    checkGeometryType
  
   } = useSketch(args);  
   return (
@@ -128,7 +129,7 @@ function Sketch(args: any) {
               id="clearSketch"
               icon="trash"
               text={""}
-              onClick={() => clearSketch(setActiveSketchTool)}
+              onClick={() => clearSketch(setActiveSketchTool, setSelectedGraphics)}
             ></CalciteAction>
             <CalciteTooltip label="Clear Sketches" referenceElement="clearSketch">Clear Sketches</CalciteTooltip>            
           </CalciteActionGroup>
@@ -136,14 +137,14 @@ function Sketch(args: any) {
         <div
           id="point-symbols"
           className="symbol"
-          hidden={activeSketchTool !== "point" ? true : undefined}
+          hidden={activeSketchTool === "point" || (checkGeometryType(selectedGraphics, 'point') && activeSketchTool === "select") ? undefined : true}
         >
           <PointSymbols pointSymbolUpdated={pointSymbolUpdated}></PointSymbols>
         </div>
         <div
           id="line-symbols"
           className="symbol"
-          hidden={activeSketchTool !== "polyline" ? true : undefined}
+          hidden={activeSketchTool === "polyline" || (checkGeometryType(selectedGraphics, 'polyline') && activeSketchTool === "select") ? undefined : true}
         >
           <LineSymbols
             polylineSymbolUpdated={polylineSymbolUpdated}
@@ -152,11 +153,7 @@ function Sketch(args: any) {
         <div
           id="polygon-symbols"
           className="symbol"
-          hidden={
-            !["polygon", "rectangle", "circle"].includes(activeSketchTool)
-              ? true
-              : undefined
-          }
+          hidden={["polygon", "rectangle", "circle"].includes(activeSketchTool) || (checkGeometryType(selectedGraphics, 'polygon') && activeSketchTool === "select") ? undefined : true}
         >
           <PolygonSymbols
             polygonSymbolUpdated={polygonSymbolUpdated}

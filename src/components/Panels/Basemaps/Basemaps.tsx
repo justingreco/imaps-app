@@ -7,6 +7,10 @@ import {
   CalcitePanel,
   CalciteAction,
   CalciteTooltip,
+  CalciteCheckbox,
+  CalciteSwitch,
+  CalciteLabel,
+  CalciteSlider,
 } from "@esri/calcite-components-react";
 import React, {  } from "react";
 import Blend from "./Blend/Blend";
@@ -25,7 +29,10 @@ function Basemaps(args: any) {
     showAlert,
     isActive,
     panelDismissed,
-    tipsClicked  
+    tipsClicked,
+    blendUpdated,
+    blendOpacityChanged,
+    blendActive
   } = useBasemaps(args);
   return (
     <CalcitePanel
@@ -44,24 +51,29 @@ function Basemaps(args: any) {
             <CalciteTabTitle>Maps</CalciteTabTitle>
             <CalciteTabTitle>Images</CalciteTabTitle>
             <CalciteTabTitle>Esri</CalciteTabTitle>
-            <CalciteTabTitle>Blend</CalciteTabTitle>
+            {/* <CalciteTabTitle>Blend</CalciteTabTitle> */}
           </CalciteTabNav>
           <CalciteTab>
             <div ref={basemapRef}></div>
           </CalciteTab>
           <CalciteTab>
+            <CalciteLabel layout="inline" alignment="end">
+              <CalciteSwitch onCalciteSwitchChange={blendUpdated}></CalciteSwitch>
+              Blend
+            </CalciteLabel>
+            <CalciteSlider hidden={blendActive ? undefined : true} max={100} min={0} value={50} onCalciteSliderInput={blendOpacityChanged}></CalciteSlider>
             <div ref={imagesRef}></div>
           </CalciteTab>
           <CalciteTab>
             <div ref={esriRef}></div>
           </CalciteTab>
-          <CalciteTab>
+          {/* <CalciteTab>
             <Blend
               view={view}
               mapGroup={mapGroup}
               imageGroup={imageGroup}
             ></Blend>
-          </CalciteTab>
+          </CalciteTab> */}
         </CalciteTabs>
         <CalciteAlert
           active={showAlert.show === true ? true : undefined}

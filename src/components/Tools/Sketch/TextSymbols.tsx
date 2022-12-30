@@ -27,8 +27,6 @@ function TextSymbols(args: any) {
           value={textContent}
           onCalciteInputInput={(e) => {
             setTextContent(e.target.value);
-          }}
-          onCalciteInputChange={(e) => {
             requestAnimationFrame(() => {
               args.textSymbolUpdated(
                 fontSize,
@@ -36,9 +34,12 @@ function TextSymbols(args: any) {
                 haloSize,
                 haloColor,
                 showHalo,
-                textContent
+                e.target.value
               );
-            });
+            });            
+          }}
+          onCalciteInputChange={(e) => {
+
           }}
         ></CalciteInput>
       </CalciteLabel>

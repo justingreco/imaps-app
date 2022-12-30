@@ -57,6 +57,7 @@ let textSketchViewModel: SketchViewModel;
 let sketchLayerView: __esri.GraphicsLayerView;
 let highlights: any;
 let highlightedGraphic: Graphic;
+
 export function initializeSketchViewModel(
   view: MapView,
   setActiveSketchTool: Function,
@@ -71,7 +72,9 @@ export function initializeSketchViewModel(
   view
     .whenLayerView(sketchLayer)
     .then(
-      (layerView) => (sketchLayerView = layerView as __esri.GraphicsLayerView)
+      (layerView) => {
+        sketchLayerView = layerView as __esri.GraphicsLayerView;
+      }
     );
   pointLayer = sketchLayer.pointLayer;
   polylineLayer = sketchLayer.polylineLayer;
@@ -104,9 +107,9 @@ export function initializeSketchViewModel(
       }
     });
     viewModel?.on("update", (e) => {
-      console.log('update', e.graphics)
       if (e.state === "start" || e.state === "active") {
         setSelectedGraphics([...e.graphics]);
+        
       }
     });
   });
@@ -123,6 +126,7 @@ function createSketchViewModels(
     updateOnGraphicClick: true,
   });
   sketchVM.on("create", addGraphic);
+  view.highlightOptions = {fillOpacity: 0, color: '#00ffff', haloColor: '#00ffff', haloOpacity: 1} as any;
   if (!isText) {
     // sketchVM.on("update", updateMapNotes);
   }
@@ -137,27 +141,33 @@ function addGraphic(e: any) {
       //   setTimeout(() => polygonSketchViewModel.updateGraphics.add(e.graphic));
 
       polygonSketchViewModel.create(e.tool);
-      // polygonSketchViewModel.update(e.graphic, {});
+     // polygonSketchViewModel.update(e.graphic, {});
     }
     if (e.graphic.geometry.type === "polyline") {
       e.graphic.symbol = lineSymbol;
       sketchLayer.polylineLayer.add(e.graphic);
       polylineSketchViewModel.create(e.tool);
+      //polylineSketchViewModel.update(e.graphic, {});
     }
     if (selectedTool === "text") {
       e.graphic.symbol = textSymbol;
       sketchLayer.textLayer.add(e.graphic);
       textSketchViewModel.create("point");
+      //textSketchViewModel.update(e.graphic, {});
+
     }
     if (selectedTool === "point") {
       e.graphic.symbol = pointSymbol;
       sketchLayer.pointLayer.add(e.graphic);
       pointSketchViewModel.create("point");
+     // pointSketchViewModel.update(e.graphic, {});
+
     }
     if (highlights) {
       highlights.remove();
     }
     highlights = sketchLayerView.highlight(e.graphic);
+    
     highlightedGraphic = e.graphic;
   }
 }
@@ -204,7 +214,7 @@ export function polygonSymbolUpdated(
     if (polygonSketchViewModel) {
       polygonSketchViewModel.activeFillSymbol = fillSymbol;
       if (sketchLayer.polygonLayer) {
-        updateHighlightedGraphicSymbol(sketchLayer.polygonLayer, fillSymbol);
+        updateHighlightedGraphicSymbol(sketchLayer.polygonLayer, fillSymbol, polygonSketchViewModel);
       }
     }
     updatingPolygonSymbol = true;
@@ -220,15 +230,38 @@ export function polygonSymbolUpdated(
 
 function updateHighlightedGraphicSymbol(
   layer: GraphicsLayer,
-  symbol: __esri.Symbol
+  symbol: __esri.Symbol,
+  vm: __esri.SketchViewModel
 ) {
-  if (highlightedGraphic) {
-    layer.remove(highlightedGraphic);
-    highlightedGraphic.symbol = symbol;
-    highlightedGraphic = highlightedGraphic.clone();
-    layer.add(highlightedGraphic);
-    highlights = sketchLayerView.highlight(highlightedGraphic);
+
+
+  if (vm.updateGraphics.length) {
+    const graphic = vm.updateGraphics.getItemAt(0);
+    layer.remove(graphic);
+    graphic.symbol = symbol;
+    const clone = graphic.clone();
+    layer.add(clone);
+
+    setTimeout(() => {
+      vm.cancel();
+      vm.update(clone);
+    });
   }
+  // vm.updateGraphics.forEach(highlightedGraphic => {
+  //   let graphic = layer.graphics.find(g => {
+  //     return JSON.stringify(g.geometry.toJSON()) === JSON.stringify(highlightedGraphic.geometry.toJSON());
+  //   });
+  //   if (graphic) {
+  //     vm.updateGraphics.remove(graphic);      
+  //     graphic = graphic.clone();
+  //     graphic.symbol = symbol;
+  //     //layer.add(graphic);
+  //     vm.updateGraphics.add(highlightedGraphic);
+
+  //     highlights = sketchLayerView.highlight(highlightedGraphic); 
+  //   }
+
+  // });
 }
 
 export function pointSymbolUpdated(symbol: any, color: Color, size: number) {
@@ -243,7 +276,7 @@ export function pointSymbolUpdated(symbol: any, color: Color, size: number) {
     cimSymbolUtils.applyCIMSymbolColor(pointSymbol, color);
     cimSymbolUtils.scaleCIMSymbolTo(pointSymbol, size);
     if (sketchLayer.pointLayer) {
-      updateHighlightedGraphicSymbol(sketchLayer.pointLayer, pointSymbol);
+      updateHighlightedGraphicSymbol(sketchLayer.pointLayer, pointSymbol, pointSketchViewModel);
     }
     pointSketchViewModel.pointSymbol = pointSymbol;
     const preview = document.getElementById("icon-preview");
@@ -267,7 +300,7 @@ export function polylineSymbolUpdated(lineColor: Color, width: number) {
       graphic.symbol = lineSymbol;
     });
     if (sketchLayer.polylineLayer) {
-      updateHighlightedGraphicSymbol(sketchLayer.polylineLayer, lineSymbol);
+      updateHighlightedGraphicSymbol(sketchLayer.polylineLayer, lineSymbol, polylineSketchViewModel);
     }
   }
 
@@ -296,7 +329,7 @@ export function textSymbolUpdated(
   textSymbol.text = textContent;
   textSketchViewModel.pointSymbol = textSymbol as any;
   if (sketchLayer.textLayer) {
-    updateHighlightedGraphicSymbol(sketchLayer.textLayer, textSymbol);
+    updateHighlightedGraphicSymbol(sketchLayer.textLayer, textSymbol, textSketchViewModel);
   }
 }
 
@@ -307,7 +340,13 @@ export function cancelSketch() {
   textSketchViewModel.cancel();
 }
 
-export function clearSketch(setActiveSketchTool: Function) {
+export function clearSketch(setActiveSketchTool: Function, setSelectedGraphics: Function) {
+  setActiveSketchTool("");
+  setSelectedGraphics([...[],...[]]);
+  pointSketchViewModel.cancel();
+  polygonSketchViewModel.cancel();
+  polylineSketchViewModel.cancel();
+  textSketchViewModel.cancel();
   sketchLayer.polygonLayer.graphics.removeAll();
   sketchLayer.pointLayer.graphics.removeAll();
   sketchLayer.polylineLayer.graphics.removeAll();
