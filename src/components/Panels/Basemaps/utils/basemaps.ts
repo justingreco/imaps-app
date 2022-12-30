@@ -191,7 +191,6 @@ export const blendBasemap = (switched: boolean, view: __esri.MapView, streetMapI
   }
  }
  images.watch('activeBasemap', activeBasemap => {
-  console.log(activeBasemap, switched, opacity);
   if (switched) {
     const layer = activeBasemap.baseLayers.find((layer: __esri.Layer) => {
       if (layer.type === 'vector-tile') {
