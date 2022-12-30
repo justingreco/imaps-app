@@ -101,6 +101,7 @@ const useShell = () => {
     }, []);
     const activePanelChanged = useCallback(
       (panel: string) => {
+        setTipsHidden(true);
         setActivePanel(panel);
         if (!loadedPanels.includes(panel)) {
           setLoadedPanels([...loadedPanels, panel]);
@@ -110,6 +111,7 @@ const useShell = () => {
     );
     const activeToolChanged = useCallback(
       (tool: string) => {
+        setTipsHidden(true);
         setActiveTool(tool);
         if (!loadedTools.includes(tool)) {
           setLoadedTools([...loadedTools, tool]);
