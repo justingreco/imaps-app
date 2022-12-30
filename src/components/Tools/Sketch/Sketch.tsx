@@ -122,6 +122,9 @@ function Sketch(args: any) {
               onClick={() => {
                 stopSketching();
                 toolSelected("select", activeSketchTool, setActiveSketchTool);
+                setTimeout(() => {
+                  (args.view as __esri.MapView).popup.autoOpenEnabled = false;
+                },1000);
               }}
             ></CalciteAction>
             <CalciteTooltip label="Select Sketch" referenceElement="selectSketch">Select Sketch</CalciteTooltip>
@@ -162,7 +165,7 @@ function Sketch(args: any) {
         <div
           id="text-symbols"
           className="symbol"
-          hidden={activeSketchTool !== "text" ? true : undefined}
+          hidden={activeSketchTool === "text" || (checkGeometryType(selectedGraphics, 'text') && activeSketchTool === "select") ? undefined : true}
         >
           <TextSymbols textSymbolUpdated={textSymbolUpdated}></TextSymbols>
         </div>
