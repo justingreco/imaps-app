@@ -48,7 +48,6 @@ const useBasemaps = (args: any) => {
         args.showTips(tips);
         }, []);  
       const blendUpdated = useCallback((e: any) => {
-        debugger
         setBlendActive(e.detail.switched);
        blendBasemap(e.detail.switched, args.view, streetMapId, opacity.current);
       }, []);        

@@ -57,7 +57,6 @@ const loaded = useRef(false);
     const uniqueTypes = geometryTypes.filter((t, index) => {
       return geometryTypes.indexOf(t) === index;
     });
-    console.log(uniqueTypes);
     if (uniqueTypes.length > 1 || uniqueTypes.length < 1 || selectedGraphics.length !== 1) {
       return false;
     }

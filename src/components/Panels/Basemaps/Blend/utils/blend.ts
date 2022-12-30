@@ -36,7 +36,6 @@ export function addBasemap(
               // if (index === 0) {
               //   (layer as any).blendMode = "multiply";
               // }
-              console.log(layer.type);
               if (!layer.type.includes('image')) {
                 layer.opacity = 0.5;
               }

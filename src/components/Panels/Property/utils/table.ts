@@ -185,9 +185,6 @@ function getTableTemplate(layer: __esri.FeatureLayer): TableTemplate {
       initialSortPriority: setSortPriority(field.fieldName),
       direction: "asc",
     } as any);
-    columnTemplate.watch('visible', (e) => {
-      console.log(e);
-    })
     tableTemplate.columnTemplates.push(columnTemplate);
   });
   layer.popupTemplate.fieldInfos.forEach((field) => {

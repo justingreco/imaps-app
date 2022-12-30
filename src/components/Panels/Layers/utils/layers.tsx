@@ -58,7 +58,6 @@ function addLayersFromWebmap(view: MapView) {
         //     (group as __esri.GroupLayer).add(layer, i);
         //   }
         // });
-        console.log(match.title, match.layers.length);
         const matchlayers = match.layers.slice();
         const layers = match.layers.filter((layer) => {
           const found = (group as __esri.GroupLayer).findLayerById(layer.id);
@@ -84,7 +83,6 @@ function addLayersFromWebmap(view: MapView) {
           let index = matchlayers.findIndex(layer2 => {
             return layer1.id === layer2.id;
           });
-          console.log(layer1.title, index);
           (group as __esri.GroupLayer).reorder(layer1, index);
         });
         matchlayers.destroy();

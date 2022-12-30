@@ -50,7 +50,6 @@ const useSelect = (args: any) => {
       }
     }, [args.isActive]);
     const toolDismissed = useCallback((e: any) => {
-      debugger
       args.toolDismissed();
       cancelSelect();
     }, []);
