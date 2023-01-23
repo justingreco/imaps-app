@@ -18,6 +18,7 @@ import "./Print.css";
 import {
   getScales,
   exportClicked,
+  showFrame,
 } from "./utils/print";
 
 import { collapsePanel } from "../../Shell/utils/shell";
@@ -27,7 +28,7 @@ function Print(args: any) {
     setSelectedFormat, formats, setScaleType,
     scaleType, customScaleSelect, setCustomScale,
     customScale, userDefined, selectedProperty,
-    selectedLayout, attributes, legend, setJobs, jobs, jobRef, tipsClicked } = usePrint(args);
+    selectedLayout, attributes, legend, setJobs, jobs, jobRef, tipsClicked, showFrameChanged, frame, scale } = usePrint(args);
   const toolDismissed = useCallback((e: any) => {
     args.toolDismissed();
   }, []);
@@ -60,8 +61,12 @@ function Print(args: any) {
           Page size
           <CalciteSelect
             label={""}
-            onCalciteSelectChange={(e) =>
-              setSelectedLayout(e.target.selectedOption.value)
+            onCalciteSelectChange={(e) => {
+              setSelectedLayout(e.target.selectedOption.value);
+              if (frame.current) {
+                showFrame(frame.current.checked, args.view, selectedLayout, scaleType, customScaleSelect);
+              }
+            }
             }
           >
             {layouts.map((layout, i) => {
@@ -98,6 +103,9 @@ function Print(args: any) {
           name="scale-radio"
           onCalciteRadioButtonGroupChange={(e) => {
             setScaleType(e.detail);
+            if (frame.current) {
+              showFrame(frame.current.checked, args.view, selectedLayout, scaleType, customScaleSelect);
+            }   
           }}
         >
           <CalciteLabel layout="inline">
@@ -121,8 +129,12 @@ function Print(args: any) {
             <CalciteSelect
               ref={customScaleSelect}
               label={""}
-              onCalciteSelectChange={(e) =>
-                setCustomScale(e.target.selectedOption.value)
+              onCalciteSelectChange={(e) => {
+                setCustomScale(e.target.selectedOption.value);
+                if (frame.current) {
+                  showFrame(frame.current.checked, args.view, selectedLayout, scaleType, customScaleSelect);
+                }
+              }                
               }
             >
               {args?.view &&
@@ -163,7 +175,7 @@ function Print(args: any) {
           Legend?
         </CalciteLabel>
         <CalciteLabel layout="inline">
-          <CalciteCheckbox value="showFrame"></CalciteCheckbox>Show map frame?
+          <CalciteCheckbox ref={frame} value="frameChecked" onCalciteCheckboxChange={showFrameChanged}></CalciteCheckbox>Show map frame?
         </CalciteLabel>
         <CalciteButton
           width="full"

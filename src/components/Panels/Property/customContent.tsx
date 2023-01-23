@@ -75,7 +75,7 @@ export const createDurhamButton = () => {
       "style",
       "display: flex;flex-direction: row;justify-content: space-around;"
     );
-    if (!e.graphic.getAttribute('CITY_DECODE').includes('DURHAM COUNTY')) {    
+    if (!e.graphic.getAttribute('CITY_DECODE')?.includes('DURHAM COUNTY')) {    
     return (e.graphic.layer as FeatureLayer)
       .queryRelatedFeatures({
         relationshipId: (e.graphic.layer as FeatureLayer).relationships.find(
@@ -96,7 +96,7 @@ export const createDurhamButton = () => {
             "BOM_DOC_NUM"
           );
 
-        if (!e.graphic.getAttribute('CITY_DECODE').includes('DURHAM COUNTY')) {
+        if (!e.graphic.getAttribute('CITY_DECODE')?.includes('DURHAM COUNTY') || !e.graphic.getAttribute('CITY_DECODE')) {
           if (deed) {
             const deedBtn = createButton('file-text','Deeds');
             deedBtn.onclick = () => {
@@ -180,13 +180,13 @@ export const createDurhamButton = () => {
           };
           div.append(btn);
         }
-        if (!layer) {
+
           layer = new FeatureLayer({
             portalItem: {
               id: "bb3eb1f6cc774bdda560554381a4c06f",
             },
           });
-        }
+
         (layer as FeatureLayer)
           .queryFeatures({
             where: `PIN_NUM = '${e.graphic.attributes["PIN_NUM"]}'`,

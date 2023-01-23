@@ -8,6 +8,9 @@ import TileInfo from "@arcgis/core/layers/support/TileInfo";
 import Graphic from "@arcgis/core/Graphic";
 import { printTemplates } from "./templates";
 import MapView from "@arcgis/core/views/MapView";
+import GraphicsLayer from "@arcgis/core/layers/GraphicsLayer";
+import Extent from "@arcgis/core/geometry/Extent";
+import * as projection from '@arcgis/core/geometry/projection';
 
 type MapScale = {
   scale: number;
@@ -366,5 +369,76 @@ const exportMap = (
     // setTimeout(() => {
     //   view.scale = oldScale;
     // }, 1000);
+  });
+};
+let mapViewStationary: any = null;
+export const showFrame = (show: boolean, view: MapView, selectedLayout: any, scaleType: string, customScaleSelect: any) => {
+
+  let graphics = view.map.findLayerById('print-graphic') as GraphicsLayer;
+  if (!graphics) {
+    graphics = new GraphicsLayer({ id: 'print-graphic', listMode: 'hide' });
+    view.map.add(graphics);
+  }
+  graphics.removeAll();
+  let customScale: any = null;
+  if (customScaleSelect.current) {
+    customScale = customScaleSelect.current.value;
+  }
+  if (show) {
+    addPrintGraphic(graphics, view, selectedLayout, scaleType, customScale);
+
+    mapViewStationary = view.watch('stationary', (stationary) => {
+      graphics.removeAll();
+      if (customScaleSelect.current) {
+        customScale = customScaleSelect.current.value;
+      }      
+      addPrintGraphic(graphics, view, selectedLayout, scaleType, customScale);
+    });
+  console.log((view as any).hasHandles());
+  } else {
+    if (mapViewStationary) {
+      mapViewStationary.remove();
+    }
+  }
+}
+
+const addPrintGraphic = (graphics: GraphicsLayer, view: MapView, selectedLayout: any, scaleType: string, customScale: any) => {
+
+  setTimeout(() => {
+    projection.load().then(() => {
+      const center = projection.project(view.extent.center, {
+        wkid: 2264,
+      }) as __esri.Point;
+      const layout = selectedLayout.template ? selectedLayout : JSON.parse(selectedLayout);
+      const selectedTemplate = layout.template.replace('.', '');
+      const template = printTemplates.results[0].value.filter((value) => {
+        return value.layoutTemplate === selectedTemplate;
+      });
+      //        let mapScale = (props.view as __esri.MapView).scale / 12;
+      
+      let mapScale =
+        scaleType === 'current'
+          ? roundScale(view.scale)
+          : parseInt(customScale);
+      mapScale = mapScale / 12;
+      const width = template[0]?.webMapFrameSize[0] * mapScale;
+      const height = template[0]?.webMapFrameSize[1] * mapScale;
+      const xmax = center.x + width / 2;
+      const ymax = center.y + height / 2;
+      const xmin = center.x - width / 2;
+      const ymin = center.y - height / 2;
+      graphics.removeAll();
+
+      graphics.add(
+        new Graphic({
+          symbol: {
+            type: 'simple-fill',
+            style: 'cross',
+            outline: { width: 2, color: [149, 149, 149, 1] },
+          } as any,
+          geometry: new Extent({ xmax: xmax, xmin: xmin, ymax: ymax, ymin: ymin, spatialReference: { wkid: 2264 } }),
+        }),
+      );
+    });
   });
 };

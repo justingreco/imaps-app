@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
     getFormats,
-    getLayouts
+    getLayouts,
+    showFrame
   } from "../utils/print";
 import { tips } from "./tips";
   
@@ -18,7 +19,9 @@ const usePrint = (args: any) => {
     const userDefined = useRef<HTMLCalciteInputElement>(null);
     const title = useRef<HTMLCalciteInputElement>(null);
     const jobRef = useRef<any[]>([]);
-  
+    const frame = useRef<HTMLCalciteCheckboxElement>(null);
+    const scale = useRef<HTMLCalciteSelectElement>(null);
+
     const [layouts, setLayouts] = useState<any[]>([]);
     const [formats, setFormats] = useState<any[]>([]);
     const [scaleType, setScaleType] = useState("current");
@@ -49,12 +52,17 @@ const usePrint = (args: any) => {
     useEffect(() => {
       setIsActive(args.isActive);
     }, [args.isActive]);        
+    const showFrameChanged = useCallback((e: any) => {
+
+        showFrame(e.target.checked, args.view, selectedLayout, scaleType, customScaleSelect);
+      
+    }, [selectedLayout, scaleType, customScale]);       
     return {isActive, title, setSelectedLayout, layouts, 
         selectedFormat,
         setSelectedFormat, formats, setScaleType,
         scaleType, customScaleSelect, setCustomScale,
         customScale, userDefined, selectedProperty,
-        selectedLayout, attributes, legend, setJobs, jobs, jobRef, tipsClicked};
+        selectedLayout, attributes, legend, setJobs, jobs, jobRef, tipsClicked, showFrameChanged, frame, scale};
 };
 
 export default usePrint;

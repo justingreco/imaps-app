@@ -73,7 +73,7 @@ function Basemaps(args: any) {
           </CalciteTab> */}
         </CalciteTabs>
         <CalciteAlert
-          active={showAlert.show === true ? true : undefined}
+          open={showAlert.show === true ? true : undefined}
           autoDismiss
           autoDismissDuration="medium"
           color="yellow"
