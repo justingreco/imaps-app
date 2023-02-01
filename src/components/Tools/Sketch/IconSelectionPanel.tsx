@@ -1,4 +1,4 @@
-import { CalcitePanel } from "@esri/calcite-components-react";
+import { CalciteBlock, CalciteFlowItem, CalcitePanel } from "@esri/calcite-components-react";
 import React, { useEffect, useState } from "react";
 import "./Sketch.css";
 
@@ -12,13 +12,14 @@ function IconSelectionPanel(args: any) {
 
   return (
     <div id="icon-selection">
-      <CalcitePanel
-        showBackButton
+      <CalciteFlowItem
         heading="Change Symbol"
-        onCalcitePanelBackClick={() => {
+        closable
+        onCalciteFlowItemBack={() => {
           args.backClicked();
         }}
       >
+        <CalciteBlock heading={""}>
         <div className="palette">
           {symbols &&
             symbols.map((symbol: any, i: number) => {
@@ -36,7 +37,8 @@ function IconSelectionPanel(args: any) {
               );
             })}
         </div>
-      </CalcitePanel>
+        </CalciteBlock>
+      </CalciteFlowItem>
     </div>
   );
 }

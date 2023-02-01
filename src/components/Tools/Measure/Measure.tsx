@@ -41,8 +41,8 @@ export const Measure = (args: any) => {
             active={selectedTool === "distance" ? true : undefined}
             onClick={() => {
               setSelectedTool("distance");
-              if (measurement) {
-                measurement.activeTool = "distance";
+              if (measurement.current) {
+                measurement.current.activeTool = "distance";
               }
             }}
           ></CalciteAction>
@@ -52,8 +52,8 @@ export const Measure = (args: any) => {
             active={selectedTool === "area" ? true : undefined}
             onClick={() => {
               setSelectedTool("area");
-              if (measurement) {
-                measurement.activeTool = "area";
+              if (measurement.current) {
+                measurement.current.activeTool = "area";
               }
             }}
           ></CalciteAction>
@@ -61,8 +61,8 @@ export const Measure = (args: any) => {
             icon="trash"
             text="Clear"
             onClick={() => {
-              if (measurement) {
-                measurement.clear();
+              if (measurement.current) {
+                measurement.current?.clear();
                 setSelectedTool("");
               }
             }}

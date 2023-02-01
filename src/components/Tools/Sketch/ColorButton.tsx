@@ -44,7 +44,7 @@ function ColorButton(args: any) {
       <CalcitePopover
         ref={popover}
         overlayPositioning="fixed"
-        placement="top-leading"
+        placement="top-start"
         label={""}
         referenceElement={`${args.id}-popover-button`}
       >

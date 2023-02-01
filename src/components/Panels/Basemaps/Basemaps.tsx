@@ -42,7 +42,7 @@ function Basemaps(args: any) {
       <CalciteAction id="tip" icon="lightbulb"  text="Tips" slot="header-actions-end" onClick={tipsClicked}></CalciteAction>
       <CalciteTooltip label="Show Tip" referenceElement="tip">Show Tip</CalciteTooltip>
       <div className="basemaps">
-        <CalciteTabs position="below" layout="center" scale="l">
+        <CalciteTabs position="bottom" layout="center" scale="l">
           <CalciteTabNav slot="tab-nav">
             <CalciteTabTitle>Maps</CalciteTabTitle>
             <CalciteTabTitle>Images</CalciteTabTitle>
@@ -74,8 +74,8 @@ function Basemaps(args: any) {
         </CalciteTabs>
         <CalciteAlert
           open={showAlert.show === true ? true : undefined}
-          autoDismiss
-          autoDismissDuration="medium"
+          autoClose
+          autoCloseDuration="medium"
           color="yellow"
           label="Imagery Year Changed"
         >

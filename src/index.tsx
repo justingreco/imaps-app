@@ -49,6 +49,8 @@ import "@esri/calcite-components/dist/components/calcite-tip-manager";
 import "@esri/calcite-components/dist/components/calcite-tip";
 import "@esri/calcite-components/dist/components/calcite-tip-group";
 import "@esri/calcite-components/dist/components/calcite-tooltip";
+import "@esri/calcite-components/dist/components/calcite-flow";
+import "@esri/calcite-components/dist/components/calcite-flow-item";
 
 
 // Local assets

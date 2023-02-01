@@ -66,8 +66,8 @@ function Blend(args: any) {
     <div className="blend">
       <CalciteStepper layout="vertical">
         <CalciteStepperItem
-          active={activeStep === "basemap" ? true : undefined}
-          itemTitle="Basemap"
+          selected={activeStep === "basemap" ? true : undefined}
+          heading="Basemap"
           description="Select basemap layer"
           onClick={() => setActiveStep("basemap")}
         >
@@ -100,8 +100,8 @@ function Blend(args: any) {
           </CalciteCombobox>
         </CalciteStepperItem>
         <CalciteStepperItem
-          active={activeStep === "images" ? true : undefined}
-          itemTitle="Image"
+          selected={activeStep === "images" ? true : undefined}
+          heading="Image"
           description="Select imagery layer"
           onClick={() => setActiveStep("images")}
         >
@@ -138,8 +138,8 @@ function Blend(args: any) {
           </CalciteCombobox>
         </CalciteStepperItem>
         <CalciteStepperItem
-          active={activeStep === "opacity" ? true : undefined}
-          itemTitle="Opacity"
+          selected={activeStep === "opacity" ? true : undefined}
+          heading="Opacity"
           description="Set base map layer opacity"
           onClick={() => setActiveStep("opacity")}
         >

@@ -102,7 +102,7 @@ function Print(args: any) {
         <CalciteRadioButtonGroup
           name="scale-radio"
           onCalciteRadioButtonGroupChange={(e) => {
-            setScaleType(e.detail);
+            setScaleType((e as any).detail);
             if (frame.current) {
               showFrame(frame.current.checked, args.view, selectedLayout, scaleType, customScaleSelect);
             }   
@@ -210,7 +210,6 @@ function Print(args: any) {
                     <CalciteLoader
                       scale="s"
                       inline
-                      active
                       label={""}
                     ></CalciteLoader>
                     <span className="loader-text">{`${

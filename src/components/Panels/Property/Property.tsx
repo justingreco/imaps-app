@@ -59,14 +59,14 @@ function Property(args: any) {
           <CalciteTooltip referenceElement="clearSelection" label="Clear Selection">Clear Selection</CalciteTooltip>
           </div>
         )}
-        <CalciteTabs position="below" layout="center" scale="l">
+        <CalciteTabs position="bottom" layout="center" scale="l">
           <CalciteTabNav slot="tab-nav">
-            <CalciteTabTitle active={activeTab === "list" ? true : undefined}>
+            <CalciteTabTitle  selected={activeTab === "list" ? true : undefined}>
               List
             </CalciteTabTitle>
             <CalciteTabTitle
-              active={activeTab === "info" ? true : undefined}
               disabled={infoDisabled === true ? true : undefined}
+              selected={activeTab === "info" ? true : undefined}
             >
               Info
             </CalciteTabTitle>

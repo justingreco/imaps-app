@@ -144,7 +144,7 @@ function Toolbar(args: any) {
             );
           }}
         ></CalciteAction>
-        <CalciteTooltip referenceElement="measure" label="Measure">Measaure</CalciteTooltip>
+        <CalciteTooltip referenceElement="measure" label="Measure">Measure</CalciteTooltip>
         <CalciteAction
           id="sketch"
           icon="pencil"

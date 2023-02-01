@@ -171,10 +171,10 @@ function Shell() {
       ></WebMap>
       <CalciteScrim loading hidden={!loading ? true : undefined}></CalciteScrim>
       <CalciteAlert
-        active={showAlert ? true : undefined}
+        open={showAlert ? true : undefined}
         color={alert?.color}
-        autoDismiss={alert?.autoDismiss ? true : undefined}
-        autoDismissDuration={alert?.duration}
+        autoClose={alert?.autoDismiss ? true : undefined}
+        autoCloseDuration={alert?.duration}
         label={""}
       >
         <div slot="title">{alert?.title}</div>
