@@ -93,7 +93,9 @@ export const Select = (args: any) => {
             }}
           ></CalciteAction>
           <CalciteTooltip label="Select by Multi-Point" referenceElement="selectMultipoint">Select by Multi-point</CalciteTooltip>
-          <CalciteAction id="clearSelection" icon="trash" text="Clear"></CalciteAction>
+          <CalciteAction id="clearSelection" icon="trash" text="Clear" onClick={() => {
+            args.geometrySet(undefined)
+          }}></CalciteAction>
           <CalciteTooltip label="Clear Selection" referenceElement="clearSelection">Clear selection</CalciteTooltip>
         </div>
         <div className="buffer-container">

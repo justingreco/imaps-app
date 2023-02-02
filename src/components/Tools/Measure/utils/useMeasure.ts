@@ -15,8 +15,11 @@ const useMeasure = (args: any) => {
         const widget = initializeMeasure(measureRef.current, args.view);
        measurement.current = widget;
         widget.watch("activeTool", (activeTool) => {
-          setSelectedTool(activeTool ? activeTool : "");
-          measurement.current?.clear();
+          if (activeTool) {
+            setSelectedTool(activeTool ? activeTool : "");
+            //measurement.current?.clear();
+          }
+
         });
       }
       return () => {
@@ -27,14 +30,17 @@ const useMeasure = (args: any) => {
       setIsActive(args.isActive);
       if (!args.isActive) {
         (measurement.current as any).activeTool = null;
-        measurement.current?.clear();
+        //measurement.current?.clear();
+      }
+      if (isActive && measurement.current) {
+        measurement.current.activeTool = selectedTool as any;
       }
     }, [args.isActive]);
     const toolDismissed = useCallback((e: any) => {
       args.toolDismissed();
-      
+
       (measurement.current as any).activeTool = null;
-      measurement.current?.clear();
+      //measurement.current?.clear();
     }, []);
     const tipsClicked = useCallback((e: any) => {
       args.showTips(tips);

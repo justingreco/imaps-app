@@ -14,3 +14,7 @@
   max-height: calc(100vh - 160px) !important;
   overflow-y: auto;
 }
+
+.print-job calcite-loader {
+  display: flex;
+}

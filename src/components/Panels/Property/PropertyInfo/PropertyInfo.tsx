@@ -36,10 +36,10 @@ function PropertyInfo(args: any) {
       }
     }
     const url = new URL(window.location as any);
-    url.searchParams.delete("pins");
+    url.searchParams.delete("pin");
 
     if (pin !== "") {
-      url.searchParams.set("pins", pin);
+      url.searchParams.set("pin", pin);
     }
 
     //only pushState when history state is different than parameters

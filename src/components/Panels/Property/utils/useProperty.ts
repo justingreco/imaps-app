@@ -43,6 +43,12 @@ const useProperty = (args: any) => {
             }
           }
         );
+      } else {
+        setInfoDisabled(true);
+        setActiveTab("list");
+        setFeature(undefined);
+        args.selected(undefined, []);
+        setCondos([]);
       }
     }, [args.geometry]);
     const condosSelected = useCallback(

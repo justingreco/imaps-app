@@ -13,6 +13,7 @@ import Basemap from "@arcgis/core/Basemap";
 import Color from "@arcgis/core/Color";
 import IdentityManager from "@arcgis/core/identity/IdentityManager";
 import Collection from "@arcgis/core/core/Collection";
+import Multipoint from "@arcgis/core/geometry/Multipoint";
 
 export function initializeMap(
   ref: HTMLDivElement,
@@ -84,7 +85,6 @@ export function initializeMap(
       false
     );
   }  
-
 
   view.on("hold", (event) => {
     geometrySet(event.mapPoint);

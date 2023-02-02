@@ -11,7 +11,7 @@ let search: Search;
 let properties: FeatureLayer;
 function getQueryParams(condosSelected: Function) {
   const url = new URL(window.location as any);
-  const pins = url.searchParams.get("pins");
+  const pins = url.searchParams.get("pin");
   if (pins !== "" && pins !== null) {
     searchCondos(`PIN_NUM in ('${pins?.replaceAll(",", "','")}')`, []).then(
       (result) => {
