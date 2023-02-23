@@ -22,7 +22,7 @@ const useWebMap = (args: any) => {
 
         window.addEventListener('unload', () => {
 
-        })
+        });
       }
       return () => {
           // clean up the map view

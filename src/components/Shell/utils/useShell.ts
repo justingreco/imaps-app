@@ -87,6 +87,7 @@ const useShell = () => {
       [geometry]
     );
     const widgetCallback = useCallback((mapView: __esri.MapView) => {
+      debugger
       if (mapView) {
         widgetActivated(mapView, setActiveTool);
         toolSelected(

@@ -16,37 +16,37 @@ import PictureMarkerSymbol from "@arcgis/core/symbols/PictureMarkerSymbol";
 import Conversion from '@arcgis/core/widgets/CoordinateConversion/support/Conversion';
 
 const Overview = lazy(() => import("../Overview"));
-
+const Coordinates = lazy(() => import("../Coordinates/Coodinates"));
 let streetviewClick: IHandle | null = null;
 
 export function addWidgets(view: MapView, widgetActivated: Function) {
-  const coordinates = new CoordinateConversion({ view: view });
-  const stateplane = getStateplaneConversion()
-  coordinates.formats.add(stateplane);
-  coordinates.viewModel.locationSymbol = new PictureMarkerSymbol({ url: 'assets/pin.svg', height: 36, width: 36 });    
-  coordinates.conversions.splice(
-    0,
-    0,
-    new Conversion({
-      format: stateplane,
-    }),
-  );  
-  coordinates.when(() => {
-    coordinates.formats = coordinates.formats.filter((format) => {
-      return !['basemap', 'dd', 'ddm'].includes(format.name);
-    });
-    coordinates.formats.find((format) => {
-      return format.name === 'xy';
-    }).name = 'Decimal Degrees';
-  });  
-  const coordinateExpand = new Expand({
-    content: coordinates,
-    expandIconClass: "esri-icon-pan",
-    mode: "floating",
-    collapseTooltip: "Coordinates",
-    expandTooltip: "Coordinates",    
-  });
-  view.ui.add(coordinateExpand, "bottom-left");
+  // const coordinates = new CoordinateConversion({ view: view });
+  // const stateplane = getStateplaneConversion()
+  // coordinates.formats.add(stateplane);
+  // coordinates.viewModel.locationSymbol = new PictureMarkerSymbol({ url: 'assets/pin.svg', height: 36, width: 36 });    
+  // coordinates.conversions.splice(
+  //   0,
+  //   0,
+  //   new Conversion({
+  //     format: stateplane,
+  //   }),
+  // );  
+  // coordinates.when(() => {
+  //   coordinates.formats = coordinates.formats.filter((format) => {
+  //     return !['basemap', 'dd', 'ddm'].includes(format.name);
+  //   });
+  //   coordinates.formats.find((format) => {
+  //     return format.name === 'dd';
+  //   }).name = 'Decimal Degrees';
+  // });  
+  // const coordinateExpand = new Expand({
+  //   content: coordinates,
+  //   expandIconClass: "esri-icon-pan",
+  //   mode: "floating",
+  //   collapseTooltip: "Coordinates",
+  //   expandTooltip: "Coordinates",    
+  // });
+ // view.ui.add(coordinateExpand, "bottom-left");
   view.ui.add(
     new Home({
       view: view,
@@ -59,12 +59,15 @@ export function addWidgets(view: MapView, widgetActivated: Function) {
   view.ui.add(new Compass({ view: view }), "top-left");
   const track = new Track({ view: view });
   view.ui.add(track, "top-left");
+  addCoordinates(view, widgetActivated);
+
   view.ui.add(new ScaleBar({ view: view }), "bottom-left");
   const streetview = createStreetviewButton(view, widgetActivated);
   const identify = createIdentifyButton(view, widgetActivated);
   view.ui.add(identify, "top-left");
   view.ui.add(streetview, "top-left");
   addOverview(view);
+
   view.watch("activeTool", (activeTool) => {
     if (activeTool) {
       view.popup.autoOpenEnabled = false;
@@ -74,7 +77,6 @@ export function addWidgets(view: MapView, widgetActivated: Function) {
     } else {
       view.popup.autoOpenEnabled = true;
       document.querySelector(".identify-widget")?.classList.add("active");
-
     }
   });
 }
@@ -100,6 +102,34 @@ const addOverview = (view: __esri.MapView) => {
         root.render(
           <Suspense fallback={""}>
             <Overview id="overview-map" view={view} />
+          </Suspense>
+        );
+      }
+    });
+};
+
+const addCoordinates = (view: __esri.MapView, widgetActivated: Function) => {
+  const container = document.createElement("div");
+
+  const coordinateExpand = new Expand({
+    content: container,
+    expandIconClass: "esri-icon-pan",
+    collapseIconClass: "esri-icon-pan",
+    mode: "floating",
+    label: "Coordinates",
+    collapseTooltip: "Coordinates",
+    expandTooltip: "Coordinates",
+    id: "coordinates",
+  });
+  view.ui.add(coordinateExpand, "bottom-left");
+  reactiveUtils
+    .whenOnce(() => coordinateExpand.expanded)
+    .then(() => {
+      if (!container?.hasChildNodes()) {
+        const root = createRoot(container as HTMLDivElement);
+        root.render(
+          <Suspense fallback={""}>
+            <Coordinates id="coordinates" clickActivated={(view: __esri.MapView) => {debugger;widgetActivated(view)}} view={view} expand={coordinateExpand} />
           </Suspense>
         );
       }
@@ -138,7 +168,7 @@ const createStreetviewButton = (
       document.querySelector(".streetview-widget")?.classList.contains("active")) {
       document.querySelector(".streetview-widget")?.classList.remove("active");
       streetviewClick?.remove();
-    } else {
+    } else { 
       document.querySelector(".map-tool.active")?.classList.remove("active");
       document.querySelector(".streetview-widget")?.classList.add("active");
       streetviewClick?.remove();

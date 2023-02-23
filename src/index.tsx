@@ -32,9 +32,11 @@ import "@esri/calcite-components/dist/components/calcite-combobox";
 import "@esri/calcite-components/dist/components/calcite-combobox-item";
 import "@esri/calcite-components/dist/components/calcite-slider";
 import "@esri/calcite-components/dist/components/calcite-input";
+
 import "@esri/calcite-components/dist/components/calcite-accordion";
 import "@esri/calcite-components/dist/components/calcite-accordion-item";
 import "@esri/calcite-components/dist/components/calcite-select";
+import "@esri/calcite-components/dist/components/calcite-option";
 import "@esri/calcite-components/dist/components/calcite-radio-button";
 import "@esri/calcite-components/dist/components/calcite-radio-button-group";
 import "@esri/calcite-components/dist/components/calcite-checkbox";
@@ -51,6 +53,7 @@ import "@esri/calcite-components/dist/components/calcite-tip-group";
 import "@esri/calcite-components/dist/components/calcite-tooltip";
 import "@esri/calcite-components/dist/components/calcite-flow";
 import "@esri/calcite-components/dist/components/calcite-flow-item";
+import "@esri/calcite-components/dist/components/calcite-notice";
 
 
 // Local assets
