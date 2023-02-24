@@ -12,7 +12,6 @@ const useCoordinates = (args: any) => {
     const y = useRef<any>(null)
     const other = useRef<any>(null);
     const coordinateRef = useRef<any>(null);
-    const [coordinates, setCoordinates] = useState('')
     const [showSettings, setShowSettings] = useState(false);
     const [showSearch, setShowSearch] = useState(false);
     const modeActionRef = useRef<any>(null);
