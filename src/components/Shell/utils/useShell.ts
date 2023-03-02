@@ -78,16 +78,17 @@ const useShell = () => {
         viewRef.current = mapView;
         mapViewSet(mapView, setView, setLoading, setShowAlert, setAlert);
       },
-      [view]
+      []
     );
     const geometryCallback = useCallback(
       (geometry: __esri.Geometry) => {
+        debugger
         setGeometry(geometry);
       },
-      [geometry]
+      []
     );
     const widgetCallback = useCallback((mapView: __esri.MapView) => {
-      debugger
+
       if (mapView) {
         widgetActivated(mapView, setActiveTool);
         toolSelected(

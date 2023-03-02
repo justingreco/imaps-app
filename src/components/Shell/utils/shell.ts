@@ -79,6 +79,7 @@ export function mapViewSet(
   const topright = document.querySelector(".esri-ui-top-right");
   const tools = document.querySelector(".tools");
   topright?.append(tools as any);
+  
   view.when(() => {
     setView(view);
     checkForPropertyService(view, setLoading, start, setShowAlert, setAlert);

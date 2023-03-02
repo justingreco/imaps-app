@@ -1,12 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./WebMap.css";
 import useWebMap from "./utils/useWebMap";
 function WebMap(args: any) {
-  const { 
-    view
-  } = useWebMap(args);
-  const {ref} = useWebMap(args);
 
+  const { 
+    view, ref
+  } = useWebMap(args);
   return <div className="mapDiv" ref={ref}></div>;
 }
 

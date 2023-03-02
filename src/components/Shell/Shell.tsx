@@ -38,7 +38,7 @@ function Shell() {
         position="start"
       ></CalciteShellPanel> */}
       <CalciteShellPanel
-        class="custom-width"
+        className="custom-width"
         slot="panel-end"
 
         position="end"
@@ -172,7 +172,7 @@ function Shell() {
       <CalciteScrim loading hidden={!loading ? true : undefined}></CalciteScrim>
       <CalciteAlert
         open={showAlert ? true : undefined}
-        color={alert?.kind}
+        kind={alert?.kind}
         autoClose={alert?.autoDismiss ? true : undefined}
         autoCloseDuration={alert?.duration}
         label={""}

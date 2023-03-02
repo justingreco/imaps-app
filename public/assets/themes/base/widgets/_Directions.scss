@@ -83,6 +83,7 @@
   .esri-directions__departure-time-controls .esri-date-picker,
   .esri-directions__departure-time-controls .esri-time-picker {
     flex: 1 1 0%;
+    border: 1px solid $border-color--input;
     border-top: 0;
   }
 
@@ -172,14 +173,7 @@
 
   .esri-directions__stop-handle {
     flex: 0 0 auto;
-    padding-left: $side-spacing--half;
-  }
-
-  .esri-directions__stop-input {
-    box-shadow: 0 0 0 1px $border-color;
-    &:hover {
-      border-color: $border-color--hover;
-    }
+    padding-inline-start: $side-spacing--half;
   }
 
   .esri-search__sources-button {
@@ -195,7 +189,7 @@
   }
 
   .esri-directions__stop-input .esri-search .esri-search__input {
-    border: none;
+    border: 1px solid $border-color--input;
     height: auto;
     margin-bottom: $border_size;
     outline-offset: 4px;
@@ -308,7 +302,7 @@
     display: flex;
     padding: $cap-spacing $side-spacing--half;
     border: none;
-    border-left: $border-size--active solid transparent;
+    border-inline-start: $border-size--active solid transparent;
     cursor: pointer;
   }
 
@@ -376,8 +370,7 @@
     white-space: nowrap;
   }
 
-  .esri-directions__cost--intermediate,
-  .esri-directions__cost--cumulative {
+  .esri-directions__cost--intermediate {
     font-size: $font-size--small;
   }
 

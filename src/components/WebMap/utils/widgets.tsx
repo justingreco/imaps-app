@@ -129,7 +129,7 @@ const addCoordinates = (view: __esri.MapView, widgetActivated: Function) => {
         const root = createRoot(container as HTMLDivElement);
         root.render(
           <Suspense fallback={""}>
-            <Coordinates id="coordinates" clickActivated={(view: __esri.MapView) => {debugger;widgetActivated(view)}} view={view} expand={coordinateExpand} />
+            <Coordinates id="coordinates" clickActivated={(view: __esri.MapView) => {widgetActivated(view)}} view={view} expand={coordinateExpand} />
           </Suspense>
         );
       }

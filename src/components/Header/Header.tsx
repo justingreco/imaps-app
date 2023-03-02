@@ -55,7 +55,7 @@ function Header() {
           <CalciteButton id="menuButton" scale="m" slot="trigger" name="Menu" role="button" aria-label="Menu">
             <CalciteIcon icon="hamburger" scale="m"></CalciteIcon>
           </CalciteButton>
-          <CalciteTooltip label="Menu" referenceElement="menuButton">Menu</CalciteTooltip>
+          <CalciteTooltip label="Menu" referenceElement="menuButton" closeOnClick>Menu</CalciteTooltip>
           <CalciteDropdownGroup
             selection-mode="none"
             group-title="About"
