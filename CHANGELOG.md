@@ -37,6 +37,9 @@
 ### Measure
 1. Coordinate conversion widget removed and  added to the lower left corner of the map.
 
+### Coordinates
+1. Built custom coordinate component due to issues with CoodinateConversion widget
+
 ### Header
 1. Reset to default button added.  This will reset iMAPS to the default extent, layers, and base  map.
    1. This was added in case there are issues with what is stored in local storage
@@ -44,5 +47,6 @@
 ### Code
 1. React JS code has been refactored to follow best practices.
 2. Better separation of view and controller
+3. Upgraded to 4.26 JS SDK and Calcite Design System 1.0
 
 
