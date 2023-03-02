@@ -21,7 +21,7 @@ export const Legend = (args: any) => {
     >
       <CalciteAction id="tip" icon="lightbulb"  text="Tips" slot="header-actions-end" onClick={tipsClicked}></CalciteAction>
       <CalciteTooltip label="Show Tip" referenceElement="tip">Show Tip</CalciteTooltip>
-      <div ref={ref}></div>;
+      <div ref={ref}></div>
     </CalcitePanel>
   );
 };
