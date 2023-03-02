@@ -43,7 +43,7 @@ function Basemaps(args: any) {
       <CalciteTooltip label="Show Tip" referenceElement="tip">Show Tip</CalciteTooltip>
       <div className="basemaps">
         <CalciteTabs position="bottom" layout="center" scale="l">
-          <CalciteTabNav slot="tab-nav">
+          <CalciteTabNav  slot="title-group">
             <CalciteTabTitle>Maps</CalciteTabTitle>
             <CalciteTabTitle>Images</CalciteTabTitle>
             <CalciteTabTitle>Esri</CalciteTabTitle>

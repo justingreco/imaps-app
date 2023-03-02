@@ -60,7 +60,7 @@ function Property(args: any) {
           </div>
         )}
         <CalciteTabs position="bottom" layout="center" scale="l">
-          <CalciteTabNav slot="tab-nav">
+          <CalciteTabNav  slot="title-group">
             <CalciteTabTitle  selected={activeTab === "list" ? true : undefined}>
               List
             </CalciteTabTitle>
