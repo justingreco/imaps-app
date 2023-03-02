@@ -74,7 +74,7 @@ function Toolbar(args: any) {
             );
           }}
         ></CalciteAction>
-        <CalciteTooltip closeOnClick referenceElement="layerList" label="Layer List">Location Search</CalciteTooltip>
+        <CalciteTooltip closeOnClick referenceElement="layerList" label="Layer List">Layers</CalciteTooltip>
         <CalciteAction
           id="legend"
           icon="legend"

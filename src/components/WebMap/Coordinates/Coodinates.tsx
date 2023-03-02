@@ -1,4 +1,4 @@
-import { CalciteAction, CalciteAlert, CalciteButton, CalciteInput, CalciteInputMessage, CalciteLabel, CalciteNotice, CalciteOption, CalciteSelect } from "@esri/calcite-components-react";
+import { CalciteAction, CalciteTooltip, CalciteButton, CalciteInput, CalciteInputMessage, CalciteLabel, CalciteNotice, CalciteOption, CalciteSelect } from "@esri/calcite-components-react";
 import React from "react";
 import "./Coordinates.css";
 import useCoordinates from "./utils/useCoordinates";
@@ -36,9 +36,12 @@ function Coordinates(args: any) {
     </div>    
     <div className="coordinates-row">
     <div ref={coordinateRef} className="coordinates-text"></div>
-    <CalciteAction scale="s" text="" icon="search" active={showSearch ? true : undefined} onClick={searchClicked}></CalciteAction>
-    <CalciteAction scale="s" text="" icon="gear" onClick={settingsClicked} active={showSettings ? true : undefined}></CalciteAction>
-    <CalciteAction ref={modeActionRef} scale="s" text="" icon="pin" onClick={modeClicked}></CalciteAction>
+    <CalciteAction id="coordinateSearch" text="" icon="search" active={showSearch ? true : undefined} onClick={searchClicked}></CalciteAction>
+    <CalciteTooltip closeOnClick label="Search Coordinates" referenceElement="coordinateSearch">Search Coordinates</CalciteTooltip>
+    <CalciteAction id="coordinateUnits" text="" icon="gear" onClick={settingsClicked} active={showSettings ? true : undefined}></CalciteAction>
+    <CalciteTooltip closeOnClick label="Set Units" referenceElement="coordinateUnits">Set Units</CalciteTooltip>
+    <CalciteAction id="coordinateMode" ref={modeActionRef} text="" icon="pin" onClick={modeClicked}></CalciteAction>
+    <CalciteTooltip closeOnClick label="Set Mode" referenceElement="coordinateMode">Set Mode</CalciteTooltip>
 
     </div>
   </div>;
