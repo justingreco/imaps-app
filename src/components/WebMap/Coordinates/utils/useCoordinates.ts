@@ -3,8 +3,12 @@ import * as coordinateFormatter from "@arcgis/core/geometry/coordinateFormatter"
 import * as projection from "@arcgis/core/geometry/projection";
 
 import Point from "@arcgis/core/geometry/Point";
+import PictureMarkerSymbol from "@arcgis/core/symbols/PictureMarkerSymbol";
+import GraphicsLayer from "@arcgis/core/layers/GraphicsLayer";
 let moveHandler: IHandle;
 let clickHandler: IHandle;
+const marker: PictureMarkerSymbol = new PictureMarkerSymbol({ url: 'assets/pin.svg', height: 36, width: 36 }); 
+const layer: GraphicsLayer = new GraphicsLayer({id: 'coordinate-widget'});
 const useCoordinates = (args: any) => {
 
     const loaded = useRef(false);
@@ -16,7 +20,6 @@ const useCoordinates = (args: any) => {
     const [showSearch, setShowSearch] = useState(false);
     const modeActionRef = useRef<any>(null);
     const noticeRef = useRef<any>(null);
-
     const formats = [
       {value: 'dd', label: 'Decimal Degrees'},
       {value: 'dms', label: 'Degrees Minutes Seconds'},
@@ -56,8 +59,10 @@ const useCoordinates = (args: any) => {
       setSelectedFormat(e.target.value);
       formatRef.current = e.target.value;
     }, [formatRef]);
-    const searchCoordinates = useCallback((e: any) => {
-      coordinateFormatter.load().then(() => {
+    const searchCoordinates = useCallback(async (e: any) => {
+      if (!coordinateFormatter.isLoaded()) {
+        await coordinateFormatter.load();
+      }
         let point = null;
         let valid = true;
         if (formatRef.current === 'dd') {
@@ -110,11 +115,14 @@ const useCoordinates = (args: any) => {
           },3000);
         }
         if (valid) {
-          
+          if (!args.view.map.findLayerById('coordinate-widget')) {
+            args.view.map.add(layer);
+          }
+          layer.removeAll();
+          layer.add({geometry: point as __esri.Geometry, attributes: null, symbol: marker} as any);
           args.view.goTo(point);
         }
         
-      });
     }, []);    
     const validateDms= (latitude: boolean, value: string) : string => {
       const regex = latitude ? /^((90[°|\s]\s*)(0{1,2}['|\s]\s*)(0{1,2}([.|,]0{1,20})?["|\s]\s*)|(([1-8]\d|\d)[°|\s]\s*)(([0-5]\d|\d)['|\s]\s*)(([0-5]\d|\d)([.|,]\d{1,20})?["|\s]\s*))$/gm
@@ -122,57 +130,66 @@ const useCoordinates = (args: any) => {
       return regex.test(`${value} `) ? 'valid' : 'invalid';
     }
     const displayCoordinates = (e: any) => {
-      const point = args.view.toMap({x: e.x, y: e.y});
-      const wgs84 = new Point({x: point.longitude, y: point.latitude, spatialReference: {wkid: 4326}});
-      if (formatRef.current === 'dd') {
-        let dd = coordinateFormatter.toLatitudeLongitude(wgs84, 'dd', 7).replaceAll('078.', '78.');
-        let ddSplit = dd.split(' ');
-        if (ddSplit[0].includes('S')) {
-          ddSplit[0] = `-${ddSplit[0].replace('S','')}`;
-        }
-        if (ddSplit[0].includes('N')) {
-          ddSplit[0] = `${ddSplit[0].replace('N','')}`;
-        }     
-        if (ddSplit[1].includes('W')) {
-          ddSplit[1] = `-${ddSplit[1].replace('W','')}`;
-        }
-        if (ddSplit[1].includes('E')) {
-          ddSplit[1] = `${ddSplit[1].replace('N','')}`;
-        }                        
-        coordinateRef.current.innerHTML = ddSplit.join(' ');
-      } else if (formatRef.current === 'dms') {
-        
-        const dmsSplit = coordinateFormatter.toLatitudeLongitude(wgs84, 'dms', 7).split(' ');
-        const dms = `${dmsSplit[0]}° ${dmsSplit[1]}' ${dmsSplit[2].replace('N', '"')} -${dmsSplit[3].substring(1)}° ${dmsSplit[4]}' ${dmsSplit[5].replace('W', '"')}`;
 
-        coordinateRef.current.innerHTML = dms;
-      } else if (formatRef.current === 'usng') {
-        coordinateRef.current.innerHTML = coordinateFormatter.toUsng(wgs84, 5, true);
-      } else if (formatRef.current === 'mgrs') {
-        coordinateRef.current.innerHTML = coordinateFormatter.toMgrs(wgs84, 'automatic', 5, true);
-      } else if (formatRef.current === 'utm') {
-        coordinateRef.current.innerHTML = coordinateFormatter.toUtm(wgs84, 'latitude-band-indicators', true);
-      } else if (formatRef.current === 'spft') {
-        const spft = projection.project(point, {wkid: 2264}) as Point;
-        coordinateRef.current.innerHTML = `${spft.x.toString()} E, ${spft.y.toString()} N`;
+          let point:__esri.Point;
+          if (e.type === 'point') {
+            point = e
+          } else {
+            point = args.view.toMap({x: e.x, y: e.y});
+          }
+    
+          const wgs84 = new Point({x: point.longitude, y: point.latitude, spatialReference: {wkid: 4326}});
+          if (formatRef.current === 'dd') {
+            let dd = coordinateFormatter.toLatitudeLongitude(wgs84, 'dd', 7).replaceAll('078.', '78.');
+            let ddSplit = dd.split(' ');
+            if (ddSplit[0].includes('S')) {
+              ddSplit[0] = `-${ddSplit[0].replace('S','')}`;
+            }
+            if (ddSplit[0].includes('N')) {
+              ddSplit[0] = `${ddSplit[0].replace('N','')}`;
+            }     
+            if (ddSplit[1].includes('W')) {
+              ddSplit[1] = `-${ddSplit[1].replace('W','')}`;
+            }
+            if (ddSplit[1].includes('E')) {
+              ddSplit[1] = `${ddSplit[1].replace('N','')}`;
+            }                        
+            coordinateRef.current.innerHTML = ddSplit.join(' ');
+          } else if (formatRef.current === 'dms') {
+            
+            const dmsSplit = coordinateFormatter.toLatitudeLongitude(wgs84, 'dms', 7).split(' ');
+            const dms = `${dmsSplit[0]}° ${dmsSplit[1]}' ${dmsSplit[2].replace('N', '"')} -${dmsSplit[3].substring(1)}° ${dmsSplit[4]}' ${dmsSplit[5].replace('W', '"')}`;
+    
+            coordinateRef.current.innerHTML = dms;
+          } else if (formatRef.current === 'usng') {
+            coordinateRef.current.innerHTML = coordinateFormatter.toUsng(wgs84, 5, true);
+          } else if (formatRef.current === 'mgrs') {
+            coordinateRef.current.innerHTML = coordinateFormatter.toMgrs(wgs84, 'automatic', 5, true);
+          } else if (formatRef.current === 'utm') {
+            coordinateRef.current.innerHTML = coordinateFormatter.toUtm(wgs84, 'latitude-band-indicators', true);
+          } else if (formatRef.current === 'spft') {
+            const spft = projection.project(point, {wkid: 2264}) as Point;
+            coordinateRef.current.innerHTML = `${spft.x.toString()} E, ${spft.y.toString()} N`;
+    
+          }
 
-      }
+       
     }
     const addClickHandler = (view: __esri.MapView, clickActivated: Function) => {
       clickActivated(view);
       (args.view as __esri.MapView).popup.autoOpenEnabled = false;
       document.querySelector(".identify-widget")?.classList.remove("active");      
       clickHandler = (args.view as __esri.MapView).on('click', (e: any) => {
-        coordinateFormatter.load().then(() => {
-          displayCoordinates(e);
-        });
+        displayCoordinates(e);
       });
     }
-    const addMoveHandler = () => {
+    const addMoveHandler = async () => {
+      if (!coordinateFormatter.isLoaded()) {
+        await coordinateFormatter.load();
+      }
+      displayCoordinates(args.view.extent.center);
       moveHandler = (args.view as __esri.MapView).on('pointer-move', (e: any) => {
-        coordinateFormatter.load().then(() => {
-          displayCoordinates(e);
-        });
+        displayCoordinates(e);
       });
     }      
     

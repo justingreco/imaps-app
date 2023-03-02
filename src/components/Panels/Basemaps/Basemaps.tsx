@@ -12,7 +12,7 @@ import {
   CalciteSlider,
 } from "@esri/calcite-components-react";
 import React, {  } from "react";
-import Blend from "./Blend/Blend";
+// import Blend from "./Blend/Blend";
 
 import "./Basemaps.css";
 import useBasemaps from "./utils/useBasemaps";

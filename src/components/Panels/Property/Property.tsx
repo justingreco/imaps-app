@@ -51,7 +51,7 @@ function Property(args: any) {
             }
             condosSelected={condosSelected}
           ></PropertySearch>
-          <CalciteButton id="clearSelection" iconEnd="trash" color="neutral" scale="m"
+          <CalciteButton id="clearSelection" iconEnd="trash" appearance="transparent" scale="m" kind="neutral"
             onClick={() => {
               clearSearch(args.view);
             }}

@@ -64,7 +64,7 @@ function Header() {
             <CalciteDropdownItem
               onClick={() => {
                 if (disclaimer.current) {
-                  disclaimer.current.active = true;
+                  disclaimer.current.open = !disclaimer.current.open;
                 }
               }}
             >
@@ -141,7 +141,7 @@ function Header() {
           width="full"
           onClick={() => {
             if (disclaimer.current) {
-              disclaimer.current.active = false;
+              disclaimer.current.open = !disclaimer.current.open;
             }
           }}
         >

@@ -1,5 +1,5 @@
 import Expand from "@arcgis/core/widgets/Expand";
-import CoordinateConversion from "@arcgis/core/widgets/CoordinateConversion";
+//import CoordinateConversion from "@arcgis/core/widgets/CoordinateConversion";
 import Home from "@arcgis/core/widgets/Home";
 import Compass from "@arcgis/core/widgets/Compass";
 import ScaleBar from "@arcgis/core/widgets/ScaleBar";
@@ -9,11 +9,11 @@ import React, { lazy, Suspense } from "react";
 
 import { createRoot } from "react-dom/client";
 import * as reactiveUtils from "@arcgis/core/core/reactiveUtils";
-import SpatialReference from "@arcgis/core/geometry/SpatialReference";
-import Format from '@arcgis/core/widgets/CoordinateConversion/support/Format';
-import Point from '@arcgis/core/geometry/Point';
-import PictureMarkerSymbol from "@arcgis/core/symbols/PictureMarkerSymbol";
-import Conversion from '@arcgis/core/widgets/CoordinateConversion/support/Conversion';
+// import SpatialReference from "@arcgis/core/geometry/SpatialReference";
+// import Format from '@arcgis/core/widgets/CoordinateConversion/support/Format';
+// import Point from '@arcgis/core/geometry/Point';
+//import PictureMarkerSymbol from "@arcgis/core/symbols/PictureMarkerSymbol";
+//import Conversion from '@arcgis/core/widgets/CoordinateConversion/support/Conversion';
 
 const Overview = lazy(() => import("../Overview"));
 const Coordinates = lazy(() => import("../Coordinates/Coodinates"));
@@ -223,35 +223,35 @@ export const createIdentifyButton = (
   return infoButton;
 };
 
-const getStateplaneConversion = () => {
-  const numberSearchPattern = /-?\d+[.]?\d*/;
-  const stateplane = new Format({
-    name: 'Stateplane Feet',
-    conversionInfo: {
-      spatialReference: new SpatialReference({ wkid: 2264 }),
-      reverseConvert: function (string: string) {
-        const parts = string.split(',');
-        return new Point({
-          x: parseFloat(parts[0]),
-          y: parseFloat(parts[1]),
-          spatialReference: { wkid: 2264 },
-        });
-      },
-    } as any,
-    coordinateSegments: [
-      {
-        alias: 'X',
-        description: 'easting',
-        searchPattern: numberSearchPattern,
-      },
-      {
-        alias: 'Y',
-        description: 'northing',
-        searchPattern: numberSearchPattern,
-      },
-    ],
-    defaultPattern: 'X, Y',
-  });
-  return stateplane;
-}
+// const getStateplaneConversion = () => {
+//   const numberSearchPattern = /-?\d+[.]?\d*/;
+//   const stateplane = new Format({
+//     name: 'Stateplane Feet',
+//     conversionInfo: {
+//       spatialReference: new SpatialReference({ wkid: 2264 }),
+//       reverseConvert: function (string: string) {
+//         const parts = string.split(',');
+//         return new Point({
+//           x: parseFloat(parts[0]),
+//           y: parseFloat(parts[1]),
+//           spatialReference: { wkid: 2264 },
+//         });
+//       },
+//     } as any,
+//     coordinateSegments: [
+//       {
+//         alias: 'X',
+//         description: 'easting',
+//         searchPattern: numberSearchPattern,
+//       },
+//       {
+//         alias: 'Y',
+//         description: 'northing',
+//         searchPattern: numberSearchPattern,
+//       },
+//     ],
+//     defaultPattern: 'X, Y',
+//   });
+//   return stateplane;
+// }
 

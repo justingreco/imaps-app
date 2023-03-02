@@ -33,7 +33,7 @@ function ColorButton(args: any) {
           id={`${args.id}-popover-button`}
           width="half"
           iconEnd="pencil"
-          color="neutral"
+          kind="neutral"
           appearance="outline"
         >
           <CalciteColorPickerSwatch
@@ -54,7 +54,9 @@ function ColorButton(args: any) {
             text=""
             slot="header-actions-end"
             onClick={() => {
-              popover.current?.toggle();
+              if (popover.current) {
+                popover.current.open = !popover.current.open ;
+              }
               const c = new Color(color);
               c.a = 1 - transparency / 100;
               args.colorSet(c);

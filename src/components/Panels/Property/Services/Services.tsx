@@ -34,6 +34,7 @@ export const Services = (args: any) => {
             item-title={service.group.title}
             heading={service.group.title}
             onClick={(e) => {
+              debugger
               if (view && graphic) {
                 getServices(
                   e,

@@ -1,4 +1,3 @@
-import { CalciteIcon } from "@esri/calcite-components-react";
 import React, { useEffect, useRef, useState } from "react";
 import { createTemplate } from "../popuptemplate";
 import { initializeFeature, updateFeature } from "../utils/info";
@@ -48,7 +47,7 @@ function PropertyInfo(args: any) {
       window.history.pushState({ pins: pin }, "", url);
     }
   }, [args.feature]);
-  return <div ref={ref}><CalciteIcon className="prev-icon" icon="chevron-left"></CalciteIcon><CalciteIcon className="next-icon" icon="chevron-right"></CalciteIcon></div>;
+  return <div ref={ref}></div>;
 }
 
 export default React.memo(PropertyInfo);

@@ -28,7 +28,7 @@ function Print(args: any) {
     setSelectedFormat, formats, setScaleType,
     scaleType, customScaleSelect, setCustomScale,
     customScale, userDefined, selectedProperty,
-    selectedLayout, attributes, legend, setJobs, jobs, jobRef, tipsClicked, showFrameChanged, frame, scale } = usePrint(args);
+    selectedLayout, attributes, legend, setJobs, jobs, jobRef, tipsClicked, showFrameChanged, frame } = usePrint(args);
   const toolDismissed = useCallback((e: any) => {
     args.toolDismissed();
   }, []);

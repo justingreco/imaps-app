@@ -63,8 +63,9 @@ export function getServices(
   setFeatures: Function,
   setSearching: Function
 ) {
+  
   requestAnimationFrame(() => {
-    if ((e.target as HTMLCalciteAccordionItemElement).hasAttribute("active")) {
+    if ((e.target as HTMLCalciteAccordionItemElement).hasAttribute("expanded")) {
       setSearching(true);
       setFeatures([]);
       const title = (e.target as HTMLCalciteAccordionItemElement).getAttribute(

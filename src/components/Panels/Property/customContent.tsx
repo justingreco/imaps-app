@@ -25,7 +25,7 @@ const createButton = (icon: string, text: string) => {
     const btn = document.createElement("calcite-button");
     btn.setAttribute("scale", "m");
     btn.setAttribute("width", "full");
-    btn.setAttribute("appearance", "clear");
+    btn.setAttribute("appearance", "outline");
     btn.setAttribute("icon-start", icon);
     btn.setAttribute("rel", "noreferrer");
     btn.textContent = text;
