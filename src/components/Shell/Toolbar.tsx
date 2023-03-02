@@ -40,7 +40,7 @@ function Toolbar(args: any) {
             )
           }
         ></CalciteAction>
-        <CalciteTooltip referenceElement="propertySearch" label="Property Search">Property Search</CalciteTooltip>
+        <CalciteTooltip closeOnClick referenceElement="propertySearch" label="Property Search">Property Search</CalciteTooltip>
         <CalciteAction
           id="locationSearch"
           icon="pin"
@@ -57,7 +57,7 @@ function Toolbar(args: any) {
             );
           }}
         ></CalciteAction>
-        <CalciteTooltip referenceElement="locationSearch" label="Location Search">Location Search</CalciteTooltip>
+        <CalciteTooltip closeOnClick referenceElement="locationSearch" label="Location Search">Location Search</CalciteTooltip>
         <CalciteAction
           id="layerList"
           icon="layers"
@@ -74,7 +74,7 @@ function Toolbar(args: any) {
             );
           }}
         ></CalciteAction>
-        <CalciteTooltip referenceElement="layerList" label="Layer List">Location Search</CalciteTooltip>
+        <CalciteTooltip closeOnClick referenceElement="layerList" label="Layer List">Location Search</CalciteTooltip>
         <CalciteAction
           id="legend"
           icon="legend"
@@ -91,7 +91,7 @@ function Toolbar(args: any) {
             );
           }}
         ></CalciteAction>
-        <CalciteTooltip referenceElement="legend" label="Legend">Legend</CalciteTooltip>
+        <CalciteTooltip closeOnClick referenceElement="legend" label="Legend">Legend</CalciteTooltip>
         <CalciteAction
           id="basemaps"
           icon="basemap"
@@ -108,7 +108,7 @@ function Toolbar(args: any) {
             );
           }}
         ></CalciteAction>
-        <CalciteTooltip referenceElement="basemaps" label="Basemaps">Basemaps</CalciteTooltip>
+        <CalciteTooltip closeOnClick referenceElement="basemaps" label="Basemaps">Basemaps</CalciteTooltip>
       </CalciteActionGroup>
       <CalciteActionGroup>
         <CalciteAction
@@ -127,7 +127,7 @@ function Toolbar(args: any) {
             )
           }
         ></CalciteAction>
-        <CalciteTooltip referenceElement="propertySelect" label="Property Select">Property Select</CalciteTooltip>
+        <CalciteTooltip closeOnClick referenceElement="propertySelect" label="Property Select">Property Select</CalciteTooltip>
         <CalciteAction
           id="measure"
           icon="measure"
@@ -144,7 +144,7 @@ function Toolbar(args: any) {
             );
           }}
         ></CalciteAction>
-        <CalciteTooltip referenceElement="measure" label="Measure">Measure</CalciteTooltip>
+        <CalciteTooltip closeOnClick referenceElement="measure" label="Measure">Measure</CalciteTooltip>
         <CalciteAction
           id="sketch"
           icon="pencil"
@@ -161,7 +161,7 @@ function Toolbar(args: any) {
             );
           }}
         ></CalciteAction>
-        <CalciteTooltip referenceElement="sketch" label="Sketch">Sketch</CalciteTooltip>
+        <CalciteTooltip closeOnClick referenceElement="sketch" label="Sketch">Sketch</CalciteTooltip>
         <CalciteAction
           id="bookmarks"
           icon="bookmark"
@@ -178,7 +178,7 @@ function Toolbar(args: any) {
             );
           }}
         ></CalciteAction>
-        <CalciteTooltip referenceElement="bookmarks" label="Bookmarks">Bookmarks</CalciteTooltip>
+        <CalciteTooltip closeOnClick referenceElement="bookmarks" label="Bookmarks">Bookmarks</CalciteTooltip>
         <CalciteAction
           id="print"
           icon="print"
@@ -195,7 +195,7 @@ function Toolbar(args: any) {
             )
           }
         ></CalciteAction>
-        <CalciteTooltip referenceElement="print" label="Print">Print</CalciteTooltip>
+        <CalciteTooltip closeOnClick referenceElement="print" label="Print">Print</CalciteTooltip>
       </CalciteActionGroup>
     </CalciteActionBar>
   );

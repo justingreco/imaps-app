@@ -37,8 +37,8 @@ export const Select = (args: any) => {
         slot="header-actions-end"
         onClick={collapsePanel}
       ></CalciteAction>
-      <CalciteTooltip label="Show Tip" referenceElement="tip">Show Tip</CalciteTooltip>
-      <CalciteTooltip label="Collapse" referenceElement="collapseTool">Collapse</CalciteTooltip>
+      <CalciteTooltip closeOnClick label="Show Tip" referenceElement="tip">Show Tip</CalciteTooltip>
+      <CalciteTooltip closeOnClick label="Collapse" referenceElement="collapseTool">Collapse</CalciteTooltip>
       <div id="select-tools">
         <div className="select-container">
           <CalciteAction
@@ -53,7 +53,7 @@ export const Select = (args: any) => {
               }
             }}
           ></CalciteAction>
-          <CalciteTooltip label="Select by Point" referenceElement="selectPoint">Select by Point</CalciteTooltip>
+          <CalciteTooltip closeOnClick label="Select by Point" referenceElement="selectPoint">Select by Point</CalciteTooltip>
           <CalciteAction
             id="selectLine"
             icon="line"
@@ -66,7 +66,7 @@ export const Select = (args: any) => {
               }
             }}
           ></CalciteAction>
-          <CalciteTooltip label="Select by Line" referenceElement="selectLine">Select by Line</CalciteTooltip>
+          <CalciteTooltip closeOnClick label="Select by Line" referenceElement="selectLine">Select by Line</CalciteTooltip>
           <CalciteAction
             id="selectPolygon"
             icon="polygon"
@@ -79,7 +79,7 @@ export const Select = (args: any) => {
               }
             }}
           ></CalciteAction>
-          <CalciteTooltip label="Select by Polygon" referenceElement="selectPolygon">Select by Polygon</CalciteTooltip>
+          <CalciteTooltip closeOnClick label="Select by Polygon" referenceElement="selectPolygon">Select by Polygon</CalciteTooltip>
           <CalciteAction
             id="selectMultipoint"
             icon="pins"
@@ -92,11 +92,11 @@ export const Select = (args: any) => {
               }
             }}
           ></CalciteAction>
-          <CalciteTooltip label="Select by Multi-Point" referenceElement="selectMultipoint">Select by Multi-point</CalciteTooltip>
+          <CalciteTooltip closeOnClick label="Select by Multi-Point" referenceElement="selectMultipoint">Select by Multi-point</CalciteTooltip>
           <CalciteAction id="clearSelection" icon="trash" text="Clear" onClick={() => {
             args.geometrySet(undefined)
           }}></CalciteAction>
-          <CalciteTooltip label="Clear Selection" referenceElement="clearSelection">Clear selection</CalciteTooltip>
+          <CalciteTooltip closeOnClick label="Clear Selection" referenceElement="clearSelection">Clear selection</CalciteTooltip>
         </div>
         <div className="buffer-container">
           <CalciteLabel>

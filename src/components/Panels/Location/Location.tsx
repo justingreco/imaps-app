@@ -36,7 +36,7 @@ function Location(args: any) {
       onCalcitePanelClose={panelDismissed}
     >
       <CalciteAction id="tip" icon="lightbulb"  text="Tips" slot="header-actions-end" onClick={tipsClicked}></CalciteAction>
-      <CalciteTooltip label="Show Tip" referenceElement="tip">Show Tip</CalciteTooltip>
+      <CalciteTooltip label="Show Tip" referenceElement="tip" closeOnClick>Show Tip</CalciteTooltip>
       <div id="location-search">
         <div ref={searchDiv}></div>
         {isIntersection && (

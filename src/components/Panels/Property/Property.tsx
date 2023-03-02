@@ -41,7 +41,7 @@ function Property(args: any) {
       onCalcitePanelClose={panelDismissed}
     >
       <CalciteAction id="tip" icon="lightbulb"  text="Tips" slot="header-actions-end" onClick={tipsClicked}></CalciteAction>
-      <CalciteTooltip label="Show Tip" referenceElement="tip">Show Tip</CalciteTooltip>
+      <CalciteTooltip label="Show Tip" referenceElement="tip" closeOnClick>Show Tip</CalciteTooltip>
       <div className="property">
         {args.view && (
           <div className="row"><PropertySearch
@@ -56,7 +56,7 @@ function Property(args: any) {
               clearSearch(args.view);
             }}
           ></CalciteButton>
-          <CalciteTooltip referenceElement="clearSelection" label="Clear Selection">Clear Selection</CalciteTooltip>
+          <CalciteTooltip referenceElement="clearSelection" label="Clear Selection" closeOnClick>Clear Selection</CalciteTooltip>
           </div>
         )}
         <CalciteTabs position="bottom" layout="center" scale="l">

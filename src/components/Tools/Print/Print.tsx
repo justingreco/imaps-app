@@ -50,8 +50,8 @@ function Print(args: any) {
         slot="header-actions-end"
         onClick={collapsePanel}
       ></CalciteAction>
-      <CalciteTooltip label="Show Tip" referenceElement="tip">Show Tip</CalciteTooltip>
-      <CalciteTooltip label="Collapse" referenceElement="collapseTool">Collapse</CalciteTooltip>      
+      <CalciteTooltip label="Show Tip" referenceElement="tip" closeOnClick>Show Tip</CalciteTooltip>
+      <CalciteTooltip label="Collapse" referenceElement="collapseTool" closeOnClick>Collapse</CalciteTooltip>      
       <div id="print-container">
         <CalciteLabel>
           Title
