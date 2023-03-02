@@ -52,7 +52,7 @@ function Header() {
               ?.setAttribute("style", "min-height: 58vh");
           }}
         >
-          <CalciteButton id="menuButton" scale="m" slot="dropdown-trigger" name="Menu" role="button" aria-label="Menu">
+          <CalciteButton id="menuButton" scale="m" slot="trigger" name="Menu" role="button" aria-label="Menu">
             <CalciteIcon icon="hamburger" scale="m"></CalciteIcon>
           </CalciteButton>
           <CalciteTooltip label="Menu" referenceElement="menuButton">Menu</CalciteTooltip>

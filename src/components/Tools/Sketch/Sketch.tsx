@@ -175,7 +175,7 @@ function Sketch(args: any) {
               deleteSelectedGraphics(selectedGraphics, setSelectedGraphics)
             }
             alignment="center"
-            color="red"
+            kind="danger"
             appearance="transparent"
             icon-end="trash"
           >

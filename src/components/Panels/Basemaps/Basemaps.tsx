@@ -76,7 +76,7 @@ function Basemaps(args: any) {
           open={showAlert.show === true ? true : undefined}
           autoClose
           autoCloseDuration="medium"
-          color="yellow"
+          kind="warning"
           label="Imagery Year Changed"
         >
           <div slot="title">Imagery Not Available</div>

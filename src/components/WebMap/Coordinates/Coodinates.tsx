@@ -5,7 +5,7 @@ import useCoordinates from "./utils/useCoordinates";
 function Coordinates(args: any) {
   const {loaded, settingsClicked, showSettings, formats, formatChanged, searchClicked, showSearch, selectedFormat, searchCoordinates, x, y, other, modeClicked, coordinateRef, modeActionRef, noticeRef} = useCoordinates(args);
   return <div id="coordinatesWidget">
-    <CalciteNotice scale="s" ref={noticeRef}  color="red" closable><div slot="message">Location outside of county</div></CalciteNotice>
+    <CalciteNotice scale="s" ref={noticeRef}  kind="danger" closable><div slot="message">Location outside of county</div></CalciteNotice>
 
     <div hidden={showSettings ? undefined : true}>
       <CalciteSelect scale="s" label="Coordinate Systems" onCalciteSelectChange={formatChanged}>

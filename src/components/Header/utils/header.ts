@@ -1,15 +1,15 @@
 export function toggleTheme(isDark: boolean) {
- // document.body.classList.toggle("calcite-theme-dark");
-  //document.querySelector('.esri-ui')?.classList.toggle("calcite-theme-dark");
-  //document.querySelector('.esri-ui')?.classList.toggle("calcite-theme-light");
+ // document.body.classList.toggle("calcite-mode-dark");
+  //document.querySelector('.esri-ui')?.classList.toggle("calcite-mode-dark");
+  //document.querySelector('.esri-ui')?.classList.toggle("calcite-mode-light");
   if (isDark) {
-    document.body.classList.add('calcite-theme-dark');
-    document.querySelector('.esri-ui')?.classList.remove("calcite-theme-light");
-    document.querySelector('.esri-ui')?.classList.add("calcite-theme-dark");
+    document.body.classList.add('calcite-mode-dark');
+    document.querySelector('.esri-ui')?.classList.remove("calcite-mode-light");
+    document.querySelector('.esri-ui')?.classList.add("calcite-mode-dark");
   } else {
-    document.body.classList.remove('calcite-theme-dark');
-    document.querySelector('.esri-ui')?.classList.add("calcite-theme-light");
-    document.querySelector('.esri-ui')?.classList.remove("calcite-theme-dark");
+    document.body.classList.remove('calcite-mode-dark');
+    document.querySelector('.esri-ui')?.classList.add("calcite-mode-light");
+    document.querySelector('.esri-ui')?.classList.remove("calcite-mode-dark");
   }
 
   // ArcGIS JSAPI theme
@@ -24,5 +24,5 @@ export function toggleTheme(isDark: boolean) {
     light.disabled = isDark;
   }
 
-  return document.body.classList.contains("calcite-theme-dark");
+  return document.body.classList.contains("calcite-mode-dark");
 }

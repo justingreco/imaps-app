@@ -172,7 +172,7 @@ function Shell() {
       <CalciteScrim loading hidden={!loading ? true : undefined}></CalciteScrim>
       <CalciteAlert
         open={showAlert ? true : undefined}
-        color={alert?.color}
+        color={alert?.kind}
         autoClose={alert?.autoDismiss ? true : undefined}
         autoCloseDuration={alert?.duration}
         label={""}

@@ -3,7 +3,7 @@
         "show": false,
         "autoDismiss": true,
         "duration": "fast",
-        "color": "blue",
+        "kind": "info",
         "icon": "information",
         "title": "New Version",
         "message": "This is the new version of iMAPS, the legacy version will be available for a limited time.",
