@@ -13,7 +13,6 @@ import Basemap from "@arcgis/core/Basemap";
 import Color from "@arcgis/core/Color";
 import IdentityManager from "@arcgis/core/identity/IdentityManager";
 import Collection from "@arcgis/core/core/Collection";
-import Multipoint from "@arcgis/core/geometry/Multipoint";
 
 export function initializeMap(
   ref: HTMLDivElement,
@@ -54,37 +53,14 @@ export function initializeMap(
       // }, 5000);
     });
   });
-  const getMobileOS = () => {
-    const ua = navigator.userAgent
-    if (/android/i.test(ua)) {
-      return "Android"
+  window.addEventListener('pagehide', (e) => {
+
+    if (e.persisted) {
+      return;
     }
-    else if(/iPad|iPhone|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)){
-      return "iOS"
-    }
-    return "Other"
-  }
-    if (getMobileOS() !== 'iOS') {
-    window.addEventListener(
-      "beforeunload",
-      (e) => {
-        //if (document.hidden === undefined) {
-          saveMap(view);
-       // }
-      },
-      false
-    );
-  } else {
-    document.addEventListener(
-      "visibilitychange",
-      (e) => {
-        if (!document.hidden) {
-          saveMap(view);
-        }
-      },
-      false
-    );
-  }  
+
+    saveMap(view);
+  });
 
   view.on("hold", (event) => {
     geometrySet(event.mapPoint);
@@ -150,7 +126,7 @@ function removeGraphicsLayers(view: MapView) {
       .toArray()
   );
 }
-const saveMap = (view: MapView) => {
+export const saveMap = (view: MapView) => {
   if (localStorage.getItem('imaps_reset')) {
     localStorage.removeItem('imaps_reset');
   }  else {

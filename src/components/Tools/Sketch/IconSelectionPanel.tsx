@@ -1,4 +1,4 @@
-import { CalciteBlock, CalciteFlow, CalciteFlowItem, CalcitePanel } from "@esri/calcite-components-react";
+import { CalciteBlock, CalciteFlow, CalciteFlowItem } from "@esri/calcite-components-react";
 import React, { useEffect, useState } from "react";
 import "./Sketch.css";
 
