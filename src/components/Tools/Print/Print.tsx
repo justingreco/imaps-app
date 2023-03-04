@@ -101,17 +101,17 @@ function Print(args: any) {
         </CalciteLabel>
         <CalciteRadioButtonGroup
           name="scale-radio"
-          onCalciteRadioButtonGroupChange={(e) => {
-            setScaleType((e as any).detail);
-            if (frame.current) {
-              showFrame(frame.current.checked, args.view, selectedLayout, scaleType, customScaleSelect);
-            }   
-          }}
         >
           <CalciteLabel layout="inline">
             <CalciteRadioButton
               checked={scaleType === "current" ? true : undefined}
               value="current"
+              onCalciteRadioButtonChange={(e) => {
+                setScaleType(e.target.value);
+                if (frame.current) {
+                  showFrame(frame.current.checked, args.view, selectedLayout, scaleType, customScaleSelect);
+                }   
+              }}
             ></CalciteRadioButton>
             Current Scale
           </CalciteLabel>
@@ -119,6 +119,12 @@ function Print(args: any) {
             <CalciteRadioButton
               checked={scaleType === "custom" ? true : undefined}
               value="custom"
+              onCalciteRadioButtonChange={(e) => {
+                setScaleType(e.target.value);
+                if (frame.current) {
+                  showFrame(frame.current.checked, args.view, selectedLayout, scaleType, customScaleSelect);
+                }   
+              }}              
             ></CalciteRadioButton>
             Custom Scale
           </CalciteLabel>
