@@ -128,6 +128,7 @@ const useShell = () => {
     }, []);
     const propertySelected = useCallback(
       (feature: __esri.Graphic, condos: __esri.Graphic[]) => {
+        debugger
         setSelectedProperty(feature);
         setProperties(getDistinctProperties(feature, condos));
       },

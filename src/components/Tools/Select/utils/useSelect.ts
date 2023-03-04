@@ -33,9 +33,10 @@ const useSelect = (args: any) => {
       };
     }, []); // only after first render
     useEffect(() => {
-      if (args.selectedProperty) {
+      //if (args.selectedProperty) {
+        
         setSelectedProperty(args.selectedProperty);
-      }
+     // }
     }, [args.selectedProperty]);
     useEffect(() => {
       if (sketchVm && args.selectDismissed) {
