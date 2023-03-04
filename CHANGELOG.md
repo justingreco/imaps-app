@@ -13,6 +13,7 @@
 7. If property is in Durham County, a button will appear to link user to Durham County's property app
 8. Durham County properties now display the photo that is available from Durham County's app
 9. BUG: Tax Page button was linking to Wake County for Durham County properties, resulting in no information.  Now linking to Durham County's tax page 
+10. When multiple properties are selected, next and previous buttons added to the left and right of the title (site address)
 
 ### Layer List
 1. By default only the property layer and the layers visible in previous session are loaded.
@@ -20,15 +21,12 @@
 3. This should greatly improve load times.
 
 ### Basemaps
-1. Blend option (currently in beta) has been added.  
-   1. 3 steps:
-      1. Choose base map
-      2. Choose image map
-      3. Set transparency
+1. Blend option added to top of list of image base maps.  When selected, the street base map is added on top of the imagery, with a slider to control opacity.
 
 ### Property Select
 1. Highlight selected properties as you draw a shape.
 2. If buffer distance set, displays buffered area as you draw.
+3. Added a clear button
 
 ### Sketch
 1. More customization of symbols
