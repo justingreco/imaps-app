@@ -14,7 +14,7 @@ const useProperty = (args: any) => {
     const [searching, setSearching] = useState(false);
     const [activeTab, setActiveTab] = useState("list");
     const [isActive, setIsActive] = useState(false);
-  
+    const [featureTable, setFeatureTable] = useState<__esri.FeatureTable>();
     useEffect(() => {
       if (!loaded.current) {
         loaded.current = true;
@@ -80,6 +80,13 @@ const useProperty = (args: any) => {
       },
       [args.selected, feature]
     );
+    const featureChanged = useCallback(
+      (feature: __esri.Graphic) => {
+        setFeature(feature);
+        
+      },
+      [feature]
+    );    
     const clearSearch = useCallback(
       (view: __esri.MapView) => {
         setFeature(undefined);
@@ -114,7 +121,9 @@ const useProperty = (args: any) => {
         featureSelected,
         panelDismissed,
         clearSearch,
-        tipsClicked        
+        tipsClicked,
+        featureChanged,
+        featureTable, setFeatureTable
       }
 };
 

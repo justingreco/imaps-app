@@ -3,13 +3,16 @@ import PopupTemplate from "@arcgis/core/PopupTemplate";
 import FieldInfo from "@arcgis/core/popup/FieldInfo";
 import Graphic from "@arcgis/core/Graphic";
 
-import { createDeedButtons, createDurhamButton, createEnvironmentalButtons, createLinkButtons, getAddressTable, getDurhamPhoto, getServiceAccordion } from "./customContent";
+import { createDeedButtons, createDurhamButton, createEnvironmentalButtons, createFeatureTitle, createLinkButtons, getAddressTable, getDurhamPhoto, getServiceAccordion } from "./customContent";
 import { arcadeExpressionInfos } from "./utils/arcadeExpressions";
+import FeatureTable from "@arcgis/core/widgets/FeatureTable";
 
 export const createTemplate = (
   view: __esri.MapView | __esri.SceneView,
   condoTable: FeatureLayer,
-  feature: Graphic
+  feature: Graphic,
+  condos: Graphic[],
+  featureTable: __esri.FeatureTable
 ): PopupTemplate => {
   const popupTemplate = new PopupTemplate({
     expressionInfos: arcadeExpressionInfos,
@@ -27,10 +30,11 @@ export const createTemplate = (
       };
     }),
     content: [
-      {
-        type: "text",
-        text: "<h2>{expression/site-address}</h2>",
-      },
+      // {
+      //   type: "text",
+      //   text: "<h2>{expression/site-address}</h2>",
+      // },
+      createFeatureTitle(view as __esri.MapView, feature, condos, featureTable),
       createDurhamButton(),
       createLinkButtons(),
       createEnvironmentalButtons(view),

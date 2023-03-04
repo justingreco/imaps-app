@@ -46,6 +46,7 @@ export function initializeFeatureTable(
       featureTable?.when(() => {
         resolve(featureTable);
         initializeGrid(featureTable);
+
         featureTable.on("selection-change", (e) => {
           if (e.added.length) {
             (featureTable.layer as __esri.FeatureLayer)

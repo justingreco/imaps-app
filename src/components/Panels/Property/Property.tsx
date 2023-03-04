@@ -28,7 +28,9 @@ function Property(args: any) {
     featureSelected,
     panelDismissed,
     clearSearch,
-    tipsClicked
+    tipsClicked,
+    featureTable,
+    setFeatureTable
   } = useProperty(args);
 
   return (
@@ -77,12 +79,18 @@ function Property(args: any) {
                 view={args.view}
                 condos={condos}
                 featureSelected={featureSelected}
+                featureTableSet={(table: __esri.FeatureTable) => setFeatureTable(table)}
               ></PropertyTable>
             )}
           </CalciteTab>
           <CalciteTab>
             {args.view && (
-              <PropertyInfo view={args.view} feature={feature}></PropertyInfo>
+              <PropertyInfo 
+                view={args.view}
+                feature={feature} 
+                condos={condos} 
+                featureTable={featureTable}
+                ></PropertyInfo>
             )}
           </CalciteTab>
           <CalciteScrim

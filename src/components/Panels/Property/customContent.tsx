@@ -5,9 +5,11 @@ import FeatureLayer from "@arcgis/core/layers/FeatureLayer";
 import { lazy, Suspense } from "react";
 import { services } from "../../../config/config";
 import { createRoot } from "react-dom/client";
+import FeatureTable from "@arcgis/core/widgets/FeatureTable";
 
 const Services = lazy(() => import("./Services/Services"));
 const AddressTable = lazy(() => import("./AddressTable/AddressTable"));
+const NextPropertyButton = lazy(() => import("./NextPropertyButton/NextPropertyButton"));
 
 
 export const executeArcade = async (expression: string, feature: Graphic) => {
@@ -293,6 +295,31 @@ export const createDurhamButton = () => {
             accordion.append(item);
           });
           return accordion;
+        },
+      })    
+  }
+  export const createFeatureTitle = (view: __esri.MapView, feature: __esri.Graphic, condos: __esri.Graphic[], featureTable: FeatureTable) => {
+ 
+    return new CustomContent({
+        outFields: ["*"],
+        creator: (e: any) => {
+            const div = document.createElement("div");
+            const root = createRoot(div as HTMLDivElement);
+            root.render(<div className="feature-title">
+              {condos.length > 1 && <Suspense fallback={""}>
+              <NextPropertyButton view={view} icon="caret-left" text="Previous" featureTable={featureTable} />
+            </Suspense> }      
+              <h2>{ feature.getAttribute('SITE_ADDRESS')}</h2>
+              <Suspense fallback={""}>
+              {condos.length > 1 && 
+              <NextPropertyButton view={view}  icon="caret-right" text="Next" featureTable={featureTable}/>
+              }
+            </Suspense>              
+              </div>
+            );
+                
+
+          return div;
         },
       })    
   }

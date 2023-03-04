@@ -1,6 +1,7 @@
 import Graphic from "@arcgis/core/Graphic";
 import MapView from "@arcgis/core/views/MapView";
 import Feature from "@arcgis/core/widgets/Feature";
+import FeatureTable from "@arcgis/core/widgets/FeatureTable";
 import { createTemplate, getPhotos } from "../popuptemplate";
 
 export function initializeFeature(ref: HTMLDivElement, view: MapView) {
@@ -11,13 +12,16 @@ export function initializeFeature(ref: HTMLDivElement, view: MapView) {
   return feature;
 }
 
-export function updateFeature(feature: Feature, graphic: Graphic) {
+export function updateFeature(feature: Feature, graphic: Graphic, condos: Graphic[], featureTable: FeatureTable) {
   getPhotos(graphic).then((mediaInfos: __esri.MediaInfo[]) => {
     graphic.popupTemplate = createTemplate(
       feature.view,
       graphic.layer as __esri.FeatureLayer,
-      graphic
+      graphic,
+      condos,
+      featureTable
     );
+    
     const media = (graphic.popupTemplate.content as __esri.Content[]).find(
       (content: __esri.Content) => {
         return content?.type === "media";

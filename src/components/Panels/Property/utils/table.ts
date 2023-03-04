@@ -56,34 +56,40 @@ export function initializeFeatureTable(
       featureTable?.when(() => {
         resolve(featureTable);
         initializeGrid(featureTable);
-        featureTable.on("selection-change", (e) => {
+
+        featureTable.highlightIds.on('change', (e) => {
           if (e.added.length) {
-            const condoTable = (
-              view.map.allTables.find((table: __esri.Layer) => {
-                return table.title.includes("Condo");
-              }) as __esri.FeatureLayer
-            );
-            (featureTable.layer as __esri.FeatureLayer)
-              condoTable.queryFeatures({
-                where: `REID = '${e.added[0].feature.getAttribute('REID')}'`,
-                outFields: ['*'],
-                returnGeometry: false,
-              })
-              .then((featureSet) => {
-                if (featureSet.features.length) {
-                  const oid = featureSet.features[0].getAttribute('OBJECTID');
-                  getProperty([oid]).then(properties => {
-                    if (properties.length) {
-                      featureSet.features[0].geometry = properties[0].geometry;
-                      view.goTo(featureSet.features[0]);
-                      featureSelected(featureSet.features[0]);                      
-                    }
+            (featureTable.layer as __esri.FeatureLayer).queryFeatures({where:`OBJECTID = ${e.added[0]}`, outFields: ['REID'], returnGeometry: false}).then(fs => {
+              if (fs.features.length) {
+                const condoTable = (
+                  view.map.allTables.find((table: __esri.Layer) => {
+                    return table.title.includes("Condo");
+                  }) as __esri.FeatureLayer
+                );
+                (featureTable.layer as __esri.FeatureLayer)
+                  condoTable.queryFeatures({
+                    where: `REID = '${fs.features[0].getAttribute('REID')}'`,
+                    outFields: ['*'],
+                    returnGeometry: false,
                   })
-                  //view.goTo(featureSet.features[0]);
-                  //featureSelected(featureSet.features[0]);
-                }
-              });
-              featureTable.highlightIds.removeAll();
+                  .then((featureSet) => {
+                    if (featureSet.features.length) {
+                      const oid = featureSet.features[0].getAttribute('OBJECTID');
+                      getProperty([oid]).then(properties => {
+                        if (properties.length) {
+                          featureSet.features[0].geometry = properties[0].geometry;
+                          view.goTo(featureSet.features[0]);
+                          featureSelected(featureSet.features[0]);                      
+                        }
+                      })
+                      //view.goTo(featureSet.features[0]);
+                      //featureSelected(featureSet.features[0]);
+                    }
+                  });
+                 // featureTable.highlightIds.removeAll();
+              }
+            });
+           
           }
         });
       });
@@ -107,8 +113,10 @@ function initializeGrid(featureTable: FeatureTable) {
     grid?.addEventListener("cell-activate", (e: any) => {
       featureTable.highlightIds.removeAll();
       const feature = e.detail.model.item.feature;
-      
-      featureTable.highlightIds.add(feature.getAttribute('OBJECTID'));
+
+      featureTable.highlightIds.add(e.detail.model.item.objectId);
+      console.log(featureTable.highlightIds.getItemAt(0));
+      //featureTable.highlightIds.add(e.detail.model.index);
     });
   });
 }

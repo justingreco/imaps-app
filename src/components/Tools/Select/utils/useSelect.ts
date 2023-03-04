@@ -35,7 +35,6 @@ const useSelect = (args: any) => {
     useEffect(() => {
       if (args.selectedProperty) {
         setSelectedProperty(args.selectedProperty);
-        debugger;
       }
     }, [args.selectedProperty]);
     useEffect(() => {

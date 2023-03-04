@@ -43,7 +43,6 @@ const useCoordinates = (args: any) => {
     }, []);    
     const modeClicked = useCallback((e: any) => {
       e.target.active = !e.target.active;
-      debugger
       if (e.target.active) {
         moveHandler?.remove();
         addClickHandler(args.view, args.clickActivated);

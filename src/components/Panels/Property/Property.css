@@ -35,3 +35,12 @@ calcite-tab {
   }
 }
 
+.feature-title {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+
+.feature-title h2 {
+  width: 100%;
+}

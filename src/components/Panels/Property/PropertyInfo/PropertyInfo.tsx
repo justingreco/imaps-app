@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { createTemplate } from "../popuptemplate";
 import { initializeFeature, updateFeature } from "../utils/info";
 import "./PropertyInfo.css";
@@ -15,6 +15,7 @@ function PropertyInfo(args: any) {
       feature && feature?.destroy();
     };
   }, []);
+ 
   useEffect(() => {
     let pin = "";
     if (feature && args.feature) {
@@ -27,9 +28,11 @@ function PropertyInfo(args: any) {
       args.feature.popupTemplate = createTemplate(
         feature?.view as __esri.MapView,
         table,
-        args.feature
+        args.feature,
+        args.condos,
+        args.featureTable
       );
-      updateFeature(feature, args.feature);
+      updateFeature(feature, args.feature, args.condos, args.featureTable);
     } else {
       if (feature) {
         (feature as any).graphic = null;
@@ -46,7 +49,7 @@ function PropertyInfo(args: any) {
     if (window.history.state?.pins !== pin) {
       window.history.pushState({ pins: pin }, "", url);
     }
-  }, [args.feature]);
+  }, [args.feature, args.table, args.featureTable]);
   return <div ref={ref}></div>;
 }
 

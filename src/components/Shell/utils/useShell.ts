@@ -82,7 +82,6 @@ const useShell = () => {
     );
     const geometryCallback = useCallback(
       (geometry: __esri.Geometry) => {
-        debugger
         setGeometry(geometry);
       },
       []

@@ -53,14 +53,35 @@ export function initializeMap(
       // }, 5000);
     });
   });
-  window.addEventListener('pagehide', (e) => {
+  // window.addEventListener('pagehide', (e) => {
 
-    if (e.persisted) {
-      return;
-    }
+  //   if (e.persisted) {
+  //     return;
+  //   }
 
+  //   saveMap(view);
+  // });
+
+  window.addEventListener('beforeunload', handleBeforeUnload);
+  window.addEventListener('unload', handleUnload);
+  document.addEventListener('visibilitychange', handleVisibilityChange);
+  function handleBeforeUnload() {
+    // Perform actions before the tab is reloaded or closed
     saveMap(view);
-  });
+  }
+
+  function handleUnload() {
+    // Perform actions when the tab is reloaded or closed
+    saveMap(view);
+  }
+
+  function handleVisibilityChange() {
+    if (document.visibilityState === 'hidden') {
+      // Perform actions when the tab is hidden (e.g. when switching to another app)
+      saveMap(view);
+    }
+  }
+
 
   view.on("hold", (event) => {
     geometrySet(event.mapPoint);

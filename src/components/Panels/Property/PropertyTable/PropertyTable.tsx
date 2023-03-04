@@ -13,6 +13,7 @@ function PropertyTable(args: any) {
       initializeFeatureTable(ref.current, args.view, args.featureSelected).then(
         (table: __esri.FeatureTable) => {
           setFeatureTable(table);
+          args.featureTableSet(table);
         }
       );
     }
