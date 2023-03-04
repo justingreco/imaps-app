@@ -43,6 +43,7 @@ export const Select = (args: any) => {
         <div className="select-container">
           <CalciteAction
             id="selectPoint"
+            scale="m"
             icon="pin"
             text="Point"
             active={selectedTool === "point" ? true : undefined}
@@ -56,6 +57,7 @@ export const Select = (args: any) => {
           <CalciteTooltip closeOnClick label="Select by Point" referenceElement="selectPoint">Select by Point</CalciteTooltip>
           <CalciteAction
             id="selectLine"
+            scale="m"
             icon="line"
             text="Line"
             active={selectedTool === "line" ? true : undefined}
@@ -69,6 +71,7 @@ export const Select = (args: any) => {
           <CalciteTooltip closeOnClick label="Select by Line" referenceElement="selectLine">Select by Line</CalciteTooltip>
           <CalciteAction
             id="selectPolygon"
+            scale="m"
             icon="polygon"
             text="Polygon"
             active={selectedTool === "polygon" ? true : undefined}
@@ -79,9 +82,40 @@ export const Select = (args: any) => {
               }
             }}
           ></CalciteAction>
+          <CalciteTooltip closeOnClick label="Select by Rectangle" referenceElement="selectRectangle">Select by Rectangle</CalciteTooltip>
+          <CalciteAction
+            id="selectRectangle"
+            scale="m"
+            icon="rectangle"
+            text="Rectangle"
+            active={selectedTool === "rectangle" ? true : undefined}
+            onClick={() => {
+              setSelectedTool("rectangle");
+              if (sketchVm) {
+                createSketch(sketchVm, "rectangle");
+              }
+            }}
+          ></CalciteAction>        
+          <CalciteTooltip closeOnClick label="Select by Circle" referenceElement="selectCircle">Select by Circle</CalciteTooltip>
+          <CalciteAction
+            id="selectCircle"
+            scale="m"
+
+            icon="circle"
+            text="Circle"
+            active={selectedTool === "circle" ? true : undefined}
+            onClick={() => {
+              setSelectedTool("circle");
+              if (sketchVm) {
+                createSketch(sketchVm, "circle");
+              }
+            }}
+          ></CalciteAction>               
           <CalciteTooltip closeOnClick label="Select by Polygon" referenceElement="selectPolygon">Select by Polygon</CalciteTooltip>
           <CalciteAction
             id="selectMultipoint"
+            scale="m"
+
             icon="pins"
             text="Multi-Point"
             active={selectedTool === "multipoint" ? true : undefined}
@@ -93,7 +127,7 @@ export const Select = (args: any) => {
             }}
           ></CalciteAction>
           <CalciteTooltip closeOnClick label="Select by Multi-Point" referenceElement="selectMultipoint">Select by Multi-point</CalciteTooltip>
-          <CalciteAction id="clearSelection" icon="trash" text="Clear" onClick={() => {
+          <CalciteAction  id="clearSelection" scale="m" icon="trash" text="Clear" onClick={() => {
             args.geometrySet(undefined)
           }}></CalciteAction>
           <CalciteTooltip closeOnClick label="Clear Selection" referenceElement="clearSelection">Clear selection</CalciteTooltip>
