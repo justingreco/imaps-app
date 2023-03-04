@@ -9,8 +9,12 @@
 } */
 .tools {
   overflow-y: hidden;
-  width: 336px;
+  width: 336git cpx;
   z-index: 10000;
+}
+
+.esri-ui-top-right {
+  align-items: center;
 }
 
 .container {
