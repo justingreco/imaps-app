@@ -35,7 +35,9 @@ export const Measure = (args: any) => {
       <CalciteTooltip label="Collapse" referenceElement="collapseTool" closeOnClick>Collapse</CalciteTooltip>             
       <div id="measure-tools">
         <div className="measure-container">
+          <CalciteTooltip closeOnClick label="Distance" referenceElement="measureDistance">Distance</CalciteTooltip>
           <CalciteAction
+            id="measureDistance"
             icon="measure-line"
             text="Distance"
             active={selectedTool === "distance" ? true : undefined}
@@ -46,7 +48,9 @@ export const Measure = (args: any) => {
               }
             }}
           ></CalciteAction>
+          <CalciteTooltip closeOnClick label="Area" referenceElement="measureArea">Area</CalciteTooltip>
           <CalciteAction
+            id="measureArea"
             icon="measure-area"
             text="Area"
             active={selectedTool === "area" ? true : undefined}
@@ -57,7 +61,9 @@ export const Measure = (args: any) => {
               }
             }}
           ></CalciteAction>
+          <CalciteTooltip closeOnClick label="Clear" referenceElement="clearMeasure">Clear</CalciteTooltip>
           <CalciteAction
+            id="clearMeasure"
             icon="trash"
             text="Clear"
             onClick={() => {
