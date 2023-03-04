@@ -49,7 +49,7 @@ function Header() {
           onCalciteDropdownOpen={(e: any) => {
             e.target.shadowRoot
               ?.querySelector(".calcite-dropdown-content")
-              ?.setAttribute("style", "min-height: 58vh");
+              ?.setAttribute("style", "min-height: 590px");
           }}
         >
           <CalciteButton id="menuButton" scale="m" slot="trigger" name="Menu" role="button" aria-label="Menu">
