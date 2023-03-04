@@ -45,7 +45,7 @@ export function initializeSelect(
     setSelectedTool(activeTool);
   });
   sketchVm.on("create" as any, (event: __esri.SketchViewModelCreateEvent) => {
-    if (event.state === "start") {
+    if (event.state === "start" || event.state === 'cancel') {
       layer.graphics.removeAll();
       if (highlight) {
         highlight.remove();
