@@ -99,12 +99,13 @@ function isSearchable(layer: __esri.Layer, webmap: any) {
 function getWebMap(mapId: string): Promise<WebMap> {
   return new Promise((resolve, reject) => {
     let webmap: any;
-    if (window.localStorage.getItem("imaps_calcite")) {
+    if (window.localStorage.getItem("imaps_calcite") && window.localStorage.getItem("imaps_reset") !== "true") {
       webmap = WebMap.fromJSON(
         JSON.parse(window?.localStorage?.getItem("imaps_calcite") as string)
       );
       resolve(webmap);
     } else {
+      window.localStorage.removeItem("imaps_reset");
       webmap = new WebMap({
         portalItem: {
           id: mapId,
@@ -148,9 +149,8 @@ function removeGraphicsLayers(view: MapView) {
   );
 }
 export const saveMap = (view: MapView) => {
-  if (localStorage.getItem('imaps_reset')) {
-    localStorage.removeItem('imaps_reset');
-  }  else {
+
+
   if (view && view?.ready) {
     const groups = view.map.allLayers
       .filter((layer) => {
@@ -184,10 +184,10 @@ export const saveMap = (view: MapView) => {
     // );
     const json = (view.map as any).toJSON();
     json.initialState.viewpoint.targetGeometry = view.extent;
+    
     window.localStorage.setItem("imaps_calcite", JSON.stringify(json));
     //window.localStorage.removeItem('imaps_calcite');
   }
-}
 };
 const clusterConfig = {
   type: "cluster",
