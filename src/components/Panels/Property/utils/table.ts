@@ -78,7 +78,7 @@ export function initializeFeatureTable(
                       getProperty([oid]).then(properties => {
                         if (properties.length) {
                           featureSet.features[0].geometry = properties[0].geometry;
-                          view.goTo(featureSet.features[0]);
+                          //view.goTo(featureSet.features[0]);
                           featureSelected(featureSet.features[0]);                      
                         }
                       })
