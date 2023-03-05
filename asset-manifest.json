@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/imaps-app/static/css/main.83623743.css",
-    "main.js": "/imaps-app/static/js/main.a347eb7c.js",
+    "main.js": "/imaps-app/static/js/main.e66f1ea0.js",
     "static/css/9381.75063931.chunk.css": "/imaps-app/static/css/9381.75063931.chunk.css",
     "static/js/9381.c139f671.chunk.js": "/imaps-app/static/js/9381.c139f671.chunk.js",
     "static/css/4402.6043e8a5.chunk.css": "/imaps-app/static/css/4402.6043e8a5.chunk.css",
@@ -306,7 +306,7 @@
     "static/js/5387.0c09e1e3.chunk.js": "/imaps-app/static/js/5387.0c09e1e3.chunk.js",
     "index.html": "/imaps-app/index.html",
     "main.83623743.css.map": "/imaps-app/static/css/main.83623743.css.map",
-    "main.a347eb7c.js.map": "/imaps-app/static/js/main.a347eb7c.js.map",
+    "main.e66f1ea0.js.map": "/imaps-app/static/js/main.e66f1ea0.js.map",
     "9381.75063931.chunk.css.map": "/imaps-app/static/css/9381.75063931.chunk.css.map",
     "9381.c139f671.chunk.js.map": "/imaps-app/static/js/9381.c139f671.chunk.js.map",
     "4402.6043e8a5.chunk.css.map": "/imaps-app/static/css/4402.6043e8a5.chunk.css.map",
@@ -593,6 +593,6 @@
   },
   "entrypoints": [
     "static/css/main.83623743.css",
-    "static/js/main.a347eb7c.js"
+    "static/js/main.e66f1ea0.js"
   ]
 }
