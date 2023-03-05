@@ -10,18 +10,22 @@ import { services } from "../../../../config/config";
 import ServiceLayer from "./ServiceLayer";
 import { getServices } from "../utils/services";
 
-export const Services = (args: any) => {
+interface Props {
+  view: __esri.MapView;
+  graphic: __esri.Graphic;
+}
+export const Services = (props: Props) => {
   const [view, setView] = useState<__esri.MapView>();
   const [graphic, setGraphic] = useState<__esri.Graphic>();
   const [features, setFeatures] = useState<__esri.Graphic[]>([]);
   const [searching, setSearching] = useState(false);
 
   useEffect(() => {
-    if (args.view) {
-      setView(args.view);
+    if (props.view) {
+      setView(props.view);
     }
-    if (args.graphic) {
-      setGraphic(args.graphic);
+    if (props.graphic) {
+      setGraphic(props.graphic);
     }
   }, []);
 

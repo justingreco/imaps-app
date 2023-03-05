@@ -2,8 +2,9 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { tips } from "./tips";
 import Measurement from "@arcgis/core/widgets/Measurement";
 import { initializeMeasure } from "./measure";
+import { ToolProps } from "../../utils/ToolProps";
   
-const useMeasure = (args: any) => {
+const useMeasure = (props: ToolProps) => {
     const measureRef = useRef() as any;
     const loaded = useRef(false);
     const [selectedTool, setSelectedTool] = useState("");
@@ -12,7 +13,7 @@ const useMeasure = (args: any) => {
     useEffect(() => {
       if (!loaded.current) {
         loaded.current = true;
-        const widget = initializeMeasure(measureRef.current, args.view);
+        const widget = initializeMeasure(measureRef.current, props.view);
        measurement.current = widget;
         widget.watch("activeTool", (activeTool) => {
           if (activeTool) {
@@ -27,23 +28,23 @@ const useMeasure = (args: any) => {
       };
     }, []);
     useEffect(() => {
-      setIsActive(args.isActive);
-      if (!args.isActive) {
+      setIsActive(props.isActive);
+      if (!props.isActive) {
         (measurement.current as any).activeTool = null;
         //measurement.current?.clear();
       }
       if (isActive && measurement.current) {
         measurement.current.activeTool = selectedTool as any;
       }
-    }, [args.isActive]);
+    }, [props.isActive]);
     const toolDismissed = useCallback((e: any) => {
-      args.toolDismissed();
+      props.toolDismissed();
 
       (measurement.current as any).activeTool = null;
       //measurement.current?.clear();
     }, []);
     const tipsClicked = useCallback((e: any) => {
-      args.showTips(tips);
+      props.showTips(tips);
       }, []);      
     return {measureRef, measurement, selectedTool, setSelectedTool, isActive, toolDismissed, tipsClicked}
 };

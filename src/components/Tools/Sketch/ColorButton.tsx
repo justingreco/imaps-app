@@ -13,24 +13,24 @@ import {
 } from "@esri/calcite-components-react";
 import React, { useEffect, useRef, useState } from "react";
 
-function ColorButton(args: any) {
+function ColorButton(props: any) {
   const popover = useRef<HTMLCalcitePopoverElement>(null);
   const picker = useRef<HTMLCalciteColorPickerElement>(null);
   const [color, setColor] = useState<Color>();
   const [transparency, setTransparency] = useState<any>(0);
   useEffect(() => {
-    if (!color && args.color) {
-      setColor(new Color(args.color));
-      setTransparency((1 - args.color[3]) * 100);
+    if (!color && props.color) {
+      setColor(new Color(props.color));
+      setTransparency((1 - props.color[3]) * 100);
     }
-  }, [args.color]);
+  }, [props.color]);
 
   return (
-    <div id={args.id}>
+    <div id={props.id}>
       <CalciteLabel>
-        {args.label} Color
+        {props.label} Color
         <CalciteButton
-          id={`${args.id}-popover-button`}
+          id={`${props.id}-popover-button`}
           width="half"
           iconEnd="pencil"
           kind="neutral"
@@ -46,7 +46,7 @@ function ColorButton(args: any) {
         overlayPositioning="fixed"
         placement="top-start"
         label={""}
-        referenceElement={`${args.id}-popover-button`}
+        referenceElement={`${props.id}-popover-button`}
       >
         <CalcitePanel heading="Color">
           <CalciteAction
@@ -59,7 +59,7 @@ function ColorButton(args: any) {
               }
               const c = new Color(color);
               c.a = 1 - transparency / 100;
-              args.colorSet(c);
+              props.colorSet(c);
             }}
           ></CalciteAction>
           <CalciteColorPicker
@@ -79,15 +79,15 @@ function ColorButton(args: any) {
             popover.current?.toggle();
             const c = new Color(color);
             c.a = 1 - transparency / 100;
-            args.colorSet(c);
+            props.colorSet(c);
           }}
         >
           Done
         </CalciteButton> */}
       </CalcitePopover>
-      {!args.hideTransparency && (
+      {!props.hideTransparency && (
         <CalciteLabel>
-          {args.label} Transparency
+          {props.label} Transparency
           <div className="slider-input">
             <CalciteSlider
               max={100}
@@ -104,7 +104,7 @@ function ColorButton(args: any) {
                 setTransparency(value);
                 const c = new Color(color);
                 c.a = 1 - transparency / 100;
-                args.colorSet(c);
+                props.colorSet(c);
               }}
             ></CalciteSlider>
             <CalciteInput
@@ -126,7 +126,7 @@ function ColorButton(args: any) {
                 setTransparency(value);
                 const c = new Color(color);
                 c.a = 1 - transparency / 100;
-                args.colorSet(c);
+                props.colorSet(c);
               }}
             ></CalciteInput>
           </div>

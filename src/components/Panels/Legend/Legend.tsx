@@ -2,13 +2,14 @@ import React, { } from "react";
 
 import { CalciteAction, CalcitePanel, CalciteTooltip } from "@esri/calcite-components-react";
 import useLegend from "./utils/useLegend";
-export const Legend = (args: any) => {
+import { PanelProps } from "../utils/PanelProps";
+export const Legend = (props: PanelProps) => {
   const { 
     ref,
     isActive,
     panelDismissed,
     tipsClicked    
-  } = useLegend(args);
+  } = useLegend(props);
 
   return (
     <CalcitePanel

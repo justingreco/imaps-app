@@ -3,13 +3,14 @@ import { CalcitePanel, CalciteAction, CalciteTooltip } from "@esri/calcite-compo
 import "./Bookmarks.css";
 import { collapsePanel } from "../../Shell/utils/shell";
 import useBookmarks from "./utils/useBooksmarks";
-export const Bookmarks = (args: any) => {
+import { ToolProps } from "../utils/ToolProps";
+export const Bookmarks = (props: ToolProps) => {
   const { 
     bookmarkRef, 
     isActive, 
     toolDismissed, 
     tipsClicked
-  } = useBookmarks(args);
+  } = useBookmarks(props);
   return (
     <CalcitePanel
       id="bookmarks-panel"

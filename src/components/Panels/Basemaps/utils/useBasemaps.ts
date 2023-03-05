@@ -1,9 +1,10 @@
 import MapView from "@arcgis/core/views/MapView";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { PanelProps } from "../../utils/PanelProps";
 import { blendBasemap, initializeBasemaps, initializeEsriMaps, initializeImageMaps, updateBlendOpacity } from "./basemaps";
 import { tips } from "./tips";
 
-const useBasemaps = (args: any) => {
+const useBasemaps = (props: PanelProps) => {
     const [view, setView] = useState<MapView>();
     const [showAlert, setShowAlert] = useState<any>({
       show: false,
@@ -22,39 +23,39 @@ const useBasemaps = (args: any) => {
     const imageGroup = "492386759d264d49948bf7f83957ddb9";
     const streetMapId = '02d50d24991747538e218e0a5806e9b3';
     useEffect(() => {
-      setView(args.view);
+      setView(props.view);
       if (!loaded.current) {
         loaded.current = true;
-        initializeBasemaps(args.view, basemapRef.current as any, mapGroup);
+        initializeBasemaps(props.view, basemapRef.current as any, mapGroup);
         initializeImageMaps(
-          args.view,
+          props.view,
           imagesRef.current as any,
           imageGroup,
           setShowAlert
         );
-        initializeEsriMaps(args.view, esriRef.current as any);
+        initializeEsriMaps(props.view, esriRef.current as any);
         setTimeout(() => {
           document.querySelector('.basemaps calcite-tab-nav')?.shadowRoot?.querySelector('.tab-nav')?.setAttribute('style', 'overflow: hidden');
         },100);
       }
-    }, [args.view]);
+    }, [props.view]);
     useEffect(() => {
-      setIsActive(args.isActive);
-    }, [args.isActive]);
+      setIsActive(props.isActive);
+    }, [props.isActive]);
     const panelDismissed = useCallback((e: any) => {
-      args.panelDismissed();
+      props.panelDismissed();
     }, []);    
     const tipsClicked = useCallback((e: any) => {
-        args.showTips(tips);
+        props.showTips(tips);
         }, []);  
       const blendUpdated = useCallback((e: any) => {
         setBlendActive(e.detail.switched);
         debugger;
-       blendBasemap(e.detail.switched, args.view, streetMapId, opacity.current);
+       blendBasemap(e.detail.switched, props.view, streetMapId, opacity.current);
       }, []);        
       const blendOpacityChanged = useCallback((e: any) => {
         opacity.current = 1 - e.target.value/100;
-        updateBlendOpacity(e.target.value/100, args.view, streetMapId, opacity.current);
+        updateBlendOpacity(e.target.value/100, props.view, streetMapId, opacity.current);
        }, []);              
     return {
         basemapRef,

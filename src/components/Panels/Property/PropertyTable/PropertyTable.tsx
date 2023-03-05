@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import { initializeFeatureTable, updateTable } from "../utils/table";
+import { PropertyTableProps } from "./PropertyProps";
 
-function PropertyTable(args: any) {
+function PropertyTable(args: PropertyTableProps) {
   const ref = useRef() as any;
   const loaded = useRef(false);
   const [featureTable, setFeatureTable] = useState<__esri.FeatureTable>();

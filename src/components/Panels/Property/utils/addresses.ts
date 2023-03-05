@@ -12,8 +12,7 @@ import { clearAddressPoints } from "./property";
 let featureTable: FeatureTable;
 export function initializeFeatureTable(
   ref: HTMLDivElement,
-  view: MapView,
-  featureSelected: Function
+  view: MapView
 ): Promise<FeatureTable> {
   return new Promise((resolve, reject) => {
     getTableLayer(view).then((table: any) => {

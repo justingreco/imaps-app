@@ -1,9 +1,11 @@
 import { CalciteAction, CalciteTooltip, CalciteButton, CalciteInput, CalciteInputMessage, CalciteLabel, CalciteNotice, CalciteOption, CalciteSelect } from "@esri/calcite-components-react";
 import React from "react";
 import "./Coordinates.css";
+import { CoordinateProps } from "./utils/CoordinateProps";
 import useCoordinates from "./utils/useCoordinates";
-function Coordinates(args: any) {
-  const {loaded, settingsClicked, showSettings, formats, formatChanged, searchClicked, showSearch, selectedFormat, searchCoordinates, x, y, other, modeClicked, coordinateRef, modeActionRef, noticeRef} = useCoordinates(args);
+
+function Coordinates(props: CoordinateProps) {
+  const {loaded, settingsClicked, showSettings, formats, formatChanged, searchClicked, showSearch, selectedFormat, searchCoordinates, x, y, other, modeClicked, coordinateRef, modeActionRef, noticeRef} = useCoordinates(props);
   return <div id="coordinatesWidget">
     <CalciteNotice scale="s" ref={noticeRef}  kind="danger" closable><div slot="message">Location outside of county</div></CalciteNotice>
 

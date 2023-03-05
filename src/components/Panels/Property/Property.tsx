@@ -15,7 +15,8 @@ import PropertySearch from "./PropertySearch/PropertySearch";
 import PropertyTable from "./PropertyTable/PropertyTable";
 import PropertyInfo from "./PropertyInfo/PropertyInfo";
 import useProperty from "./utils/useProperty";
-function Property(args: any) {
+import { PropertyProps } from "./utils/PropertyProps";
+function Property(props: PropertyProps) {
   const { 
     condos,
     feature,
@@ -31,7 +32,7 @@ function Property(args: any) {
     tipsClicked,
     featureTable,
     setFeatureTable
-  } = useProperty(args);
+  } = useProperty(props);
 
   return (
     <CalcitePanel
@@ -45,9 +46,9 @@ function Property(args: any) {
       <CalciteAction id="tip" icon="lightbulb"  text="Tips" slot="header-actions-end" onClick={tipsClicked}></CalciteAction>
       <CalciteTooltip label="Show Tip" referenceElement="tip" closeOnClick>Show Tip</CalciteTooltip>
       <div className="property">
-        {args.view && (
+        {props.view && (
           <div className="row"><PropertySearch
-            view={args.view}
+            view={props.view}
             searchingChanged={(isSearching: boolean) =>
               setSearching(isSearching)
             }
@@ -55,7 +56,7 @@ function Property(args: any) {
           ></PropertySearch>
           <CalciteButton id="clearSelection" iconEnd="trash" appearance="transparent" scale="m" kind="neutral"
             onClick={() => {
-              clearSearch(args.view);
+              clearSearch(props.view);
             }}
           ></CalciteButton>
           <CalciteTooltip referenceElement="clearSelection" label="Clear Selection" closeOnClick>Clear Selection</CalciteTooltip>
@@ -74,9 +75,9 @@ function Property(args: any) {
             </CalciteTabTitle>
           </CalciteTabNav>
           <CalciteTab>
-            {args.view && (
+            {props.view && (
               <PropertyTable
-                view={args.view}
+                view={props.view}
                 condos={condos}
                 featureSelected={featureSelected}
                 featureTableSet={(table: __esri.FeatureTable) => setFeatureTable(table)}
@@ -84,9 +85,9 @@ function Property(args: any) {
             )}
           </CalciteTab>
           <CalciteTab>
-            {args.view && (
+            {props.view && (
               <PropertyInfo 
-                view={args.view}
+                view={props.view}
                 feature={feature} 
                 condos={condos} 
                 featureTable={featureTable}

@@ -1,9 +1,10 @@
 import MapView from "@arcgis/core/views/MapView";
 import { useEffect, useRef } from "react";
 import { displayProperties, initializeMap } from "../utils/map";
+import { WebMapProps } from "./WebMapProps";
 
-  
-const useWebMap = (args: any) => {
+
+const useWebMap = (args: WebMapProps) => {
     const ref = useRef() as any;
     const loaded = useRef(false);
     const view = useRef<MapView | null>(null);

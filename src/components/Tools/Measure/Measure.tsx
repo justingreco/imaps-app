@@ -3,7 +3,8 @@ import React, { } from "react";
 import "./Measure.css";
 import { collapsePanel } from "../../Shell/utils/shell";
 import useMeasure from "./utils/useMeasure";
-export const Measure = (args: any) => {
+import { ToolProps } from "../utils/ToolProps";
+export const Measure = (props: ToolProps) => {
   const { 
     measureRef,
     measurement, 
@@ -12,7 +13,7 @@ export const Measure = (args: any) => {
     isActive, 
     toolDismissed, 
     tipsClicked
-  } = useMeasure(args);
+  } = useMeasure(props);
   return (
     <CalcitePanel
       id="measure-panel"

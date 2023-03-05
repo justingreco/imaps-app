@@ -140,7 +140,7 @@ export const createDurhamButton = () => {
   };
 
 
-  export const createEnvironmentalButtons = (view: __esri.MapView | __esri.SceneView) => {
+  export const createEnvironmentalButtons = (view: __esri.MapView) => {
     return new CustomContent({
         outFields: ["PIN_NUM"],
         creator: (e) => {
@@ -273,7 +273,7 @@ export const createDurhamButton = () => {
     }    
   }
 
-  export const getServiceAccordion = (view: __esri.MapView | __esri.SceneView) => {
+  export const getServiceAccordion = (view: __esri.MapView) => {
     return new CustomContent({
         outFields: ["*"],
         creator: (e: any) => {
@@ -298,33 +298,34 @@ export const createDurhamButton = () => {
         },
       })    
   }
-  export const createFeatureTitle = (view: __esri.MapView, feature: __esri.Graphic, condos: __esri.Graphic[], featureTable: FeatureTable) => {
+  export const createFeatureTitle = (view: __esri.MapView, feature: __esri.Graphic, condos: __esri.Graphic[], featureTable: FeatureTable | undefined) => {
  
     return new CustomContent({
         outFields: ["*"],
         creator: (e: any) => {
+
             const div = document.createElement("div");
             const root = createRoot(div as HTMLDivElement);
-            root.render(<div className="feature-title">
-              {condos.length > 1 && <Suspense fallback={""}>
+            if (featureTable) {
+              root.render(<div className="feature-title">
+              {featureTable.highlightIds.length > 1 && <Suspense fallback={""}>
               <NextPropertyButton view={view} icon="caret-left" text="Previous" featureTable={featureTable} />
             </Suspense> }      
               <h2>{ feature.getAttribute('SITE_ADDRESS')}</h2>
               <Suspense fallback={""}>
-              {condos.length > 1 && 
+              {featureTable.highlightIds.length > 1 && 
               <NextPropertyButton view={view}  icon="caret-right" text="Next" featureTable={featureTable}/>
               }
             </Suspense>              
               </div>
             );
-                
-
+            }
           return div;
         },
       })    
   }
 
-  export const getAddressTable = (view: __esri.MapView | __esri.SceneView) => {
+  export const getAddressTable = (view: __esri.MapView) => {
     return new CustomContent({
         outFields: ["*"],
         creator: (e: any) => {

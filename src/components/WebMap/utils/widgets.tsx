@@ -9,44 +9,12 @@ import React, { lazy, Suspense } from "react";
 
 import { createRoot } from "react-dom/client";
 import * as reactiveUtils from "@arcgis/core/core/reactiveUtils";
-// import SpatialReference from "@arcgis/core/geometry/SpatialReference";
-// import Format from '@arcgis/core/widgets/CoordinateConversion/support/Format';
-// import Point from '@arcgis/core/geometry/Point';
-//import PictureMarkerSymbol from "@arcgis/core/symbols/PictureMarkerSymbol";
-//import Conversion from '@arcgis/core/widgets/CoordinateConversion/support/Conversion';
 
 const Overview = lazy(() => import("../Overview"));
 const Coordinates = lazy(() => import("../Coordinates/Coodinates"));
 let streetviewClick: IHandle | null = null;
 
 export function addWidgets(view: MapView, widgetActivated: Function) {
-  // const coordinates = new CoordinateConversion({ view: view });
-  // const stateplane = getStateplaneConversion()
-  // coordinates.formats.add(stateplane);
-  // coordinates.viewModel.locationSymbol = new PictureMarkerSymbol({ url: 'assets/pin.svg', height: 36, width: 36 });    
-  // coordinates.conversions.splice(
-  //   0,
-  //   0,
-  //   new Conversion({
-  //     format: stateplane,
-  //   }),
-  // );  
-  // coordinates.when(() => {
-  //   coordinates.formats = coordinates.formats.filter((format) => {
-  //     return !['basemap', 'dd', 'ddm'].includes(format.name);
-  //   });
-  //   coordinates.formats.find((format) => {
-  //     return format.name === 'dd';
-  //   }).name = 'Decimal Degrees';
-  // });  
-  // const coordinateExpand = new Expand({
-  //   content: coordinates,
-  //   expandIconClass: "esri-icon-pan",
-  //   mode: "floating",
-  //   collapseTooltip: "Coordinates",
-  //   expandTooltip: "Coordinates",    
-  // });
- // view.ui.add(coordinateExpand, "bottom-left");
   view.ui.add(
     new Home({
       view: view,

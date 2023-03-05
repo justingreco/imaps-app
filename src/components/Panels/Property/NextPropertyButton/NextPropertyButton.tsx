@@ -1,20 +1,21 @@
 import { CalciteButton } from "@esri/calcite-components-react";
-import React, { useEffect, useRef, useState } from "react";
+import React from "react";
+interface Props {
+  view: __esri.MapView;
+  icon: string;
+  text: string;
+  featureTable: __esri.FeatureTable
+}
 
-function NextPropertyButton(args: any) {
+function NextPropertyButton(props: Props) {
 
-
-  useEffect(() => {
-
-  }, []);
-
-  return <CalciteButton appearance="transparent" kind="neutral" scale="s" iconEnd={args.icon} onClick={() => {
-    const ids = (args.featureTable as __esri.FeatureTable).highlightIds;
+  return <CalciteButton appearance="transparent" kind="neutral" scale="s" iconEnd={props.icon} onClick={() => {
+    const ids = (props.featureTable as __esri.FeatureTable).highlightIds;
     if (ids.length) {
-      const orderByFields = (args.featureTable as __esri.FeatureTable).activeSortOrders.map(order => {
+      const orderByFields = (props.featureTable as __esri.FeatureTable).activeSortOrders.map(order => {
         return order.fieldName + ' ' + order.direction
       });
-      ((args.featureTable as __esri.FeatureTable).layer as __esri.FeatureLayer).queryFeatures({
+      ((props.featureTable as __esri.FeatureTable).layer as __esri.FeatureLayer).queryFeatures({
         where: '1=1',
         orderByFields: orderByFields,
         outFields: ['OBJECTID']
@@ -27,13 +28,13 @@ function NextPropertyButton(args: any) {
           return i === ids.getItemAt(0)
         });
 
-        if (args.text === 'Next') {
+        if (props.text === 'Next') {
           index += 1;
           if (index === oids.length) {
             index = 0;
           }      
         }
-        if (args.text === 'Previous') {
+        if (props.text === 'Previous') {
           if (index === 0) {
             index = oids.length - 1
           } else {
@@ -41,8 +42,8 @@ function NextPropertyButton(args: any) {
           }      
         }    
 
-        (args.featureTable as __esri.FeatureTable).highlightIds.removeAll();
-        (args.featureTable as __esri.FeatureTable).highlightIds.add(oids[index]);
+        (props.featureTable as __esri.FeatureTable).highlightIds.removeAll();
+        (props.featureTable as __esri.FeatureTable).highlightIds.add(oids[index]);
       })
     }
   }}></CalciteButton>;

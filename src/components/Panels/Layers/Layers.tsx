@@ -9,7 +9,8 @@ import React from "react";
 import { filterLayers, resetLayers } from "./utils/layers";
 import "./Layers.css";
 import useLayers from "./utils/useLayers";
-export const Layers = (args: any) => {
+import { PanelProps } from "../utils/PanelProps";
+export const Layers = (props: PanelProps) => {
   
   const { 
     ref,
@@ -18,7 +19,7 @@ export const Layers = (args: any) => {
     isActive,
     panelDismissed,
     tipsClicked      
-  } = useLayers(args);
+  } = useLayers(props);
 
   return (
     <CalcitePanel

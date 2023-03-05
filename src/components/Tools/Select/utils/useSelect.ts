@@ -5,8 +5,9 @@ import {
   } from "../utils/select";
 import SketchViewModel from "@arcgis/core/widgets/Sketch/SketchViewModel";
 import { tips } from "./tips";
+import { SelectProps } from "./SelectProps";
   
-const useSelect = (args: any) => {
+const useSelect = (props: SelectProps) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const loaded = useRef(false);
     const [isActive, setIsActive] = useState(false);
@@ -22,8 +23,8 @@ const useSelect = (args: any) => {
         loaded.current = true;
         setSketchVm(
           initializeSelect(
-            args.view,
-            args.geometrySet,
+            props.view,
+            props.geometrySet,
             setSelectedTool
           )
         );
@@ -33,29 +34,29 @@ const useSelect = (args: any) => {
       };
     }, []); // only after first render
     useEffect(() => {
-      //if (args.selectedProperty) {
+      //if (props.selectedProperty) {
         
-        setSelectedProperty(args.selectedProperty);
+        setSelectedProperty(props.selectedProperty);
      // }
-    }, [args.selectedProperty]);
+    }, [props.selectedProperty]);
     useEffect(() => {
-      if (sketchVm && args.selectDismissed) {
+      if (sketchVm && props.toolDismissed) {
         sketchVm.cancel();
         setSelectedTool("");
       }
-    }, [args.selectDismissed]);
+    }, [props.toolDismissed]);
     useEffect(() => {
-      setIsActive(args.isActive);
-      if (!args.isActive) {
+      setIsActive(props.isActive);
+      if (!props.isActive) {
         cancelSelect();
       }
-    }, [args.isActive]);
+    }, [props.isActive]);
     const toolDismissed = useCallback((e: any) => {
-      args.toolDismissed();
+      props.toolDismissed();
       cancelSelect();
     }, []);
     const tipsClicked = useCallback((e: any) => {
-      args.showTips(tips);
+      props.showTips(tips);
       }, []);      
     return {isActive, selectedTool, setSelectedTool, sketchVm, distance, setDistance
     , selectedProperty, toolDismissed, tipsClicked}

@@ -1,16 +1,20 @@
 import { CalciteSlider } from "@esri/calcite-components-react";
 import React, { useEffect, useState } from "react";
-export const OpacitySlider = (args: any) => {
+interface Props {
+  layer: __esri.Layer;
+  value: number;
+}
+export const OpacitySlider = (props: Props) => {
   // const layer = useRef<__esri.Layer>();
   const [layer, setLayer] = useState<__esri.Layer>();
   useEffect(() => {
-    if (args.layer) {
-      setLayer(args.layer);
+    if (props.layer) {
+      setLayer(props.layer);
     }
-  }, [args.layer]);
+  }, [props.layer]);
   return (
     <CalciteSlider
-      value={args.value}
+      value={props.value}
       max={1}
       min={0}
       step={0.05}

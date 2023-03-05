@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import { PanelProps } from "../../utils/PanelProps";
 import { initializeLayers } from "./layers";
 import { tips } from "./tips";
 
-const useLayers = (args: any) => {
+const useLayers = (props: PanelProps) => {
 
     const ref = useRef() as any;
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -14,7 +15,7 @@ const useLayers = (args: any) => {
     useEffect(() => {
       if (!loaded.current) {
         loaded.current = true;
-        initializeLayers(ref.current, args.view).then(
+        initializeLayers(ref.current, props.view).then(
           (layerList: __esri.LayerList) => {
             setLayerList(layerList);
             layerList.when(() => {
@@ -29,13 +30,13 @@ const useLayers = (args: any) => {
     }, []); // only after first render
   
     useEffect(() => {
-      setIsActive(args.isActive);
-    }, [args.isActive]);
+      setIsActive(props.isActive);
+    }, [props.isActive]);
     const panelDismissed = useCallback((e: any) => {
-        args.panelDismissed();
+        props.panelDismissed();
         }, []);
     const tipsClicked = useCallback((e: any) => {
-        args.showTips(tips);
+        props.showTips(tips);
         }, []);    
     return {
         ref,

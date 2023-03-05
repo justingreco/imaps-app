@@ -8,11 +8,11 @@ import { arcadeExpressionInfos } from "./utils/arcadeExpressions";
 import FeatureTable from "@arcgis/core/widgets/FeatureTable";
 
 export const createTemplate = (
-  view: __esri.MapView | __esri.SceneView,
+  view: __esri.MapView,
   condoTable: FeatureLayer,
   feature: Graphic,
   condos: Graphic[],
-  featureTable: __esri.FeatureTable
+  featureTable: __esri.FeatureTable | undefined
 ): PopupTemplate => {
   const popupTemplate = new PopupTemplate({
     expressionInfos: arcadeExpressionInfos,

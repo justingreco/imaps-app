@@ -21,8 +21,8 @@ const useShell = () => {
     const [view, setView] = useState<__esri.MapView>();
     const viewRef = useRef<__esri.MapView>();
 
-    const [properties, setProperties] = useState<__esri.Graphic[]>();
-    const [geometry, setGeometry] = useState<__esri.Geometry>();
+    const [properties, setProperties] = useState<__esri.Graphic[]>([]);
+    const [geometry, setGeometry] = useState<__esri.Geometry | undefined>(undefined);
     const [selectedProperty, setSelectedProperty] = useState<__esri.Graphic>();
 
     const [tips, setTips] = useState<any>();

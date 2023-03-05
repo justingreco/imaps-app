@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import { PanelProps } from "../../utils/PanelProps";
 import { initializeLegend } from "./legend";
 import { tips } from "./tips";
 
-const useLegend = (args: any) => {
+const useLegend = (props: PanelProps) => {
 const ref = useRef() as any;
   const loaded = useRef(false);
   const [legend, setLegend] = useState<__esri.Legend>();
@@ -11,20 +12,20 @@ const ref = useRef() as any;
   useEffect(() => {
     if (!loaded.current) {
       loaded.current = true;
-      setLegend(initializeLegend(ref.current, args.view));
+      setLegend(initializeLegend(ref.current, props.view));
     }
     return () => {
       legend && legend?.destroy();
     };
   }, []);
   useEffect(() => {
-    setIsActive(args.isActive);
-  }, [args.isActive]);
+    setIsActive(props.isActive);
+  }, [props.isActive]);
   const panelDismissed = useCallback((e: any) => {
-    args.panelDismissed();
+    props.panelDismissed();
   }, []);
     const tipsClicked = useCallback((e: any) => {
-        args.showTips(tips);
+        props.showTips(tips);
         }, []);    
     return {
         ref,

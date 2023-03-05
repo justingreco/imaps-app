@@ -6,22 +6,29 @@ import {
 } from "@esri/calcite-components-react";
 import React, { useEffect, useState } from "react";
 import { panelSelected, toolSelected } from "./utils/shell";
-
-function Toolbar(args: any) {
+interface Props {
+  view: __esri.MapView;
+  expandable: boolean | undefined;
+  activePanel: string;
+  activeTool: string;
+  activePanelChanged: Function;
+  activeToolChanged: Function;
+}
+function Toolbar(props: Props) {
   const [activePanel, setActivePanel] = useState("search");
   const [activeTool, setActiveTool] = useState("");
 
   useEffect(() => {
-    setActivePanel(args.activePanel);
-  }, [args.activePanel]);
+    setActivePanel(props.activePanel);
+  }, [props.activePanel]);
   useEffect(() => {
-    setActiveTool(args.activeTool);
-  }, [args.activeTool]);
+    setActiveTool(props.activeTool);
+  }, [props.activeTool]);
   return (
     <CalciteActionBar
       slot="action-bar"
       position="end"
-      expandDisabled={args.expandable}
+      expandDisabled={props.expandable}
     >
       <CalciteActionGroup>
         <CalciteAction
@@ -35,8 +42,8 @@ function Toolbar(args: any) {
               activePanel,
               setActiveTool,
               setActivePanel,
-              args.activePanelChanged,
-              args.activeToolChanged
+              props.activePanelChanged,
+              props.activeToolChanged
             )
           }
         ></CalciteAction>
@@ -52,8 +59,8 @@ function Toolbar(args: any) {
               activePanel,
               setActiveTool,
               setActivePanel,
-              args.activePanelChanged,
-              args.activeToolChanged
+              props.activePanelChanged,
+              props.activeToolChanged
             );
           }}
         ></CalciteAction>
@@ -69,8 +76,8 @@ function Toolbar(args: any) {
               activePanel,
               setActiveTool,
               setActivePanel,
-              args.activePanelChanged,
-              args.activeToolChanged
+              props.activePanelChanged,
+              props.activeToolChanged
             );
           }}
         ></CalciteAction>
@@ -86,8 +93,8 @@ function Toolbar(args: any) {
               activePanel,
               setActiveTool,
               setActivePanel,
-              args.activePanelChanged,
-              args.activeToolChanged
+              props.activePanelChanged,
+              props.activeToolChanged
             );
           }}
         ></CalciteAction>
@@ -103,8 +110,8 @@ function Toolbar(args: any) {
               activePanel,
               setActiveTool,
               setActivePanel,
-              args.activePanelChanged,
-              args.activeToolChanged
+              props.activePanelChanged,
+              props.activeToolChanged
             );
           }}
         ></CalciteAction>
@@ -122,8 +129,8 @@ function Toolbar(args: any) {
               activeTool,
               setActiveTool,
               setActivePanel,
-              args.activePanelChanged,
-              args.activeToolChanged
+              props.activePanelChanged,
+              props.activeToolChanged
             )
           }
         ></CalciteAction>
@@ -139,8 +146,8 @@ function Toolbar(args: any) {
               activeTool,
               setActiveTool,
               setActivePanel,
-              args.activePanelChanged,
-              args.activeToolChanged
+              props.activePanelChanged,
+              props.activeToolChanged
             );
           }}
         ></CalciteAction>
@@ -156,8 +163,8 @@ function Toolbar(args: any) {
               activeTool,
               setActiveTool,
               setActivePanel,
-              args.activePanelChanged,
-              args.activeToolChanged
+              props.activePanelChanged,
+              props.activeToolChanged
             );
           }}
         ></CalciteAction>
@@ -173,8 +180,8 @@ function Toolbar(args: any) {
               activeTool,
               setActiveTool,
               setActivePanel,
-              args.activePanelChanged,
-              args.activeToolChanged
+              props.activePanelChanged,
+              props.activeToolChanged
             );
           }}
         ></CalciteAction>
@@ -190,8 +197,8 @@ function Toolbar(args: any) {
               activeTool,
               setActiveTool,
               setActivePanel,
-              args.activePanelChanged,
-              args.activeToolChanged
+              props.activePanelChanged,
+              props.activeToolChanged
             )
           }
         ></CalciteAction>

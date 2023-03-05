@@ -1,7 +1,11 @@
 import React, { useEffect, useRef } from "react";
 import { initializeFeatureTable, updateTable } from "../utils/addresses";
 import "./AddressTable.css";
-function AddressTable(args: any) {
+interface Props {
+  view: __esri.MapView;
+  property: __esri.Graphic;
+}
+function AddressTable(props: Props) {
   const ref = useRef() as any;
   const loaded = useRef(false);
 
@@ -9,9 +13,9 @@ function AddressTable(args: any) {
     if (!loaded.current) {
       loaded.current = true;
 
-      initializeFeatureTable(ref.current, args.view, args.featureSelected).then(
+      initializeFeatureTable(ref.current, props.view).then(
         (table: __esri.FeatureTable) => {
-          updateTable(args.property, table);
+          updateTable(props.property, table);
         }
       );
     }

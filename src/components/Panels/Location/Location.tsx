@@ -12,7 +12,8 @@ import {
 } from "./utils/location";
 import "./Location.css";
 import useLocation from "./utils/useLocation";
-function Location(args: any) {
+import { PanelProps } from "../utils/PanelProps";
+function Location(props: PanelProps) {
    
   const { 
     searchDiv,
@@ -24,7 +25,7 @@ function Location(args: any) {
     isActive,
     panelDismissed,
     tipsClicked    
-  } = useLocation(args);
+  } = useLocation(props);
 
   return (
     <CalcitePanel

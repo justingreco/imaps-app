@@ -4,13 +4,15 @@ import React, { useEffect, useState } from "react";
 import ColorButton from "./ColorButton";
 import SizeSlider from "./SizeSlider";
 import Color from "@arcgis/core/Color";
-
-function LineSymbols(args: any) {
+interface Props {
+  polylineSymbolUpdated: Function;
+}
+function LineSymbols(props: Props) {
   const [lineColor, setLineColor] = useState<Color>(new Color([255, 0, 0, 1]));
   const [width, setWidth] = useState(2);
   useEffect(() => {
     if (lineColor && width) {
-      args.polylineSymbolUpdated(lineColor, width);
+      props.polylineSymbolUpdated(lineColor, width);
     }
   }, [lineColor, width]);
   return (
@@ -23,7 +25,7 @@ function LineSymbols(args: any) {
         color={lineColor.toRgba()}
         colorSet={(c: any) => {
           setLineColor(c);
-          args.polylineSymbolUpdated(c, width);
+          props.polylineSymbolUpdated(c, width);
         }}
       ></ColorButton>
       <SizeSlider
@@ -33,7 +35,7 @@ function LineSymbols(args: any) {
         label="Width"
         sizeSet={(size: number) => {
           setWidth(size);
-          args.polylineSymbolUpdated(lineColor, width);
+          props.polylineSymbolUpdated(lineColor, width);
         }}
       ></SizeSlider>
     </div>

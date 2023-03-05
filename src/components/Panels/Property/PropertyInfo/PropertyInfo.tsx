@@ -1,15 +1,16 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { createTemplate } from "../popuptemplate";
 import { initializeFeature, updateFeature } from "../utils/info";
 import "./PropertyInfo.css";
-function PropertyInfo(args: any) {
+import { PropertyInfoProps } from "./PropertyInfoProps";
+function PropertyInfo(props: PropertyInfoProps) {
   const loaded = useRef(false);
   const ref = useRef<any>(null);
   const [feature, setFeature] = useState<__esri.Feature>();
   useEffect(() => {
     if (!loaded.current) {
       loaded.current = true;
-      setFeature(initializeFeature(ref.current, args.view));
+      setFeature(initializeFeature(ref.current, props.view));
     }
     return () => {
       feature && feature?.destroy();
@@ -18,21 +19,21 @@ function PropertyInfo(args: any) {
  
   useEffect(() => {
     let pin = "";
-    if (feature && args.feature) {
-      pin = args.feature.getAttribute("PIN_NUM");
+    if (feature && props.feature) {
+      pin = props.feature.getAttribute("PIN_NUM");
       const table = feature?.view.map.allTables.find((table: __esri.Layer) => {
         return table.title.includes("Condo");
       }) as __esri.FeatureLayer;
-      args.feature.view = feature.view;
-      args.feature.layer = table;
-      args.feature.popupTemplate = createTemplate(
+     // props.feature.view = feature.view;
+      props.feature.layer = table;
+      props.feature.popupTemplate = createTemplate(
         feature?.view as __esri.MapView,
         table,
-        args.feature,
-        args.condos,
-        args.featureTable
+        props.feature,
+        props.condos,
+        props.featureTable
       );
-      updateFeature(feature, args.feature, args.condos, args.featureTable);
+      updateFeature(feature, props.feature, props.condos, props.featureTable);
     } else {
       if (feature) {
         (feature as any).graphic = null;
@@ -49,7 +50,7 @@ function PropertyInfo(args: any) {
     if (window.history.state?.pins !== pin) {
       window.history.pushState({ pins: pin }, "", url);
     }
-  }, [args.feature, args.table, args.featureTable]);
+  }, [props.feature, props.featureTable]);
   return <div ref={ref}></div>;
 }
 

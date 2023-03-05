@@ -23,14 +23,15 @@ import {
 
 import { collapsePanel } from "../../Shell/utils/shell";
 import usePrint from "./utils/usePrint";
-function Print(args: any) {
+import { PrintProps } from "./utils/PrintProps";
+function Print(props: PrintProps) {
   const { isActive, title, setSelectedLayout, layouts,  selectedFormat,
     setSelectedFormat, formats, setScaleType,
     scaleType, customScaleSelect, setCustomScale,
     customScale, userDefined, selectedProperty,
-    selectedLayout, attributes, legend, setJobs, jobs, jobRef, tipsClicked, showFrameChanged, frame } = usePrint(args);
+    selectedLayout, attributes, legend, setJobs, jobs, jobRef, tipsClicked, showFrameChanged, frame } = usePrint(props);
   const toolDismissed = useCallback((e: any) => {
-    args.toolDismissed();
+    props.toolDismissed();
   }, []);
   return (
     <CalcitePanel
@@ -64,7 +65,7 @@ function Print(args: any) {
             onCalciteSelectChange={(e) => {
               setSelectedLayout(e.target.selectedOption.value);
               if (frame.current) {
-                showFrame(frame.current.checked, args.view, selectedLayout, scaleType, customScaleSelect);
+                showFrame(frame.current.checked, props.view, selectedLayout, scaleType, customScaleSelect);
               }
             }
             }
@@ -109,7 +110,7 @@ function Print(args: any) {
               onCalciteRadioButtonChange={(e) => {
                 setScaleType(e.target.value);
                 if (frame.current) {
-                  showFrame(frame.current.checked, args.view, selectedLayout, scaleType, customScaleSelect);
+                  showFrame(frame.current.checked, props.view, selectedLayout, scaleType, customScaleSelect);
                 }   
               }}
             ></CalciteRadioButton>
@@ -122,7 +123,7 @@ function Print(args: any) {
               onCalciteRadioButtonChange={(e) => {
                 setScaleType(e.target.value);
                 if (frame.current) {
-                  showFrame(frame.current.checked, args.view, selectedLayout, scaleType, customScaleSelect);
+                  showFrame(frame.current.checked, props.view, selectedLayout, scaleType, customScaleSelect);
                 }   
               }}              
             ></CalciteRadioButton>
@@ -138,13 +139,13 @@ function Print(args: any) {
               onCalciteSelectChange={(e) => {
                 setCustomScale(e.target.selectedOption.value);
                 if (frame.current) {
-                  showFrame(frame.current.checked, args.view, selectedLayout, scaleType, customScaleSelect);
+                  showFrame(frame.current.checked, props.view, selectedLayout, scaleType, customScaleSelect);
                 }
               }                
               }
             >
-              {args?.view &&
-                getScales(args?.view).map((scale, i) => {
+              {props?.view &&
+                getScales(props?.view).map((scale, i) => {
                   return (
                     <CalciteOption
                       key={i}
@@ -186,8 +187,8 @@ function Print(args: any) {
         <CalciteButton
           width="full"
           onClick={() => {exportClicked(
-            args.view, 
-            args.exportUrl,
+            props.view, 
+            props.exportUrl,
             scaleType,
             customScale,
             userDefined?.current?.value,

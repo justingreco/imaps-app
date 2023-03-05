@@ -2,12 +2,12 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import MapView from "@arcgis/core/views/MapView";
 import { clearAddressPoints, getPropertyByGeometry } from "../utils/property";
 import { tips } from "./tips";
+import { PropertyProps } from "./PropertyProps";
 
   
-const useProperty = (args: any) => {
-    const [condos, setCondos] = useState<__esri.Graphic[]>();
+const useProperty = (props: PropertyProps) => {
+    const [condos, setCondos] = useState<__esri.Graphic[]>([]);
     const condoRef = useRef<__esri.Graphic[]>();
-  
     const [feature, setFeature] = useState<__esri.Graphic>();
     const loaded = useRef(false);
     const [infoDisabled, setInfoDisabled] = useState(true);
@@ -22,11 +22,11 @@ const useProperty = (args: any) => {
           document.querySelector('.property calcite-tab-nav')?.shadowRoot?.querySelector('.tab-nav')?.setAttribute('style', 'overflow: hidden');
         },100);        
       }
-    }, [args.view]);
+    }, [props.view]);
   
     useEffect(() => {
-      if (args.geometry && args.view) {
-        getPropertyByGeometry(args.geometry, args.view as MapView).then(
+      if (props.geometry && props.view) {
+        getPropertyByGeometry(props.geometry, props.view as MapView).then(
           (result: any) => {
             setCondos(result.features);
             condoRef.current = result.features;
@@ -34,12 +34,12 @@ const useProperty = (args: any) => {
               setInfoDisabled(false);
               setActiveTab("info");
               setFeature(result.features[0]);
-              args.selected(result.features[0], result.features);
+              props.selected(result.features[0], result.features);
             } else {
               setInfoDisabled(true);
               setActiveTab("list");
               setFeature(undefined);
-              args.selected(undefined, result.features);
+              props.selected(undefined, result.features);
             }
           }
         );
@@ -47,10 +47,10 @@ const useProperty = (args: any) => {
         setInfoDisabled(true);
         setActiveTab("list");
         setFeature(undefined);
-        args.selected(undefined, []);
+        props.selected(undefined, []);
         setCondos([]);
       }
-    }, [args.geometry]);
+    }, [props.geometry]);
     const condosSelected = useCallback(
       (selectedCondos: __esri.Graphic[]) => {
         setCondos(selectedCondos);
@@ -59,26 +59,26 @@ const useProperty = (args: any) => {
           setInfoDisabled(false);
           setActiveTab("info");
           setFeature(selectedCondos[0]);
-          args.selected(selectedCondos[0], selectedCondos);
+          props.selected(selectedCondos[0], selectedCondos);
         } else {
           setInfoDisabled(true);
           setActiveTab("list");
           setFeature(undefined);
-          args.selected(undefined, selectedCondos);
+          props.selected(undefined, selectedCondos);
         }
       },
-      [condoRef.current, condos, args.selected]
+      [condoRef.current, condos, props.selected]
     );
   
     const featureSelected = useCallback(
       (selectedFeature: __esri.Graphic) => {
         setFeature(selectedFeature);
-        //args.featureSelected(feature);
-        args.selected(selectedFeature, condoRef.current);
+        //props.featureSelected(feature);
+        props.selected(selectedFeature, condoRef.current);
         setActiveTab("info");
         setInfoDisabled(false);
       },
-      [args.selected, feature]
+      [props.selected, feature]
     );
     const featureChanged = useCallback(
       (feature: __esri.Graphic) => {
@@ -93,20 +93,20 @@ const useProperty = (args: any) => {
         setCondos([]);
         setActiveTab('list');
         setInfoDisabled(true);
-        args.selected(null, []);
+        props.selected(null, []);
         clearAddressPoints(view)
       },
       []
     );
   
     useEffect(() => {
-      setIsActive(args.isActive);
-    }, [args.isActive]);
+      setIsActive(props.isActive);
+    }, [props.isActive]);
     const panelDismissed = useCallback((e: any) => {
-      args.panelDismissed();
+      props.panelDismissed();
     }, []);
     const tipsClicked = useCallback((e: any) => {
-      args.showTips(tips);
+      props.showTips(tips);
     }, []);    
   
       return {

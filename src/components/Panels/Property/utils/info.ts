@@ -12,10 +12,10 @@ export function initializeFeature(ref: HTMLDivElement, view: MapView) {
   return feature;
 }
 
-export function updateFeature(feature: Feature, graphic: Graphic, condos: Graphic[], featureTable: FeatureTable) {
+export function updateFeature(feature: Feature, graphic: Graphic, condos: Graphic[], featureTable: FeatureTable | undefined) {
   getPhotos(graphic).then((mediaInfos: __esri.MediaInfo[]) => {
     graphic.popupTemplate = createTemplate(
-      feature.view,
+      feature.view as __esri.MapView,
       graphic.layer as __esri.FeatureLayer,
       graphic,
       condos,

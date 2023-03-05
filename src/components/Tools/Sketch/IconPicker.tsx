@@ -1,8 +1,11 @@
 import { CalciteIcon, CalciteLabel } from "@esri/calcite-components-react";
 import React from "react";
 import "./Sketch.css";
-
-function IconPicker(args: any) {
+interface Props {
+  symbol: any;
+  pickerClicked: Function;
+}
+function IconPicker(props: Props) {
   return (
     <div id="icon-picker">
       <div id="icon-preview" className="preview"></div>
@@ -11,25 +14,25 @@ function IconPicker(args: any) {
           className="change-symbol-trigger"
           type="button"
           onClick={() => {
-            args.pickerClicked();
+            props.pickerClicked();
           }}
         >
           <div className="container">
-            {args.symbol && (
+            {props.symbol && (
               <div className="icon-symbol">
                 <img
-                  src={`${args.symbol.url}${args.symbol.thumbnail.href.replace(
+                  src={`${props.symbol.url}${props.symbol.thumbnail.href.replace(
                     ".",
                     ""
                   )}`}
-                  alt={args.symbol.title}
+                  alt={props.symbol.title}
                   width={50}
                   height={50}
                 />
               </div>
             )}
 
-            <div className="icon-label">{args.symbol.title}</div>
+            <div className="icon-label">{props.symbol.title}</div>
             <CalciteIcon icon="chevron-right"></CalciteIcon>
           </div>
         </button>

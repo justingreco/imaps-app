@@ -6,8 +6,10 @@ import {
 } from "@esri/calcite-components-react";
 import React, { useState } from "react";
 import ColorButton from "./ColorButton";
-
-function TextSymbols(args: any) {
+interface Props {
+  textSymbolUpdated: Function;
+}
+function TextSymbols(props: Props) {
   const [fontColor, setFontColor] = useState<Color>(new Color([255, 0, 0, 1]));
   const [fontSize, setFontSize] = useState(10);
   const [showHalo, setShowHalo] = useState(false);
@@ -28,7 +30,7 @@ function TextSymbols(args: any) {
           onCalciteInputInput={(e) => {
             setTextContent(e.target.value);
             requestAnimationFrame(() => {
-              args.textSymbolUpdated(
+              props.textSymbolUpdated(
                 fontSize,
                 fontColor,
                 haloSize,
@@ -50,7 +52,7 @@ function TextSymbols(args: any) {
         hideTransparency
         colorSet={(c: any) => {
           setFontColor(c);
-          args.textSymbolUpdated(
+          props.textSymbolUpdated(
             fontSize,
             c,
             haloSize,
@@ -69,7 +71,7 @@ function TextSymbols(args: any) {
           value={fontSize.toString()}
           onCalciteInputInput={(e) => {
             setFontSize(parseFloat(e.target.value));
-            args.textSymbolUpdated(
+            props.textSymbolUpdated(
               fontSize,
               fontColor,
               haloSize,
@@ -86,7 +88,7 @@ function TextSymbols(args: any) {
           checked={showHalo ? true : undefined}
           onCalciteSwitchChange={(e) => {
             setShowHalo(e.target.checked);
-            args.textSymbolUpdated(
+            props.textSymbolUpdated(
               fontSize,
               fontColor,
               haloSize,
@@ -105,7 +107,7 @@ function TextSymbols(args: any) {
           hideTransparency
           colorSet={(c: any) => {
             setHaloColor(c);
-            args.textSymbolUpdated(
+            props.textSymbolUpdated(
               fontSize,
               fontColor,
               haloSize,
@@ -124,7 +126,7 @@ function TextSymbols(args: any) {
             value={haloSize.toString()}
             onCalciteInputInput={(e) => {
               setHaloSize(parseFloat(e.target.value));
-              args.textSymbolUpdated(
+              props.textSymbolUpdated(
                 fontSize,
                 fontColor,
                 haloSize,

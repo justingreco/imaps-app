@@ -14,8 +14,10 @@ import IconPicker from "./IconPicker";
 import IconSelectionPanel from "./IconSelectionPanel";
 import ColorButton from "./ColorButton";
 import Color from "@arcgis/core/Color";
-
-function PointSymbols(args: any) {
+interface Props {
+  pointSymbolUpdated: Function;
+}
+function PointSymbols(props: Props) {
   const [symbols, setSymbols] = useState<any[]>([]);
   const [symbol, setSymbol] = useState<any>();
   const [pointSize, setPointSize] = useState(16);
@@ -36,7 +38,7 @@ function PointSymbols(args: any) {
       setSymbols(items as any[]);
       if (items.length) {
         setSymbol(items[0]);
-        args.pointSymbolUpdated(items[0], pointColor, pointSize);
+        props.pointSymbolUpdated(items[0], pointColor, pointSize);
       }
     });
   }, []);
@@ -56,7 +58,7 @@ function PointSymbols(args: any) {
                 color={pointColor.toRgba()}
                 colorSet={(c: any) => {
                   setPointColor(c);
-                  args.pointSymbolUpdated(symbol, c, pointSize);
+                  props.pointSymbolUpdated(symbol, c, pointSize);
                 }}
               ></ColorButton>
               <CalciteLabel>
@@ -68,7 +70,7 @@ function PointSymbols(args: any) {
                   value={pointSize.toString()}
                   onCalciteInputChange={(e: any) => {
                     setPointSize(parseFloat(e.target.value));
-                    args.pointSymbolUpdated(
+                    props.pointSymbolUpdated(
                       symbol,
                       pointColor,
                       parseFloat(e.target.value)
@@ -82,7 +84,7 @@ function PointSymbols(args: any) {
             <IconSelectionPanel
               iconSelected={(icon: any) => {
                 setSymbol(icon);
-                args.pointSymbolUpdated(icon, pointColor, pointSize);
+                props.pointSymbolUpdated(icon, pointColor, pointSize);
               }}
               backClicked={() => setActiveFlow("main")}
               symbols={symbols}

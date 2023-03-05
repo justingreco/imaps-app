@@ -5,11 +5,12 @@ import * as projection from "@arcgis/core/geometry/projection";
 import Point from "@arcgis/core/geometry/Point";
 import PictureMarkerSymbol from "@arcgis/core/symbols/PictureMarkerSymbol";
 import GraphicsLayer from "@arcgis/core/layers/GraphicsLayer";
+import { CoordinateProps } from "./CoordinateProps";
 let moveHandler: IHandle;
 let clickHandler: IHandle;
 const marker: PictureMarkerSymbol = new PictureMarkerSymbol({ url: 'assets/pin.svg', height: 36, width: 36 }); 
 const layer: GraphicsLayer = new GraphicsLayer({id: 'coordinate-widget'});
-const useCoordinates = (args: any) => {
+const useCoordinates = (props: CoordinateProps) => {
 
     const loaded = useRef(false);
     const x = useRef<any>(null)
@@ -45,10 +46,10 @@ const useCoordinates = (args: any) => {
       e.target.active = !e.target.active;
       if (e.target.active) {
         moveHandler?.remove();
-        addClickHandler(args.view, args.clickActivated);
+        addClickHandler(props.view, props.clickActivated);
       } else {
         clickHandler?.remove();    
-        (args.view as __esri.MapView).popup.autoOpenEnabled = true;
+        (props.view as __esri.MapView).popup.autoOpenEnabled = true;
         document.querySelector(".identify-widget")?.classList.add("active");
         addMoveHandler();    
       }
@@ -62,7 +63,7 @@ const useCoordinates = (args: any) => {
       if (!coordinateFormatter.isLoaded()) {
         await coordinateFormatter.load();
       }
-        let point = null;
+        let point: __esri.Point= new Point();
         let valid = true;
         if (formatRef.current === 'dd') {
           if (isFinite(y.current.value) && Math.abs(y.current.value) <= 90) {
@@ -94,32 +95,32 @@ const useCoordinates = (args: any) => {
         }      
         if (formatRef.current === 'spft') {
           point = new Point({x: x.current.value, y: y.current.value, spatialReference: {wkid: 4326}});        
-          point = projection.project(point, args.view.map.spatialReference) as Point;
+          point = projection.project(point, props.view.spatialReference) as Point;
         }
         if (formatRef.current === 'usng') {
-          point = coordinateFormatter.fromUsng(other.current.value, args.view.map.spatialReference);
+          point = coordinateFormatter.fromUsng(other.current.value, props.view.spatialReference);
         }          
         if (formatRef.current === 'mgrs') {
-          point = coordinateFormatter.fromMgrs(other.current.value, args.view.map.spatialReference, 'automatic');
+          point = coordinateFormatter.fromMgrs(other.current.value, props.view.spatialReference, 'automatic');
   
         }      
         if (formatRef.current === 'utm') {
-          point = coordinateFormatter.fromUtm(other.current.value, args.view.map.spatialReference, 'latitude-band-indicators');
+          point = coordinateFormatter.fromUtm(other.current.value, props.view.spatialReference, 'latitude-band-indicators');
   
         }          
-        if (!args.view.constraints.geometry.contains(point)) {
+        if (!(props.view.constraints.geometry as __esri.Polygon).contains(point)) {
           noticeRef.current?.setAttribute('open', true);
           setTimeout(() => {
             noticeRef.current?.removeAttribute('open');
           },3000);
         }
         if (valid) {
-          if (!args.view.map.findLayerById('coordinate-widget')) {
-            args.view.map.add(layer);
+          if (!props.view.map.findLayerById('coordinate-widget')) {
+            props.view.map.add(layer);
           }
           layer.removeAll();
           layer.add({geometry: point as __esri.Geometry, attributes: null, symbol: marker} as any);
-          args.view.goTo(point);
+          props.view.goTo(point);
         }
         
     }, []);    
@@ -134,7 +135,7 @@ const useCoordinates = (args: any) => {
           if (e.type === 'point') {
             point = e
           } else {
-            point = args.view.toMap({x: e.x, y: e.y});
+            point = props.view.toMap({x: e.x, y: e.y});
           }
     
           const wgs84 = new Point({x: point.longitude, y: point.latitude, spatialReference: {wkid: 4326}});
@@ -176,9 +177,9 @@ const useCoordinates = (args: any) => {
     }
     const addClickHandler = (view: __esri.MapView, clickActivated: Function) => {
       clickActivated(view);
-      (args.view as __esri.MapView).popup.autoOpenEnabled = false;
+      (props.view as __esri.MapView).popup.autoOpenEnabled = false;
       document.querySelector(".identify-widget")?.classList.remove("active");      
-      clickHandler = (args.view as __esri.MapView).on('click', (e: any) => {
+      clickHandler = (props.view as __esri.MapView).on('click', (e: any) => {
         displayCoordinates(e);
       });
     }
@@ -186,18 +187,18 @@ const useCoordinates = (args: any) => {
       if (!coordinateFormatter.isLoaded()) {
         await coordinateFormatter.load();
       }
-      displayCoordinates(args.view.extent.center);
-      moveHandler = (args.view as __esri.MapView).on('pointer-move', (e: any) => {
+      displayCoordinates(props.view.extent.center);
+      moveHandler = (props.view as __esri.MapView).on('pointer-move', (e: any) => {
         displayCoordinates(e);
       });
     }      
     
     useEffect(() => {
-      if (!loaded.current && args.view) {
+      if (!loaded.current && props.view) {
         loaded.current = true;
-        if (args.expand) {
-          if (!args.expand.hasHandles()) {
-            (args.expand as __esri.Expand).watch('expanded', (expanded) => {
+        if (props.expand) {
+          if (!props.expand.hasHandles()) {
+            (props.expand as __esri.Expand).watch('expanded', (expanded) => {
               if (!expanded) {
                 moveHandler?.remove();
                 clickHandler?.remove();
@@ -205,7 +206,7 @@ const useCoordinates = (args: any) => {
                 if (modeActionRef.current.getAttribute('active')) {
                   addMoveHandler();
                 } else {
-                  addClickHandler(args.view, args.clickActivated);
+                  addClickHandler(props.view, props.clickActivated);
                 }
               }
             });

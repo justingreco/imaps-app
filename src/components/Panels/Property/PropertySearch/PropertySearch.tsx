@@ -1,7 +1,8 @@
 import React, { useEffect, useRef } from "react";
 import { initializeSearch } from "../utils/search";
 import "./PropertySearch.css";
-function PropertySearch(args: any) {
+import { PropertySearchProps } from "./PropertySearchProps";
+function PropertySearch(args: PropertySearchProps) {
   const ref = useRef<HTMLDivElement>(null);
   const loaded = useRef(false);
   //const [view, setView] = useState<__esri.MapView>();

@@ -9,7 +9,7 @@
 } */
 .tools {
   overflow-y: hidden;
-  width: 336git cpx;
+  width: 336px;
   z-index: 10000;
 }
 
@@ -47,6 +47,7 @@ calcite-loader {
 .tool-panel {
   position: absolute;
   max-width: 350px;
+  min-width: 300px;
   right: 0;
   top: 0;
 }

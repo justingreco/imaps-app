@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import { ToolProps } from "../../utils/ToolProps";
 import { cancelSketch, initializeSketchViewModel, sketchActivated } from "./sketch";
 import { tips } from "./tips";
   
-const useSketch = (args: any) => {
+const useSketch = (props: ToolProps) => {
 
 const loaded = useRef(false);
   const [activeSketchTool, setActiveSketchTool] = useState("");
@@ -14,7 +15,7 @@ const loaded = useRef(false);
   useEffect(() => {
     if (!loaded.current) {
       initializeSketchViewModel(
-        args.view,
+        props.view,
         setActiveSketchTool,
         selectedGraphics,
         setSelectedGraphics
@@ -23,28 +24,28 @@ const loaded = useRef(false);
     
   }, []);
   useEffect(() => {
-    setIsActive(args.isActive);
-    if (!args.isActive) {
-      args.toolDismissed();
+    setIsActive(props.isActive);
+    if (!props.isActive) {
+      props.toolDismissed();
       cancelSketch();
       setActiveSketchTool("");
       setSelectedGraphics([...[],...[]]);
-      //args.view.highlightOptions = {fillOpacity: 0.25, color: '#00ffff', haloColor: '#00ffff', haloOpacity: 1} as any;
+      //props.view.highlightOptions = {fillOpacity: 0.25, color: '#00ffff', haloColor: '#00ffff', haloOpacity: 1} as any;
     }  else {
-      (args.view as __esri.MapView).popup.autoOpenEnabled = false;
+      (props.view as __esri.MapView).popup.autoOpenEnabled = false;
       sketchActivated();
     }
-  }, [args.isActive]);
+  }, [props.isActive]);
   const toolDismissed = useCallback(() => {
-    args.toolDismissed();
+    props.toolDismissed();
     cancelSketch();
     setActiveSketchTool("");
     setSelectedGraphics([...[],...[]]);
 
-    //args.view.highlightOptions = {fillOpacity: 0.25, color: '#00ffff', haloColor: '#00ffff', haloOpacity: 1} as any;
+    //props.view.highlightOptions = {fillOpacity: 0.25, color: '#00ffff', haloColor: '#00ffff', haloOpacity: 1} as any;
   }, []);
   const tipsClicked = useCallback((e: any) => {
-    args.showTips(tips);
+    props.showTips(tips);
     }, []);
   const checkGeometryType = (selectedGraphics: __esri.Graphic[], geometryType: string) => {
     const geometryTypes = selectedGraphics.map(graphic => {

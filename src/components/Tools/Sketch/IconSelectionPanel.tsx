@@ -1,12 +1,16 @@
 import { CalciteBlock, CalciteFlow, CalciteFlowItem } from "@esri/calcite-components-react";
 import React, { useEffect, useState } from "react";
 import "./Sketch.css";
-
-function IconSelectionPanel(args: any) {
+interface Props {
+  symbols: any[];
+  backClicked: Function;
+  iconSelected: Function;
+}
+function IconSelectionPanel(props: Props) {
   const [symbols, setSymbols] = useState<any[]>([]);
   useEffect(() => {
-    if (symbols && args.symbols) {
-      setSymbols(args.symbols);
+    if (symbols && props.symbols) {
+      setSymbols(props.symbols);
     }
   }, []);
 
@@ -17,7 +21,7 @@ function IconSelectionPanel(args: any) {
       <CalciteFlowItem
         heading="Change Symbol"
         onCalciteFlowItemBack={() => {
-          args.backClicked();
+          props.backClicked();
         }}
       >
         <CalciteBlock heading={""}>
@@ -27,8 +31,8 @@ function IconSelectionPanel(args: any) {
               return (
                 <img
                   onClick={() => {
-                    args.iconSelected(symbol);
-                    args.backClicked();
+                    props.iconSelected(symbol);
+                    props.backClicked();
                   }}
                   className="item"
                   key={`icon-${i}`}

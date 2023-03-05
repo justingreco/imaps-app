@@ -4,14 +4,18 @@ import {
   import React from "react";
   import { useEffect, useRef, useState } from "react";
   import "./Layers.css";
-  export const DevPlanFilter = (args: any) => {
+  interface Props {
+    datefield: string;
+    layer: __esri.FeatureLayer;
+  }
+  export const DevPlanFilter = (props: Props) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const loaded = useRef(false);
     const [maxYear, setMaxYear] = useState<number>(0);
     const [minYear, setMinYear] = useState<number>(0);
 
     const getMinMax = async (layer: __esri.FeatureLayer, datefield: string) => {
-        (args.layer as __esri.FeatureLayer).queryFeatures({
+        (props.layer as __esri.FeatureLayer).queryFeatures({
           where: `EXTRACT(YEAR,${datefield}) >= 2010`,
           returnGeometry: false,
             outStatistics: [{
@@ -29,8 +33,8 @@ import {
           if (stats?.features.length) {
             const max = new Date(stats.features[0].getAttribute('MAX_DATE')).getFullYear();
             const min = new Date(stats.features[0].getAttribute('MIN_DATE')).getFullYear();
-            layer.definitionExpression = `EXTRACT(YEAR FROM ${args.datefield}) >= ${min}
-            AND EXTRACT(YEAR FROM ${args.datefield}) <= ${max}
+            layer.definitionExpression = `EXTRACT(YEAR FROM ${props.datefield}) >= ${min}
+            AND EXTRACT(YEAR FROM ${props.datefield}) <= ${max}
             `;
             layer.refresh();
             setMaxYear(max);
@@ -43,9 +47,9 @@ import {
 
     }
     useEffect( () => {
-     if (args.layer && args.datefield && !loaded.current) {
+     if (props.layer && props.datefield && !loaded.current) {
         loaded.current = true;
-        getMinMax(args.layer, args.datefield).then(() => {
+        getMinMax(props.layer, props.datefield).then(() => {
 
         });
      }
@@ -70,10 +74,10 @@ import {
           minLabel={minYear.toString()} 
           maxLabel={maxYear.toString()}
           onCalciteSliderChange={(e) => {
-            args.layer.definitionExpression = `EXTRACT(YEAR FROM ${args.datefield}) >= ${e.target.minValue}
-            AND EXTRACT(YEAR FROM ${args.datefield}) <= ${e.target.maxValue}
+            props.layer.definitionExpression = `EXTRACT(YEAR FROM ${props.datefield}) >= ${e.target.minValue}
+            AND EXTRACT(YEAR FROM ${props.datefield}) <= ${e.target.maxValue}
             `;
-            args.layer.refresh();
+            props.layer.refresh();
           }}
           ></CalciteSlider>
       </div>

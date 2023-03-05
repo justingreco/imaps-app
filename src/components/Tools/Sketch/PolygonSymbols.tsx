@@ -2,8 +2,10 @@ import Color from "@arcgis/core/Color";
 import React, { useEffect, useState } from "react";
 import ColorButton from "./ColorButton";
 import SizeSlider from "./SizeSlider";
-
-function PolygonSymbols(args: any) {
+interface Props {
+  polygonSymbolUpdated: Function;
+}
+function PolygonSymbols(props: Props) {
   const [fillColor, setFillColor] = useState<Color>(
     new Color([255, 0, 0, 0.5])
   );
@@ -13,7 +15,7 @@ function PolygonSymbols(args: any) {
   const [width, setWidth] = useState(2);
   useEffect(() => {
     if (fillColor && outlineColor && width) {
-      args.polygonSymbolUpdated(fillColor, outlineColor, width);
+      props.polygonSymbolUpdated(fillColor, outlineColor, width);
     }
   }, [fillColor, outlineColor, width]);
   return (
@@ -25,7 +27,7 @@ function PolygonSymbols(args: any) {
         label="Fill"
         colorSet={(c: any) => {
           setFillColor(c);
-          args.polygonSymbolUpdated(c, outlineColor, width);
+          props.polygonSymbolUpdated(c, outlineColor, width);
         }}
       ></ColorButton>
       <ColorButton
@@ -34,7 +36,7 @@ function PolygonSymbols(args: any) {
         label="Outline"
         colorSet={(c: any) => {
           setOutlineColor(c);
-          args.polygonSymbolUpdated(fillColor, c, width);
+          props.polygonSymbolUpdated(fillColor, c, width);
         }}
       ></ColorButton>
       <SizeSlider
@@ -44,7 +46,7 @@ function PolygonSymbols(args: any) {
         value={width}
         sizeSet={(size: any) => {
           setWidth(size);
-          args.polygonSymbolUpdated(fillColor, outlineColor, width);
+          props.polygonSymbolUpdated(fillColor, outlineColor, width);
         }}
       ></SizeSlider>
     </div>

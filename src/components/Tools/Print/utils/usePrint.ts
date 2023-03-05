@@ -4,9 +4,10 @@ import {
     getLayouts,
     showFrame
   } from "../utils/print";
+import { PrintProps } from "./PrintProps";
 import { tips } from "./tips";
   
-const usePrint = (args: any) => {
+const usePrint = (props: PrintProps) => {
 
     const loaded = useRef(false);
     const [isActive, setIsActive] = useState(false);
@@ -37,24 +38,24 @@ const usePrint = (args: any) => {
           setLayouts(layouts);
           setSelectedLayout(layouts[0]);
         });
-        getFormats(args.exportUrl).then((formats) => {
+        getFormats(props.exportUrl).then((formats) => {
           setFormats(formats);
           setSelectedFormat(formats[0]);
         });
       }
     }, []);
     const tipsClicked = useCallback((e: any) => {
-      args.showTips(tips);
+      props.showTips(tips);
       }, []);      
     useEffect(() => {
-      setSelectedProperty(args.selectedProperty);
-    }, [args.selectedProperty]);
+      setSelectedProperty(props.selectedProperty);
+    }, [props.selectedProperty]);
     useEffect(() => {
-      setIsActive(args.isActive);
-    }, [args.isActive]);        
+      setIsActive(props.isActive);
+    }, [props.isActive]);        
     const showFrameChanged = useCallback((e: any) => {
 
-        showFrame(e.target.checked, args.view, selectedLayout, scaleType, customScaleSelect);
+        showFrame(e.target.checked, props.view, selectedLayout, scaleType, customScaleSelect);
       
     }, [selectedLayout, scaleType, customScale]);       
     return {isActive, title, setSelectedLayout, layouts, 

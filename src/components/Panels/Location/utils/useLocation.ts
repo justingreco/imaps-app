@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { addSearchEvents, intializeLocationFeature, intializeLocationSearch } from "./location";
+import { PanelProps } from "../../utils/PanelProps";
 import { tips } from "./tips";
 
-const useLocation = (args: any) => {
+const useLocation = (props: PanelProps) => {
     const searchDiv = useRef(null);
     const featureDiv = useRef<HTMLDivElement>(null);
   
@@ -18,12 +19,12 @@ const useLocation = (args: any) => {
     useEffect(() => {
       if (!loaded.current && searchDiv.current) {
         loaded.current = true;
-        intializeLocationSearch(args.view, searchDiv.current).then(
+        intializeLocationSearch(props.view, searchDiv.current).then(
           (searchWidget: __esri.widgetsSearch) => {
             search.current = searchWidget;
             addSearchEvents(
               searchWidget,
-              args.view,
+              props.view,
               setIsIntersection,
               setIntersections,
               setSearchTerm,
@@ -32,19 +33,19 @@ const useLocation = (args: any) => {
           }
         );
         feature.current = intializeLocationFeature(
-          args.view,
+          props.view,
           featureDiv.current as HTMLDivElement
         );
       }
     });
     useEffect(() => {
-      setIsActive(args.isActive);
-    }, [args.isActive]);
+      setIsActive(props.isActive);
+    }, [props.isActive]);
     const panelDismissed = useCallback((e: any) => {
-      args.panelDismissed();
+      props.panelDismissed();
     }, []);
     const tipsClicked = useCallback((e: any) => {
-        args.showTips(tips);
+        props.showTips(tips);
         }, []);    
     return {
         searchDiv,

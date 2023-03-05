@@ -12,11 +12,12 @@ import {
   CalciteSlider,
 } from "@esri/calcite-components-react";
 import React, {  } from "react";
+import { PanelProps } from "../utils/PanelProps";
 // import Blend from "./Blend/Blend";
 
 import "./Basemaps.css";
 import useBasemaps from "./utils/useBasemaps";
-function Basemaps(args: any) {
+function Basemaps(props: PanelProps) {
     
   const { 
     basemapRef,
@@ -29,7 +30,7 @@ function Basemaps(args: any) {
     blendUpdated,
     blendOpacityChanged,
     blendActive
-  } = useBasemaps(args);
+  } = useBasemaps(props);
   return (
     <CalcitePanel
       id="basemaps-panel"

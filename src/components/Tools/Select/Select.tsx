@@ -16,9 +16,10 @@ import {
   createSketch,
 } from "./utils/select";
 import useSelect from "./utils/useSelect";
-export const Select = (args: any) => {
+import { SelectProps } from "./utils/SelectProps";
+export const Select = (props: SelectProps) => {
   const {isActive, selectedTool, setSelectedTool, sketchVm, distance, setDistance
-    , selectedProperty, toolDismissed, tipsClicked} = useSelect(args);
+    , selectedProperty, toolDismissed, tipsClicked} = useSelect(props);
   return (
     <CalcitePanel
       id="select-panel"
@@ -128,7 +129,7 @@ export const Select = (args: any) => {
           ></CalciteAction>
           <CalciteTooltip closeOnClick label="Select by Multi-Point" referenceElement="selectMultipoint">Select by Multi-point</CalciteTooltip>
           <CalciteAction  id="clearSelection" scale="m" icon="trash" text="Clear" onClick={() => {
-            args.geometrySet(undefined)
+            props.geometrySet(undefined)
           }}></CalciteAction>
           <CalciteTooltip closeOnClick label="Clear Selection" referenceElement="clearSelection">Clear selection</CalciteTooltip>
         </div>
@@ -153,7 +154,7 @@ export const Select = (args: any) => {
             hidden={distance <= 0}
             width="full"
             onClick={() =>
-              bufferProperty(selectedProperty, distance, args.geometrySet)
+              bufferProperty(selectedProperty, distance, props.geometrySet)
             }
           >
             Buffer Property

@@ -24,7 +24,8 @@ import TextSymbols from "./TextSymbols";
 import PointSymbols from "./PointSymbols";
 import { collapsePanel } from "../../Shell/utils/shell";
 import useSketch from "./utils/useSketch";
-function Sketch(args: any) {
+import { ToolProps } from "../utils/ToolProps";
+function Sketch(props: ToolProps) {
   const { 
     activeSketchTool, 
     setActiveSketchTool, 
@@ -35,7 +36,7 @@ function Sketch(args: any) {
     tipsClicked,
     checkGeometryType
  
-  } = useSketch(args);  
+  } = useSketch(props);  
   return (
     <CalcitePanel
       id="sketch-panel"
@@ -123,7 +124,7 @@ function Sketch(args: any) {
                 stopSketching();
                 toolSelected("select", activeSketchTool, setActiveSketchTool);
                 setTimeout(() => {
-                  (args.view as __esri.MapView).popup.autoOpenEnabled = false;
+                  (props.view as __esri.MapView).popup.autoOpenEnabled = false;
                 },1000);
               }}
             ></CalciteAction>

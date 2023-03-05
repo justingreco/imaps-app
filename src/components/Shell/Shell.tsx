@@ -65,7 +65,7 @@ function Shell() {
             showTips={tipsCallback}
           ></Property>
         )}
-        {loadedPanels.includes("location") && (
+        {view && loadedPanels.includes("location") && (
           <Suspense fallback={null}>           
           <Location
             view={view}
@@ -75,7 +75,7 @@ function Shell() {
           ></Location>
           </Suspense>
         )}
-        {loadedPanels.includes("layers") && (
+        {view && loadedPanels.includes("layers") && (
         <Suspense fallback={null}> 
           <Layers
             view={view}
@@ -85,7 +85,7 @@ function Shell() {
           ></Layers>
           </Suspense>
         )}
-        {loadedPanels.includes("legend") && (
+        {view && loadedPanels.includes("legend") && (
         <Suspense fallback={null}>    
           <Legend
             view={view}
@@ -95,7 +95,7 @@ function Shell() {
           ></Legend>
           </Suspense>
         )}
-        {loadedPanels.includes("basemaps") && (
+        {view && loadedPanels.includes("basemaps") && (
         <Suspense fallback={null}>              
           <Basemaps
             view={view}
@@ -107,7 +107,7 @@ function Shell() {
         )}
       </CalciteShellPanel>
       <div className={`tools esri-component`}>
-        {loadedTools.includes("select") && (
+        {view && loadedTools.includes("select") && (
         <Suspense fallback={null}>    
           <Select
             view={view}
@@ -119,7 +119,7 @@ function Shell() {
           ></Select>
           </Suspense>      
         )}
-        {loadedTools.includes("measure") && (
+        {view && loadedTools.includes("measure") && (
         <Suspense fallback={null}>    
           <Measure
             view={view}
@@ -129,7 +129,7 @@ function Shell() {
           ></Measure>
           </Suspense>      
         )}
-        {loadedTools.includes("sketch") && (
+        {view && loadedTools.includes("sketch") && (
           <Suspense fallback={null}>
             <Sketch
               view={view}
@@ -139,7 +139,7 @@ function Shell() {
             ></Sketch>
           </Suspense>
         )}
-        {loadedTools.includes("bookmarks") && (
+        {view && loadedTools.includes("bookmarks") && (
           <Suspense fallback={null}>
             <Bookmarks
               view={view}
@@ -149,7 +149,7 @@ function Shell() {
             ></Bookmarks>
           </Suspense>
         )}
-        {loadedTools.includes("print") && (
+        {view && loadedTools.includes("print") && (
         <Suspense fallback={null}>
           <Print
             view={view}
