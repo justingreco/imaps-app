@@ -308,12 +308,12 @@ export const createDurhamButton = () => {
             const root = createRoot(div as HTMLDivElement);
             if (featureTable) {
               root.render(<div className="feature-title">
-              {featureTable.highlightIds.length > 1 && <Suspense fallback={""}>
+              {condos.length > 1 && <Suspense fallback={""}>
               <NextPropertyButton view={view} icon="caret-left" text="Previous" featureTable={featureTable} />
             </Suspense> }      
               <h2>{ feature.getAttribute('SITE_ADDRESS')}</h2>
               <Suspense fallback={""}>
-              {featureTable.highlightIds.length > 1 && 
+              {condos.length > 1 && 
               <NextPropertyButton view={view}  icon="caret-right" text="Next" featureTable={featureTable}/>
               }
             </Suspense>              

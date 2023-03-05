@@ -49,9 +49,9 @@ const useBasemaps = (props: PanelProps) => {
         props.showTips(tips);
         }, []);  
       const blendUpdated = useCallback((e: any) => {
-        setBlendActive(e.detail.switched);
+        setBlendActive(e.currentTarget.checked);
         debugger;
-       blendBasemap(e.detail.switched, props.view, streetMapId, opacity.current);
+       blendBasemap(e.currentTarget.checked, props.view, streetMapId, opacity.current);
       }, []);        
       const blendOpacityChanged = useCallback((e: any) => {
         opacity.current = 1 - e.target.value/100;
