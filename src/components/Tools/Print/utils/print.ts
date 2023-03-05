@@ -274,7 +274,7 @@ export const exportClicked = (view: MapView,
         ? parseInt(userDefined.value)
         : undefined
     );
-    const graphicsLayer:__esri.GraphicsLayer = view?.map.findLayerById('print-graphics') as __esri.GraphicsLayer;
+    const graphicsLayer:__esri.GraphicsLayer = view?.map.findLayerById('print-graphic') as __esri.GraphicsLayer;
     if (graphicsLayer) {
       graphicsLayer.visible = false;
     }
