@@ -274,6 +274,10 @@ export const exportClicked = (view: MapView,
         ? parseInt(userDefined.value)
         : undefined
     );
+    const graphicsLayer:__esri.GraphicsLayer = view?.map.findLayerById('print-graphics') as __esri.GraphicsLayer;
+    if (graphicsLayer) {
+      graphicsLayer.visible = false;
+    }
     //exportMap(args.exportUrl, args?.view, args?.view.scale);
     const customElements: any[] = getCustomElements(
       selectedLayout.size,
@@ -318,6 +322,9 @@ export const exportClicked = (view: MapView,
         .then((result) => {
           setTimeout(() => {
             //graphics.visible = true;
+            if (graphicsLayer) {
+              graphicsLayer.visible = true;
+            }            
             const index = jobRef.current.indexOf(job);
             jobRef.current[index] = {
               ...jobRef.current[index],
@@ -329,6 +336,9 @@ export const exportClicked = (view: MapView,
         .catch((reason) => {
           console.log(reason);
           //graphics.visible = true;
+          if (graphicsLayer) {
+            graphicsLayer.visible = true;
+          }                   
           const index = jobRef.current.indexOf(job);
           jobRef.current[index] = {
             ...jobRef.current[index],
