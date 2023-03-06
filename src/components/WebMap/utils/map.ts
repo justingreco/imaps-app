@@ -96,13 +96,59 @@ function isSearchable(layer: __esri.Layer, webmap: any) {
     });
   return found;
 }
+function isInUrl(layer: __esri.Layer) {
+  debugger
+  const url = new URL(window.location as any);
+  const layers = url.searchParams.get("layers")?.split(',');
+  if (!layers) {
+    return false;
+  }
+  if (layer.title in layers) {
+    layer.visible = true;
+  }
+  return layer.title in layers;
+}
 function getWebMap(mapId: string): Promise<WebMap> {
-  return new Promise((resolve, reject) => {
+  return new Promise(async (resolve, reject) => {
     let webmap: any;
+
     if (window.localStorage.getItem("imaps_calcite") && window.localStorage.getItem("imaps_reset") !== "true") {
       webmap = WebMap.fromJSON(
         JSON.parse(window?.localStorage?.getItem("imaps_calcite") as string)
       );
+      const url = new URL(window.location as any);
+      if (url.searchParams.get("layers")) {
+        debugger
+        const layers = url.searchParams.get('layers')?.split(',');
+        if (layers) {
+          const sourceMap = new WebMap({
+            portalItem: {
+              id: mapId,
+            },
+          });
+          await webmap.load();
+          await sourceMap.load();
+          const matches = sourceMap.allLayers.filter((layer: __esri.Layer) => {
+            return layers.includes(layer.title)
+          });
+          
+          matches.forEach((layer: any) => {
+           if (layer.parent) {
+            
+            const parent = webmap.findLayerById(layer.parent.id);
+            if (parent) {
+              
+              parent.add(layer);
+              parent.visible = true;
+              if (parent.parent) {
+                parent.parent.visible = true;
+              }
+              layer.visible = true;
+            }
+           }
+          });
+        }
+      }
       resolve(webmap);
     } else {
       window.localStorage.removeItem("imaps_reset");
@@ -121,6 +167,7 @@ function getWebMap(mapId: string): Promise<WebMap> {
           (group as __esri.GroupLayer).removeMany(
             (group as __esri.GroupLayer).allLayers
               .filter((layer) => {
+                debugger
                 return (
                   !layer.visible &&
                   !layer.title.includes("Property") &&

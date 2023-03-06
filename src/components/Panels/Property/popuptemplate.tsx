@@ -5,7 +5,6 @@ import Graphic from "@arcgis/core/Graphic";
 
 import { createDeedButtons, createDurhamButton, createEnvironmentalButtons, createFeatureTitle, createLinkButtons, getAddressTable, getDurhamPhoto, getServiceAccordion } from "./customContent";
 import { arcadeExpressionInfos } from "./utils/arcadeExpressions";
-import FeatureTable from "@arcgis/core/widgets/FeatureTable";
 
 export const createTemplate = (
   view: __esri.MapView,

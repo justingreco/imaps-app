@@ -6,6 +6,7 @@ import { lazy, Suspense } from "react";
 import { services } from "../../../config/config";
 import { createRoot } from "react-dom/client";
 import FeatureTable from "@arcgis/core/widgets/FeatureTable";
+import { arcadeExpressionInfos } from "./utils/arcadeExpressions";
 
 const Services = lazy(() => import("./Services/Services"));
 const AddressTable = lazy(() => import("./AddressTable/AddressTable"));
@@ -302,24 +303,30 @@ export const createDurhamButton = () => {
  
     return new CustomContent({
         outFields: ["*"],
-        creator: (e: any) => {
+        creator: async (e: any) => {
 
             const div = document.createElement("div");
-            const root = createRoot(div as HTMLDivElement);
-            if (featureTable) {
-              root.render(<div className="feature-title">
-              {condos.length > 1 && <Suspense fallback={""}>
-              <NextPropertyButton view={view} icon="caret-left" text="Previous" featureTable={featureTable} />
-            </Suspense> }      
-              <h2>{ feature.getAttribute('SITE_ADDRESS')}</h2>
-              <Suspense fallback={""}>
-              {condos.length > 1 && 
-              <NextPropertyButton view={view}  icon="caret-right" text="Next" featureTable={featureTable}/>
+            const arcade = arcadeExpressionInfos.find(info => {return info.title === 'site-address'})?.expression;
+            if (arcade) {
+              const title = await executeArcade(arcade, feature);
+              const root = createRoot(div as HTMLDivElement);
+              if (featureTable) {
+                root.render(<div className="feature-title">
+                {condos.length > 1 && <Suspense fallback={""}>
+                <NextPropertyButton view={view} icon="caret-left" text="Previous" featureTable={featureTable} />
+              </Suspense> }      
+                <h2>{ title }</h2>
+                <Suspense fallback={""}>
+                {condos.length > 1 && 
+                <NextPropertyButton view={view}  icon="caret-right" text="Next" featureTable={featureTable}/>
+                }
+              </Suspense>              
+                </div>
+              );
               }
-            </Suspense>              
-              </div>
-            );
             }
+
+            
           return div;
         },
       })    
