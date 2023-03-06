@@ -88,7 +88,7 @@ function Basemaps(props: PanelProps) {
             ></Blend>
           </CalciteTab> */}
         </CalciteTabs>
-        <CalciteAlert
+        {/* <CalciteAlert
           open={showAlert.show === true ? true : undefined}
           autoClose
           autoCloseDuration="medium"
@@ -97,7 +97,7 @@ function Basemaps(props: PanelProps) {
         >
           <div slot="title">Imagery Not Available</div>
           <div slot="message">{`Imagery for ${showAlert.from} only available inside Raleigh, base map has changed to ${showAlert.to}`}</div>
-        </CalciteAlert>
+        </CalciteAlert> */}
       </div>
     </CalcitePanel>
   );

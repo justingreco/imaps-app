@@ -43,6 +43,7 @@ function Shell() {
     toolDismissed,
     loading,
     showAlert,
+    alertSet,
     selectedProperty,
     mapCallback,
     geometryCallback,
@@ -54,6 +55,7 @@ function Shell() {
     tipsHidden,
   } = useShell();
   return (
+    <div>
     <CalciteShell contentBehind={contentBehind ? true : undefined}>
       <Header></Header>
       {/* <CalciteShellPanel
@@ -125,6 +127,7 @@ function Shell() {
               panelDismissed={panelDismissed}
               isActive={activePanel === "basemaps"}
               showTips={tipsCallback}
+              alertSet={alertSet}
             ></Basemaps>
           </Suspense>
         )}
@@ -193,22 +196,10 @@ function Shell() {
         widgetActivated={widgetCallback}
       ></WebMap>
       <CalciteScrim loading hidden={!loading ? true : undefined}></CalciteScrim>
-      <CalciteAlert
-        open={showAlert ? true : undefined}
-        kind={alert?.kind}
-        autoClose={alert?.autoDismiss ? true : undefined}
-        autoCloseDuration={alert?.duration}
-        label={""}
-      >
-        <div slot="title">{alert?.title}</div>
-        <div slot="message">{alert?.message}</div>
-        {alert?.link.show && (
-          <a slot="link" href={alert?.link.url}>
-            {alert?.link.text}
-          </a>
-        )}
-      </CalciteAlert>
-      <CalciteTipManager closed={tipsHidden ? true : undefined}>
+      
+
+    </CalciteShell>
+    <CalciteTipManager closed={tipsHidden ? true : undefined}>
         <CalciteTipGroup group-title={tips?.title}>
           {tips?.tips.map((tip: any) => {
             return (
@@ -219,7 +210,27 @@ function Shell() {
           })}
         </CalciteTipGroup>
       </CalciteTipManager>
-    </CalciteShell>
+      <CalciteAlert
+        open={alert?.show}
+        onCalciteAlertClose={() => {
+          if (alert) {
+            alert.show = false;
+          }
+        }}
+        kind={alert?.kind}
+        autoClose={alert?.autoDismiss ? true : undefined}
+        autoCloseDuration={alert?.duration}
+        label={""}
+      >
+        <div slot="title">{alert?.title}</div>
+        <div slot="message">{alert?.message}</div>
+        {alert?.link?.show && (
+          <a slot="link" href={alert?.link.url}>
+            {alert?.link.text}
+          </a>
+        )}
+      </CalciteAlert>      
+    </div>
   );
 }
 export default Shell;

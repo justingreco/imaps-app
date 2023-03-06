@@ -64,6 +64,18 @@ calcite-action-bar {
   background-color: var(--calcite-ui-foreground-1) !important;
 } */
 
+calcite-tip-manager {
+  bottom: 0;
+  position: absolute;
+  z-index: 100;
+  width: 100%;
+  max-width: 500px;
+  left: 50%;
+  transform: translate(-50%, 0);
+  border-color: var(--calcite-ui-border-3);
+  border-style: solid;
+}
+
 @media only screen and (max-width: 400px) {
   .esri-expand {
     display: none;
@@ -81,5 +93,9 @@ calcite-action-bar {
     position: absolute;
     bottom: 0;
     top: 0;
+  }
+  calcite-tip-manager {
+    left: 0;
+    transform: none;
   }
 }

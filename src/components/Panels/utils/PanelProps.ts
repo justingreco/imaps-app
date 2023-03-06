@@ -3,4 +3,5 @@ export interface PanelProps {
     isActive: boolean;
     panelDismissed: Function;
     showTips: Function;
+    alertSet?: Function | undefined;
 }

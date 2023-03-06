@@ -5,13 +5,14 @@ import {
   toolSelected,
   widgetActivated,
 } from "../utils/shell";
+import { Alert } from "./alert";
 
 const useShell = () => {
   const [activePanel, setActivePanel] = useState("search");
   const [activeTool, setActiveTool] = useState("");
   const loaded = useRef(false);
   const [loading, setLoading] = useState(true);
-  const [alert, setAlert] = useState<any>();
+  const [alert, setAlert] = useState<Alert>();
   const [showAlert, setShowAlert] = useState(false);
   const [contentBehind, setContentBehind] = useState(false);
   const [loadedPanels, setLoadedPanels] = useState<string[]>(() => ["search"]);
@@ -133,6 +134,11 @@ const useShell = () => {
     setTipsHidden(lastTips.current === newTips);
     lastTips.current = lastTips.current === newTips ? null : newTips;
   };
+  const alertSet = (alert: Alert) => {
+    debugger
+    setShowAlert(true);
+    setAlert(alert);
+  }
   return {
     activePanel,
     activeTool,
@@ -148,6 +154,7 @@ const useShell = () => {
     toolDismissed,
     loading,
     showAlert,
+    alertSet,
     selectedProperty,
     mapCallback,
     geometryCallback,

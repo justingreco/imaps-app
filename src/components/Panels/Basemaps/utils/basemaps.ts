@@ -9,6 +9,7 @@ import Color from "@arcgis/core/Color";
 import * as reactiveUtils from "@arcgis/core/core/reactiveUtils";
 import FeatureLayer from "@arcgis/core/layers/FeatureLayer";
 import VectorTileLayer from "@arcgis/core/layers/VectorTileLayer";
+import { Alert } from "../../../Shell/utils/alert";
 
 export function initializeBasemaps(
   view: MapView,
@@ -39,7 +40,7 @@ export function initializeImageMaps(
   view: MapView,
   ref: HTMLDivElement,
   id: string,
-  setShowAlert: Function
+  alertSet: Function | undefined
 ) {
   images = new BasemapGallery({
     container: ref,
@@ -72,7 +73,7 @@ export function initializeImageMaps(
       });
     }
     view.watch("extent", (extent: __esri.Extent) =>
-      viewExtentChanged(extent, view, setShowAlert)
+      viewExtentChanged(extent, view, alertSet)
     );
   });
   view.map.watch("basemap", (basemap: Basemap) => {
@@ -129,7 +130,7 @@ const getBoundary = (view: __esri.MapView): Promise<Polygon> => {
 const viewExtentChanged = (
   extent: __esri.Extent,
   view: MapView,
-  setShowAlert: Function
+  alertSet: Function | undefined
 ) => {
   if (
     imageryBoundary &&
@@ -149,7 +150,19 @@ const viewExtentChanged = (
           const from = images.activeBasemap.title;
           images.activeBasemap = images.source.basemaps.at(0);
           const to = images.activeBasemap.title;
-          setShowAlert({ show: true, from: from, to: to });
+          //setShowAlert({ show: true, from: from, to: to });
+          debugger
+          if (alertSet) {
+            const alert: Alert = {
+              show: true,
+              autoDismiss: true,
+              duration: 'medium',
+              kind: 'warning',
+              title: 'Imagery Year Changed',
+              message: `Imagery for ${from} only available inside Raleigh, base map has changed to ${to}`
+            }      
+            alertSet(alert);
+          }
         } else {
           images.activeBasemap = match;
         }

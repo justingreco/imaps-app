@@ -37,7 +37,7 @@ const useBasemaps = (props: PanelProps) => {
         props.view,
         imagesRef.current as any,
         imageGroup,
-        setShowAlert
+        props.alertSet
       );
       initializeEsriMaps(props.view, esriRef.current as any);
       setTimeout(() => {
