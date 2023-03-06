@@ -280,9 +280,8 @@ function searchComplete(event: __esri.SearchSearchCompleteEvent): Promise<any> {
         const where = getWildcardSearchWhere(searchFields, term);
         resolve(wildcardSearch(where, condos));
       } else {
-        reject('search term must be 3 or more characters');
+        reject("search term must be 3 or more characters");
       }
-
     }
     if (event.numResults) {
       searchResultSelected(

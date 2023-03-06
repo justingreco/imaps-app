@@ -1,18 +1,22 @@
-import { CalciteAction, CalcitePanel, CalciteTooltip } from "@esri/calcite-components-react";
-import React, { } from "react";
+import {
+  CalciteAction,
+  CalcitePanel,
+  CalciteTooltip,
+} from "@esri/calcite-components-react";
+import React from "react";
 import "./Measure.css";
 import { collapsePanel } from "../../Shell/utils/shell";
 import useMeasure from "./utils/useMeasure";
 import { ToolProps } from "../utils/ToolProps";
 export const Measure = (props: ToolProps) => {
-  const { 
+  const {
     measureRef,
-    measurement, 
-    selectedTool, 
-    setSelectedTool, 
-    isActive, 
-    toolDismissed, 
-    tipsClicked
+    measurement,
+    selectedTool,
+    setSelectedTool,
+    isActive,
+    toolDismissed,
+    tipsClicked,
   } = useMeasure(props);
   return (
     <CalcitePanel
@@ -24,7 +28,13 @@ export const Measure = (props: ToolProps) => {
       closable
       onCalcitePanelClose={toolDismissed}
     >
-      <CalciteAction id="tip" icon="lightbulb"  text="Tips" slot="header-actions-end" onClick={tipsClicked}></CalciteAction>
+      <CalciteAction
+        id="tip"
+        icon="lightbulb"
+        text="Tips"
+        slot="header-actions-end"
+        onClick={tipsClicked}
+      ></CalciteAction>
       <CalciteAction
         id="collapseTool"
         icon="chevron-up"
@@ -32,11 +42,25 @@ export const Measure = (props: ToolProps) => {
         slot="header-actions-end"
         onClick={collapsePanel}
       ></CalciteAction>
-     <CalciteTooltip label="Show Tip" referenceElement="tip" closeOnClick>Show Tip</CalciteTooltip>
-      <CalciteTooltip label="Collapse" referenceElement="collapseTool" closeOnClick>Collapse</CalciteTooltip>             
+      <CalciteTooltip label="Show Tip" referenceElement="tip" closeOnClick>
+        Show Tip
+      </CalciteTooltip>
+      <CalciteTooltip
+        label="Collapse"
+        referenceElement="collapseTool"
+        closeOnClick
+      >
+        Collapse
+      </CalciteTooltip>
       <div id="measure-tools">
         <div className="measure-container">
-          <CalciteTooltip closeOnClick label="Distance" referenceElement="measureDistance">Distance</CalciteTooltip>
+          <CalciteTooltip
+            closeOnClick
+            label="Distance"
+            referenceElement="measureDistance"
+          >
+            Distance
+          </CalciteTooltip>
           <CalciteAction
             id="measureDistance"
             icon="measure-line"
@@ -49,7 +73,13 @@ export const Measure = (props: ToolProps) => {
               }
             }}
           ></CalciteAction>
-          <CalciteTooltip closeOnClick label="Area" referenceElement="measureArea">Area</CalciteTooltip>
+          <CalciteTooltip
+            closeOnClick
+            label="Area"
+            referenceElement="measureArea"
+          >
+            Area
+          </CalciteTooltip>
           <CalciteAction
             id="measureArea"
             icon="measure-area"
@@ -62,7 +92,13 @@ export const Measure = (props: ToolProps) => {
               }
             }}
           ></CalciteAction>
-          <CalciteTooltip closeOnClick label="Clear" referenceElement="clearMeasure">Clear</CalciteTooltip>
+          <CalciteTooltip
+            closeOnClick
+            label="Clear"
+            referenceElement="clearMeasure"
+          >
+            Clear
+          </CalciteTooltip>
           <CalciteAction
             id="clearMeasure"
             icon="trash"

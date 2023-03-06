@@ -16,7 +16,7 @@ function PropertyInfo(props: PropertyInfoProps) {
       feature && feature?.destroy();
     };
   }, []);
- 
+
   useEffect(() => {
     let pin = "";
     if (feature && props.feature) {
@@ -24,7 +24,7 @@ function PropertyInfo(props: PropertyInfoProps) {
       const table = feature?.view.map.allTables.find((table: __esri.Layer) => {
         return table.title.includes("Condo");
       }) as __esri.FeatureLayer;
-     // props.feature.view = feature.view;
+      // props.feature.view = feature.view;
       props.feature.layer = table;
       props.feature.popupTemplate = createTemplate(
         feature?.view as __esri.MapView,

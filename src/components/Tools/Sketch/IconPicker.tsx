@@ -21,10 +21,9 @@ function IconPicker(props: Props) {
             {props.symbol && (
               <div className="icon-symbol">
                 <img
-                  src={`${props.symbol.url}${props.symbol.thumbnail.href.replace(
-                    ".",
-                    ""
-                  )}`}
+                  src={`${
+                    props.symbol.url
+                  }${props.symbol.thumbnail.href.replace(".", "")}`}
                   alt={props.symbol.title}
                   width={50}
                   height={50}

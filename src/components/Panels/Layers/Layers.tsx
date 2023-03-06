@@ -11,15 +11,8 @@ import "./Layers.css";
 import useLayers from "./utils/useLayers";
 import { PanelProps } from "../utils/PanelProps";
 export const Layers = (props: PanelProps) => {
-  
-  const { 
-    ref,
-    layerList,
-    isLoading,
-    isActive,
-    panelDismissed,
-    tipsClicked      
-  } = useLayers(props);
+  const { ref, layerList, isLoading, isActive, panelDismissed, tipsClicked } =
+    useLayers(props);
 
   return (
     <CalcitePanel
@@ -30,8 +23,16 @@ export const Layers = (props: PanelProps) => {
       closable
       onCalcitePanelClose={panelDismissed}
     >
-      <CalciteAction id="tip" icon="lightbulb"  text="Tips" slot="header-actions-end" onClick={tipsClicked}></CalciteAction>
-      <CalciteTooltip label="Show Tip" referenceElement="tip" closeOnClick>Show Tip</CalciteTooltip>
+      <CalciteAction
+        id="tip"
+        icon="lightbulb"
+        text="Tips"
+        slot="header-actions-end"
+        onClick={tipsClicked}
+      ></CalciteAction>
+      <CalciteTooltip label="Show Tip" referenceElement="tip" closeOnClick>
+        Show Tip
+      </CalciteTooltip>
       <div className="layers">
         {layerList && (
           <div className="row sticky">

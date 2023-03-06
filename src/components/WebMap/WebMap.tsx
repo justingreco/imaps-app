@@ -4,10 +4,7 @@ import useWebMap from "./utils/useWebMap";
 import { WebMapProps } from "./utils/WebMapProps";
 
 function WebMap(args: WebMapProps) {
-
-  const { 
-    ref
-  } = useWebMap(args);
+  const { ref } = useWebMap(args);
   return <div className="mapDiv" ref={ref}></div>;
 }
 

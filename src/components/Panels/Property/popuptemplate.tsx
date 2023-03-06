@@ -3,7 +3,16 @@ import PopupTemplate from "@arcgis/core/PopupTemplate";
 import FieldInfo from "@arcgis/core/popup/FieldInfo";
 import Graphic from "@arcgis/core/Graphic";
 
-import { createDeedButtons, createDurhamButton, createEnvironmentalButtons, createFeatureTitle, createLinkButtons, getAddressTable, getDurhamPhoto, getServiceAccordion } from "./customContent";
+import {
+  createDeedButtons,
+  createDurhamButton,
+  createEnvironmentalButtons,
+  createFeatureTitle,
+  createLinkButtons,
+  getAddressTable,
+  getDurhamPhoto,
+  getServiceAccordion,
+} from "./customContent";
 import { arcadeExpressionInfos } from "./utils/arcadeExpressions";
 
 export const createTemplate = (
@@ -80,8 +89,7 @@ export const createTemplate = (
       },
       {
         type: "text",
-        text:
-          "{OWNER}<br/>{expression/mailing-address}",
+        text: "{OWNER}<br/>{expression/mailing-address}",
       },
       {
         type: "text",
@@ -160,53 +168,55 @@ export const createTemplate = (
         ],
       },
       createDeedButtons(),
-      feature.getAttribute('HEATEDAREA')  ? 
-      {
-        type: "text",
-        text: "<h2>Building</h1>",
-      } :{
-        type: "text",
-        text: "",
-      },
-      feature.getAttribute('HEATEDAREA') ?       
-      {
-        type: "fields",
-        fieldInfos: [
-          {
-            fieldName: "HEATEDAREA",
-            format: {
-              digitSeparator: true,
-            },
-            label: "Heated Area",
+      feature.getAttribute("HEATEDAREA")
+        ? {
+            type: "text",
+            text: "<h2>Building</h1>",
+          }
+        : {
+            type: "text",
+            text: "",
           },
-          {
-            fieldName: "YEAR_BUILT",
-            format: {
-              digitSeparator: false,
-            },
-            label: "Year Built",
+      feature.getAttribute("HEATEDAREA")
+        ? {
+            type: "fields",
+            fieldInfos: [
+              {
+                fieldName: "HEATEDAREA",
+                format: {
+                  digitSeparator: true,
+                },
+                label: "Heated Area",
+              },
+              {
+                fieldName: "YEAR_BUILT",
+                format: {
+                  digitSeparator: false,
+                },
+                label: "Year Built",
+              },
+              {
+                fieldName: "DESIGN_STYLE_DECODE",
+                label: "Design/Style",
+              },
+              {
+                fieldName: "TYPE_USE_DECODE",
+                label: "Use Type",
+              },
+              {
+                fieldName: "TOTSTRUCTS",
+                label: "Total Structures",
+              },
+              {
+                fieldName: "TOTUNITS",
+                label: "Total Units",
+              },
+            ],
+          }
+        : {
+            type: "text",
+            text: "",
           },
-          {
-            fieldName: "DESIGN_STYLE_DECODE",
-            label: "Design/Style",
-          },
-          {
-            fieldName: "TYPE_USE_DECODE",
-            label: "Use Type",
-          },
-          {
-            fieldName: "TOTSTRUCTS",
-            label: "Total Structures",
-          },
-          {
-            fieldName: "TOTUNITS",
-            label: "Total Units",
-          },
-        ],
-      }:{
-        type: "text",
-        text: "",
-      },
       {
         type: "media",
         mediaInfos: [],
@@ -271,7 +281,7 @@ export const getPhotos = (
   feature: __esri.Graphic
 ): Promise<__esri.MediaInfo[]> => {
   return new Promise(function (resolve) {
-      const relationship = (feature.layer as FeatureLayer)?.relationships.find(
+    const relationship = (feature.layer as FeatureLayer)?.relationships.find(
       (r) => {
         return r.name === "CONDO_PHOTOS";
       }
@@ -283,11 +293,11 @@ export const getPhotos = (
         relationshipId: relationship?.id,
         objectIds: [feature.getAttribute("OBJECTID")],
         outFields: ["*"],
-        where: `STATUS = 'A'`
+        where: `STATUS = 'A'`,
       })
       .then(async (result) => {
         for (const key in result) {
-          feature.setAttribute('OBJECTID', key);
+          feature.setAttribute("OBJECTID", key);
           result[key].features.reverse().forEach((feature: Graphic) => {
             mediaInfos.push({
               title: "",
@@ -301,9 +311,9 @@ export const getPhotos = (
             });
           });
         }
-        if (feature.getAttribute("CITY_DECODE")?.includes('DURHAM COUNTY')) {
+        if (feature.getAttribute("CITY_DECODE")?.includes("DURHAM COUNTY")) {
           const photo = await getDurhamPhoto(feature);
-          
+
           mediaInfos.push({
             title: "",
             type: "image",
@@ -311,7 +321,7 @@ export const getPhotos = (
             value: {
               sourceURL: photo,
             },
-          });             
+          });
         }
         resolve(mediaInfos);
       });

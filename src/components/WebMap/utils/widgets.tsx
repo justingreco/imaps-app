@@ -97,7 +97,14 @@ const addCoordinates = (view: __esri.MapView, widgetActivated: Function) => {
         const root = createRoot(container as HTMLDivElement);
         root.render(
           <Suspense fallback={""}>
-            <Coordinates id="coordinates" clickActivated={(view: __esri.MapView) => {widgetActivated(view)}} view={view} expand={coordinateExpand} />
+            <Coordinates
+              id="coordinates"
+              clickActivated={(view: __esri.MapView) => {
+                widgetActivated(view);
+              }}
+              view={view}
+              expand={coordinateExpand}
+            />
           </Suspense>
         );
       }
@@ -133,10 +140,11 @@ const createStreetviewButton = (
 
     view.popup.autoOpenEnabled = false;
     if (
-      document.querySelector(".streetview-widget")?.classList.contains("active")) {
+      document.querySelector(".streetview-widget")?.classList.contains("active")
+    ) {
       document.querySelector(".streetview-widget")?.classList.remove("active");
       streetviewClick?.remove();
-    } else { 
+    } else {
       document.querySelector(".map-tool.active")?.classList.remove("active");
       document.querySelector(".streetview-widget")?.classList.add("active");
       streetviewClick?.remove();
@@ -222,4 +230,3 @@ export const createIdentifyButton = (
 //   });
 //   return stateplane;
 // }
-

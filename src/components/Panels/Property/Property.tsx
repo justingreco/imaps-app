@@ -1,5 +1,5 @@
-
-import {  CalciteScrim,
+import {
+  CalciteScrim,
   CalciteTab,
   CalciteTabNav,
   CalciteTabs,
@@ -17,7 +17,7 @@ import PropertyInfo from "./PropertyInfo/PropertyInfo";
 import useProperty from "./utils/useProperty";
 import { PropertyProps } from "./utils/PropertyProps";
 function Property(props: PropertyProps) {
-  const { 
+  const {
     condos,
     feature,
     infoDisabled,
@@ -31,7 +31,7 @@ function Property(props: PropertyProps) {
     clearSearch,
     tipsClicked,
     featureTable,
-    setFeatureTable
+    setFeatureTable,
   } = useProperty(props);
 
   return (
@@ -43,28 +43,48 @@ function Property(props: PropertyProps) {
       closable
       onCalcitePanelClose={panelDismissed}
     >
-      <CalciteAction id="tip" icon="lightbulb"  text="Tips" slot="header-actions-end" onClick={tipsClicked}></CalciteAction>
-      <CalciteTooltip label="Show Tip" referenceElement="tip" closeOnClick>Show Tip</CalciteTooltip>
+      <CalciteAction
+        id="tip"
+        icon="lightbulb"
+        text="Tips"
+        slot="header-actions-end"
+        onClick={tipsClicked}
+      ></CalciteAction>
+      <CalciteTooltip label="Show Tip" referenceElement="tip" closeOnClick>
+        Show Tip
+      </CalciteTooltip>
       <div className="property">
         {props.view && (
-          <div className="row"><PropertySearch
-            view={props.view}
-            searchingChanged={(isSearching: boolean) =>
-              setSearching(isSearching)
-            }
-            condosSelected={condosSelected}
-          ></PropertySearch>
-          <CalciteButton id="clearSelection" iconEnd="trash" appearance="transparent" scale="m" kind="neutral"
-            onClick={() => {
-              clearSearch(props.view);
-            }}
-          ></CalciteButton>
-          <CalciteTooltip referenceElement="clearSelection" label="Clear Selection" closeOnClick>Clear Selection</CalciteTooltip>
+          <div className="row">
+            <PropertySearch
+              view={props.view}
+              searchingChanged={(isSearching: boolean) =>
+                setSearching(isSearching)
+              }
+              condosSelected={condosSelected}
+            ></PropertySearch>
+            <CalciteButton
+              id="clearSelection"
+              iconEnd="trash"
+              appearance="transparent"
+              scale="m"
+              kind="neutral"
+              onClick={() => {
+                clearSearch(props.view);
+              }}
+            ></CalciteButton>
+            <CalciteTooltip
+              referenceElement="clearSelection"
+              label="Clear Selection"
+              closeOnClick
+            >
+              Clear Selection
+            </CalciteTooltip>
           </div>
         )}
         <CalciteTabs position="bottom" layout="center" scale="l">
-          <CalciteTabNav  slot="title-group">
-            <CalciteTabTitle  selected={activeTab === "list" ? true : undefined}>
+          <CalciteTabNav slot="title-group">
+            <CalciteTabTitle selected={activeTab === "list" ? true : undefined}>
               List
             </CalciteTabTitle>
             <CalciteTabTitle
@@ -80,18 +100,20 @@ function Property(props: PropertyProps) {
                 view={props.view}
                 condos={condos}
                 featureSelected={featureSelected}
-                featureTableSet={(table: __esri.FeatureTable) => setFeatureTable(table)}
+                featureTableSet={(table: __esri.FeatureTable) =>
+                  setFeatureTable(table)
+                }
               ></PropertyTable>
             )}
           </CalciteTab>
           <CalciteTab>
             {props.view && (
-              <PropertyInfo 
+              <PropertyInfo
                 view={props.view}
-                feature={feature} 
-                condos={condos} 
+                feature={feature}
+                condos={condos}
                 featureTable={featureTable}
-                ></PropertyInfo>
+              ></PropertyInfo>
             )}
           </CalciteTab>
           <CalciteScrim

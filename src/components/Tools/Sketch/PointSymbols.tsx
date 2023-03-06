@@ -2,7 +2,6 @@ import "@esri/calcite-components/dist/components/calcite-input";
 import "@esri/calcite-components/dist/components/calcite-label";
 import "@esri/calcite-components/dist/components/calcite-panel";
 
-
 import {
   CalciteInput,
   CalciteLabel,

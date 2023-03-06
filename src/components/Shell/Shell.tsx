@@ -28,7 +28,31 @@ const Bookmarks = lazy(() => import("../Tools/Bookmarks/Bookmarks"));
 const Print = lazy(() => import("../Tools/Print/Print"));
 
 function Shell() {
-  const { activePanel,activeTool, contentBehind, view, activePanelChanged, activeToolChanged, geometry, propertySelected, loadedPanels, panelDismissed ,loadedTools, toolDismissed, loading,showAlert,selectedProperty,mapCallback, geometryCallback, properties, widgetCallback, alert, tipsCallback, tips, tipsHidden } = useShell();
+  const {
+    activePanel,
+    activeTool,
+    contentBehind,
+    view,
+    activePanelChanged,
+    activeToolChanged,
+    geometry,
+    propertySelected,
+    loadedPanels,
+    panelDismissed,
+    loadedTools,
+    toolDismissed,
+    loading,
+    showAlert,
+    selectedProperty,
+    mapCallback,
+    geometryCallback,
+    properties,
+    widgetCallback,
+    alert,
+    tipsCallback,
+    tips,
+    tipsHidden,
+  } = useShell();
   return (
     <CalciteShell contentBehind={contentBehind ? true : undefined}>
       <Header></Header>
@@ -40,7 +64,6 @@ function Shell() {
       <CalciteShellPanel
         className="custom-width"
         slot="panel-end"
-
         position="end"
         resizable={contentBehind ? undefined : true}
         collapsed={activePanel === ""}
@@ -66,68 +89,68 @@ function Shell() {
           ></Property>
         )}
         {view && loadedPanels.includes("location") && (
-          <Suspense fallback={null}>           
-          <Location
-            view={view}
-            panelDismissed={panelDismissed}
-            isActive={activePanel === "location"}
-            showTips={tipsCallback}
-          ></Location>
+          <Suspense fallback={null}>
+            <Location
+              view={view}
+              panelDismissed={panelDismissed}
+              isActive={activePanel === "location"}
+              showTips={tipsCallback}
+            ></Location>
           </Suspense>
         )}
         {view && loadedPanels.includes("layers") && (
-        <Suspense fallback={null}> 
-          <Layers
-            view={view}
-            panelDismissed={panelDismissed}
-            isActive={activePanel === "layers"}
-            showTips={tipsCallback}            
-          ></Layers>
+          <Suspense fallback={null}>
+            <Layers
+              view={view}
+              panelDismissed={panelDismissed}
+              isActive={activePanel === "layers"}
+              showTips={tipsCallback}
+            ></Layers>
           </Suspense>
         )}
         {view && loadedPanels.includes("legend") && (
-        <Suspense fallback={null}>    
-          <Legend
-            view={view}
-            panelDismissed={panelDismissed}
-            isActive={activePanel === "legend"}
-            showTips={tipsCallback}            
-          ></Legend>
+          <Suspense fallback={null}>
+            <Legend
+              view={view}
+              panelDismissed={panelDismissed}
+              isActive={activePanel === "legend"}
+              showTips={tipsCallback}
+            ></Legend>
           </Suspense>
         )}
         {view && loadedPanels.includes("basemaps") && (
-        <Suspense fallback={null}>              
-          <Basemaps
-            view={view}
-            panelDismissed={panelDismissed}
-            isActive={activePanel === "basemaps"}
-            showTips={tipsCallback}            
-          ></Basemaps>
+          <Suspense fallback={null}>
+            <Basemaps
+              view={view}
+              panelDismissed={panelDismissed}
+              isActive={activePanel === "basemaps"}
+              showTips={tipsCallback}
+            ></Basemaps>
           </Suspense>
         )}
       </CalciteShellPanel>
       <div className={`tools esri-component`}>
         {view && loadedTools.includes("select") && (
-        <Suspense fallback={null}>    
-          <Select
-            view={view}
-            selectedProperty={selectedProperty}
-            geometrySet={geometryCallback}
-            toolDismissed={toolDismissed}
-            isActive={activeTool === "select"}
-            showTips={tipsCallback}
-          ></Select>
-          </Suspense>      
+          <Suspense fallback={null}>
+            <Select
+              view={view}
+              selectedProperty={selectedProperty}
+              geometrySet={geometryCallback}
+              toolDismissed={toolDismissed}
+              isActive={activeTool === "select"}
+              showTips={tipsCallback}
+            ></Select>
+          </Suspense>
         )}
         {view && loadedTools.includes("measure") && (
-        <Suspense fallback={null}>    
-          <Measure
-            view={view}
-            toolDismissed={toolDismissed}
-            isActive={activeTool === "measure"}
-            showTips={tipsCallback}
-          ></Measure>
-          </Suspense>      
+          <Suspense fallback={null}>
+            <Measure
+              view={view}
+              toolDismissed={toolDismissed}
+              isActive={activeTool === "measure"}
+              showTips={tipsCallback}
+            ></Measure>
+          </Suspense>
         )}
         {view && loadedTools.includes("sketch") && (
           <Suspense fallback={null}>
@@ -150,16 +173,16 @@ function Shell() {
           </Suspense>
         )}
         {view && loadedTools.includes("print") && (
-        <Suspense fallback={null}>
-          <Print
-            view={view}
-            exportUrl="https://maps.raleighnc.gov/print/rest/services/Geoprocessing/ExportWebMapPro/GPServer/Export%20Web%20Map"
-            selectedProperty={selectedProperty}
-            toolDismissed={toolDismissed}
-            isActive={activeTool === "print"}
-            showTips={tipsCallback}
-          ></Print>
-        </Suspense>          
+          <Suspense fallback={null}>
+            <Print
+              view={view}
+              exportUrl="https://maps.raleighnc.gov/print/rest/services/Geoprocessing/ExportWebMapPro/GPServer/Export%20Web%20Map"
+              selectedProperty={selectedProperty}
+              toolDismissed={toolDismissed}
+              isActive={activeTool === "print"}
+              showTips={tipsCallback}
+            ></Print>
+          </Suspense>
         )}
       </div>
       <WebMap
@@ -188,8 +211,12 @@ function Shell() {
       <CalciteTipManager closed={tipsHidden ? true : undefined}>
         <CalciteTipGroup group-title={tips?.title}>
           {tips?.tips.map((tip: any) => {
-          return <CalciteTip title={tip.title} key={tip.title}>{tip.text}</CalciteTip>
-        })}
+            return (
+              <CalciteTip heading={tip.title} key={tip.title}>
+                {tip.text}
+              </CalciteTip>
+            );
+          })}
         </CalciteTipGroup>
       </CalciteTipManager>
     </CalciteShell>

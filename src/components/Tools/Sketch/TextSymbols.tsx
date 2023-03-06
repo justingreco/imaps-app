@@ -38,11 +38,9 @@ function TextSymbols(props: Props) {
                 showHalo,
                 e.target.value
               );
-            });            
+            });
           }}
-          onCalciteInputChange={(e) => {
-
-          }}
+          onCalciteInputChange={(e) => {}}
         ></CalciteInput>
       </CalciteLabel>
       <ColorButton

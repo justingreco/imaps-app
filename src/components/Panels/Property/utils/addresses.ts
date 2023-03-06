@@ -25,7 +25,7 @@ export function initializeFeatureTable(
           selectionColumn: false,
           menuItems: {
             refreshData: false,
-            toggleColumns: false
+            toggleColumns: false,
           },
         },
         menuConfig: {
@@ -64,7 +64,6 @@ export function initializeFeatureTable(
                   });
                   clearAddressPoints(view);
 
-
                   view.graphics.add(feature);
 
                   view.goTo(
@@ -80,8 +79,8 @@ export function initializeFeatureTable(
   });
 }
 function initializeGrid(featureTable: FeatureTable) {
-  (featureTable.findColumn("ADDRESS") as any).width = 150;  
-  (featureTable.findColumn("FEATURETYPE") as any).width = 150;  
+  (featureTable.findColumn("ADDRESS") as any).width = 150;
+  (featureTable.findColumn("FEATURETYPE") as any).width = 150;
 
   setTimeout(() => {
     const grid = (featureTable.container as HTMLElement).querySelector(
@@ -89,12 +88,11 @@ function initializeGrid(featureTable: FeatureTable) {
     ) as any;
     grid?.addEventListener("click", (e: any) => {
       if ((e.target as HTMLElement).nodeName === "VAADIN-GRID-CELL-CONTENT") {
-
         featureTable.highlightIds.removeAll();
         const item = (grid.getEventContext(e) as any)?.item;
         const feature = item.feature;
         //            featureTable.view.goTo(feature);
-        featureTable.highlightIds.add(feature.getAttribute('OBJECTID'));
+        featureTable.highlightIds.add(feature.getAttribute("OBJECTID"));
       }
     });
   }, 2000);
@@ -170,7 +168,7 @@ export function updateTable(property: Graphic, featureTable: FeatureTable) {
         geometry: property.geometry,
         outFields: ["ADDRESS", "FEATURETYPE"],
         returnGeometry: true,
-        where: '1=1'
+        where: "1=1",
       })
       .then((featureSet) => {
         (featureTable.layer as __esri.FeatureLayer)
@@ -240,7 +238,6 @@ const exportTable = (table: FeatureTable): void => {
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
-        
       }
     });
 };

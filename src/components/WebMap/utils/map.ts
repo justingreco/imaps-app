@@ -34,11 +34,11 @@ export function initializeMap(
       view.map.add(selectionLayer);
       view.map.add(selectionCluster);
       customizePopup(view);
-      view.popup.on('trigger-action', (event) => {
-        if (event.action.title === 'Select') {
+      view.popup.on("trigger-action", (event) => {
+        if (event.action.title === "Select") {
           geometrySet(view.popup.location);
         }
-      });        
+      });
       reactiveUtils
         .whenOnce(() => view.map.basemap.loaded)
         .then((loaded) => {
@@ -62,9 +62,9 @@ export function initializeMap(
   //   saveMap(view);
   // });
 
-  window.addEventListener('beforeunload', handleBeforeUnload);
-  window.addEventListener('unload', handleUnload);
-  document.addEventListener('visibilitychange', handleVisibilityChange);
+  window.addEventListener("beforeunload", handleBeforeUnload);
+  window.addEventListener("unload", handleUnload);
+  document.addEventListener("visibilitychange", handleVisibilityChange);
   function handleBeforeUnload() {
     // Perform actions before the tab is reloaded or closed
     saveMap(view);
@@ -76,12 +76,11 @@ export function initializeMap(
   }
 
   function handleVisibilityChange() {
-    if (document.visibilityState === 'hidden') {
+    if (document.visibilityState === "hidden") {
       // Perform actions when the tab is hidden (e.g. when switching to another app)
       saveMap(view);
     }
   }
-
 
   view.on("hold", (event) => {
     geometrySet(event.mapPoint);
@@ -97,9 +96,9 @@ function isSearchable(layer: __esri.Layer, webmap: any) {
   return found;
 }
 function isInUrl(layer: __esri.Layer) {
-  debugger
+  debugger;
   const url = new URL(window.location as any);
-  const layers = url.searchParams.get("layers")?.split(',');
+  const layers = url.searchParams.get("layers")?.split(",");
   if (!layers) {
     return false;
   }
@@ -112,14 +111,17 @@ function getWebMap(mapId: string): Promise<WebMap> {
   return new Promise(async (resolve, reject) => {
     let webmap: any;
 
-    if (window.localStorage.getItem("imaps_calcite") && window.localStorage.getItem("imaps_reset") !== "true") {
+    if (
+      window.localStorage.getItem("imaps_calcite") &&
+      window.localStorage.getItem("imaps_reset") !== "true"
+    ) {
       webmap = WebMap.fromJSON(
         JSON.parse(window?.localStorage?.getItem("imaps_calcite") as string)
       );
       const url = new URL(window.location as any);
       if (url.searchParams.get("layers")) {
-        debugger
-        const layers = url.searchParams.get('layers')?.split(',');
+        debugger;
+        const layers = url.searchParams.get("layers")?.split(",");
         if (layers) {
           const sourceMap = new WebMap({
             portalItem: {
@@ -129,23 +131,21 @@ function getWebMap(mapId: string): Promise<WebMap> {
           await webmap.load();
           await sourceMap.load();
           const matches = sourceMap.allLayers.filter((layer: __esri.Layer) => {
-            return layers.includes(layer.title)
+            return layers.includes(layer.title);
           });
-          
+
           matches.forEach((layer: any) => {
-           if (layer.parent) {
-            
-            const parent = webmap.findLayerById(layer.parent.id);
-            if (parent) {
-              
-              parent.add(layer);
-              parent.visible = true;
-              if (parent.parent) {
-                parent.parent.visible = true;
+            if (layer.parent) {
+              const parent = webmap.findLayerById(layer.parent.id);
+              if (parent) {
+                parent.add(layer);
+                parent.visible = true;
+                if (parent.parent) {
+                  parent.parent.visible = true;
+                }
+                layer.visible = true;
               }
-              layer.visible = true;
             }
-           }
           });
         }
       }
@@ -167,7 +167,7 @@ function getWebMap(mapId: string): Promise<WebMap> {
           (group as __esri.GroupLayer).removeMany(
             (group as __esri.GroupLayer).allLayers
               .filter((layer) => {
-                debugger
+                debugger;
                 return (
                   !layer.visible &&
                   !layer.title.includes("Property") &&
@@ -196,8 +196,6 @@ function removeGraphicsLayers(view: MapView) {
   );
 }
 export const saveMap = (view: MapView) => {
-
-
   if (view && view?.ready) {
     const groups = view.map.allLayers
       .filter((layer) => {
@@ -212,7 +210,7 @@ export const saveMap = (view: MapView) => {
               !layer.visible &&
               !layer.title.includes("Property") &&
               !isSearchable(layer, view.map) &&
-              layer.type !== 'group'
+              layer.type !== "group"
             );
           })
           .toArray()
@@ -231,7 +229,7 @@ export const saveMap = (view: MapView) => {
     // );
     const json = (view.map as any).toJSON();
     json.initialState.viewpoint.targetGeometry = view.extent;
-    
+
     window.localStorage.setItem("imaps_calcite", JSON.stringify(json));
     //window.localStorage.removeItem('imaps_calcite');
   }
@@ -445,21 +443,19 @@ function hideLogin() {
 
 const customizePopup = (view: __esri.MapView) => {
   const propertyLayer = view.map.allLayers.find((layer) => {
-    return layer.type === 'feature' && layer.title.startsWith('Property');
+    return layer.type === "feature" && layer.title.startsWith("Property");
   }) as __esri.FeatureLayer;
   view.whenLayerView(propertyLayer).then(() => {
     if (propertyLayer) {
       if (propertyLayer.popupTemplate) {
         propertyLayer.popupTemplate.actions = new Collection([
           {
-            title: 'Select',
-            id: 'property-select',
-            className: 'esri-icon-search',
+            title: "Select",
+            id: "property-select",
+            className: "esri-icon-search",
           } as __esri.ActionButton,
         ]);
-        
       }
     }
   });
-
-}
+};

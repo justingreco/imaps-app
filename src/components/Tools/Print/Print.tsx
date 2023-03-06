@@ -15,21 +15,37 @@ import {
 } from "@esri/calcite-components-react";
 import React, { useCallback } from "react";
 import "./Print.css";
-import {
-  getScales,
-  exportClicked,
-  showFrame,
-} from "./utils/print";
+import { getScales, exportClicked, showFrame } from "./utils/print";
 
 import { collapsePanel } from "../../Shell/utils/shell";
 import usePrint from "./utils/usePrint";
 import { PrintProps } from "./utils/PrintProps";
 function Print(props: PrintProps) {
-  const { isActive, title, setSelectedLayout, layouts,  selectedFormat,
-    setSelectedFormat, formats, setScaleType,
-    scaleType, customScaleSelect, setCustomScale,
-    customScale, userDefined, selectedProperty,
-    selectedLayout, attributes, legend, setJobs, jobs, jobRef, tipsClicked, showFrameChanged, frame } = usePrint(props);
+  const {
+    isActive,
+    title,
+    setSelectedLayout,
+    layouts,
+    selectedFormat,
+    setSelectedFormat,
+    formats,
+    setScaleType,
+    scaleType,
+    customScaleSelect,
+    setCustomScale,
+    customScale,
+    userDefined,
+    selectedProperty,
+    selectedLayout,
+    attributes,
+    legend,
+    setJobs,
+    jobs,
+    jobRef,
+    tipsClicked,
+    showFrameChanged,
+    frame,
+  } = usePrint(props);
   const toolDismissed = useCallback((e: any) => {
     props.toolDismissed();
   }, []);
@@ -43,7 +59,13 @@ function Print(props: PrintProps) {
       closable
       onCalcitePanelClose={toolDismissed}
     >
-      <CalciteAction id="tip" icon="lightbulb"  text="Tips" slot="header-actions-end" onClick={tipsClicked}></CalciteAction>
+      <CalciteAction
+        id="tip"
+        icon="lightbulb"
+        text="Tips"
+        slot="header-actions-end"
+        onClick={tipsClicked}
+      ></CalciteAction>
       <CalciteAction
         id="collapseTool"
         icon="chevron-up"
@@ -51,8 +73,16 @@ function Print(props: PrintProps) {
         slot="header-actions-end"
         onClick={collapsePanel}
       ></CalciteAction>
-      <CalciteTooltip label="Show Tip" referenceElement="tip" closeOnClick>Show Tip</CalciteTooltip>
-      <CalciteTooltip label="Collapse" referenceElement="collapseTool" closeOnClick>Collapse</CalciteTooltip>      
+      <CalciteTooltip label="Show Tip" referenceElement="tip" closeOnClick>
+        Show Tip
+      </CalciteTooltip>
+      <CalciteTooltip
+        label="Collapse"
+        referenceElement="collapseTool"
+        closeOnClick
+      >
+        Collapse
+      </CalciteTooltip>
       <div id="print-container">
         <CalciteLabel>
           Title
@@ -65,10 +95,15 @@ function Print(props: PrintProps) {
             onCalciteSelectChange={(e) => {
               setSelectedLayout(e.target.selectedOption.value);
               if (frame.current) {
-                showFrame(frame.current.checked, props.view, selectedLayout, scaleType, customScaleSelect);
+                showFrame(
+                  frame.current.checked,
+                  props.view,
+                  selectedLayout,
+                  scaleType,
+                  customScaleSelect
+                );
               }
-            }
-            }
+            }}
           >
             {layouts.map((layout, i) => {
               return (
@@ -100,9 +135,7 @@ function Print(props: PrintProps) {
             })}
           </CalciteSelect>
         </CalciteLabel>
-        <CalciteRadioButtonGroup
-          name="scale-radio"
-        >
+        <CalciteRadioButtonGroup name="scale-radio">
           <CalciteLabel layout="inline">
             <CalciteRadioButton
               checked={scaleType === "current" ? true : undefined}
@@ -110,8 +143,14 @@ function Print(props: PrintProps) {
               onCalciteRadioButtonChange={(e) => {
                 setScaleType(e.target.value);
                 if (frame.current) {
-                  showFrame(frame.current.checked, props.view, selectedLayout, scaleType, customScaleSelect);
-                }   
+                  showFrame(
+                    frame.current.checked,
+                    props.view,
+                    selectedLayout,
+                    scaleType,
+                    customScaleSelect
+                  );
+                }
               }}
             ></CalciteRadioButton>
             Current Scale
@@ -123,9 +162,15 @@ function Print(props: PrintProps) {
               onCalciteRadioButtonChange={(e) => {
                 setScaleType(e.target.value);
                 if (frame.current) {
-                  showFrame(frame.current.checked, props.view, selectedLayout, scaleType, customScaleSelect);
-                }   
-              }}              
+                  showFrame(
+                    frame.current.checked,
+                    props.view,
+                    selectedLayout,
+                    scaleType,
+                    customScaleSelect
+                  );
+                }
+              }}
             ></CalciteRadioButton>
             Custom Scale
           </CalciteLabel>
@@ -139,10 +184,15 @@ function Print(props: PrintProps) {
               onCalciteSelectChange={(e) => {
                 setCustomScale(e.target.selectedOption.value);
                 if (frame.current) {
-                  showFrame(frame.current.checked, props.view, selectedLayout, scaleType, customScaleSelect);
+                  showFrame(
+                    frame.current.checked,
+                    props.view,
+                    selectedLayout,
+                    scaleType,
+                    customScaleSelect
+                  );
                 }
-              }                
-              }
+              }}
             >
               {props?.view &&
                 getScales(props?.view).map((scale, i) => {
@@ -182,26 +232,33 @@ function Print(props: PrintProps) {
           Legend?
         </CalciteLabel>
         <CalciteLabel layout="inline">
-          <CalciteCheckbox ref={frame} value="frameChecked" onCalciteCheckboxChange={showFrameChanged}></CalciteCheckbox>Show map frame?
+          <CalciteCheckbox
+            ref={frame}
+            value="frameChecked"
+            onCalciteCheckboxChange={showFrameChanged}
+          ></CalciteCheckbox>
+          Show map frame?
         </CalciteLabel>
         <CalciteButton
           width="full"
-          onClick={() => {exportClicked(
-            props.view, 
-            props.exportUrl,
-            scaleType,
-            customScale,
-            userDefined?.current?.value,
-            selectedLayout,
-            selectedFormat,
-            selectedProperty,
-            title.current?.value,
-            attributes.current?.checked,
-            legend.current?.checked,
-            jobRef,
-            jobs,
-            setJobs
-            )}}
+          onClick={() => {
+            exportClicked(
+              props.view,
+              props.exportUrl,
+              scaleType,
+              customScale,
+              userDefined?.current?.value,
+              selectedLayout,
+              selectedFormat,
+              selectedProperty,
+              title.current?.value,
+              attributes.current?.checked,
+              legend.current?.checked,
+              jobRef,
+              jobs,
+              setJobs
+            );
+          }}
         >
           Export
         </CalciteButton>
@@ -214,11 +271,7 @@ function Print(props: PrintProps) {
               <div key={`printjob_${job.submitted}`} className="print-job">
                 {job.loading && (
                   <div>
-                    <CalciteLoader
-                      scale="s"
-                      inline
-                      label={""}
-                    ></CalciteLoader>
+                    <CalciteLoader scale="s" inline label={""}></CalciteLoader>
                     <span className="loader-text">{`${
                       job.title !== "" ? job.title : "untitled"
                     }`}</span>
@@ -251,12 +304,8 @@ function Print(props: PrintProps) {
           })}
         </div>
       </div>
-
     </CalcitePanel>
   );
 }
 
 export default React.memo(Print);
-
-
-

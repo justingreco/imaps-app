@@ -63,24 +63,24 @@ function addLayersFromWebmap(view: MapView) {
           const found = (group as __esri.GroupLayer).findLayerById(layer.id);
           //attempting to update stored layer if updated in webmap (popup and renderer)
           if (found !== undefined) {
-            if (found.type === 'feature') {
-              (found as __esri.FeatureLayer).popupTemplate = (layer as __esri.FeatureLayer).popupTemplate;
-              (found as __esri.FeatureLayer).renderer = (layer as __esri.FeatureLayer).renderer;
+            if (found.type === "feature") {
+              (found as __esri.FeatureLayer).popupTemplate = (
+                layer as __esri.FeatureLayer
+              ).popupTemplate;
+              (found as __esri.FeatureLayer).renderer = (
+                layer as __esri.FeatureLayer
+              ).renderer;
             }
           }
 
           return (
-            (group as __esri.GroupLayer).findLayerById(layer.id) ===
-            undefined
+            (group as __esri.GroupLayer).findLayerById(layer.id) === undefined
           );
         });
-        (group as __esri.GroupLayer).addMany(
+        (group as __esri.GroupLayer).addMany(layers.toArray());
 
-            layers.toArray()
-        );
-
-        (group as __esri.GroupLayer).layers.forEach(layer1 => {
-          let index = matchlayers.findIndex(layer2 => {
+        (group as __esri.GroupLayer).layers.forEach((layer1) => {
+          let index = matchlayers.findIndex((layer2) => {
             return layer1.id === layer2.id;
           });
           (group as __esri.GroupLayer).reorder(layer1, index);
@@ -249,7 +249,7 @@ const addPropertyLabelToggles = (item: any) => {
 
 const addDevPlanFilters = (item: any) => {
   if (
-    item.layer.title.includes('Development Plans') &&
+    item.layer.title.includes("Development Plans") &&
     item.layer.type !== "group" &&
     item.actionsSections.length === 0
   ) {
@@ -257,12 +257,12 @@ const addDevPlanFilters = (item: any) => {
     const root = createRoot(filter as HTMLDivElement);
     root.render(
       <Suspense fallback={""}>
-        <DevPlanFilter datefield={'apply_date'} layer={item.layer} />
+        <DevPlanFilter datefield={"apply_date"} layer={item.layer} />
       </Suspense>
     );
     ((item as __esri.ListItem).panel.content as any[]).push(filter);
   }
-}
+};
 
 const createPanel = (item: __esri.ListItem) => {
   if (
@@ -284,7 +284,6 @@ const createPanel = (item: __esri.ListItem) => {
       open: false,
     } as __esri.ListItemPanel;
     addDevPlanFilters(item);
-
   }
 };
 
@@ -370,13 +369,15 @@ export const filterLayers = (
 };
 
 export const resetLayers = (list: __esri.LayerList) => {
-  const groups: Collection<__esri.GroupLayer> = list?.view.map.allLayers.filter(layer => {
-    return layer.type === 'group';
-  }) as Collection<__esri.GroupLayer>;
+  const groups: Collection<__esri.GroupLayer> = list?.view.map.allLayers.filter(
+    (layer) => {
+      return layer.type === "group";
+    }
+  ) as Collection<__esri.GroupLayer>;
   groups.forEach((group) => {
-    group.visible = group.title === 'Property';
-    group.layers.forEach(layer => {
+    group.visible = group.title === "Property";
+    group.layers.forEach((layer) => {
       layer.visible = layer.title === "Property";
-    })
-  });  
+    });
+  });
 };

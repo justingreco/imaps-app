@@ -1,15 +1,14 @@
-import React, { } from "react";
+import React from "react";
 
-import { CalciteAction, CalcitePanel, CalciteTooltip } from "@esri/calcite-components-react";
+import {
+  CalciteAction,
+  CalcitePanel,
+  CalciteTooltip,
+} from "@esri/calcite-components-react";
 import useLegend from "./utils/useLegend";
 import { PanelProps } from "../utils/PanelProps";
 export const Legend = (props: PanelProps) => {
-  const { 
-    ref,
-    isActive,
-    panelDismissed,
-    tipsClicked    
-  } = useLegend(props);
+  const { ref, isActive, panelDismissed, tipsClicked } = useLegend(props);
 
   return (
     <CalcitePanel
@@ -20,8 +19,16 @@ export const Legend = (props: PanelProps) => {
       closable
       onCalcitePanelClose={panelDismissed}
     >
-      <CalciteAction id="tip" icon="lightbulb"  text="Tips" slot="header-actions-end" onClick={tipsClicked}></CalciteAction>
-      <CalciteTooltip label="Show Tip" referenceElement="tip" closeOnClick>Show Tip</CalciteTooltip>
+      <CalciteAction
+        id="tip"
+        icon="lightbulb"
+        text="Tips"
+        slot="header-actions-end"
+        onClick={tipsClicked}
+      ></CalciteAction>
+      <CalciteTooltip label="Show Tip" referenceElement="tip" closeOnClick>
+        Show Tip
+      </CalciteTooltip>
       <div ref={ref}></div>
     </CalcitePanel>
   );

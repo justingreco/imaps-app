@@ -4,7 +4,7 @@ import { initializeLegend } from "./legend";
 import { tips } from "./tips";
 
 const useLegend = (props: PanelProps) => {
-const ref = useRef() as any;
+  const ref = useRef() as any;
   const loaded = useRef(false);
   const [legend, setLegend] = useState<__esri.Legend>();
   const [isActive, setIsActive] = useState(false);
@@ -24,14 +24,14 @@ const ref = useRef() as any;
   const panelDismissed = useCallback((e: any) => {
     props.panelDismissed();
   }, []);
-    const tipsClicked = useCallback((e: any) => {
-        props.showTips(tips);
-        }, []);    
-    return {
-        ref,
-        isActive,
-        panelDismissed,
-        tipsClicked          
-        }        
-}
+  const tipsClicked = useCallback((e: any) => {
+    props.showTips(tips);
+  }, []);
+  return {
+    ref,
+    isActive,
+    panelDismissed,
+    tipsClicked,
+  };
+};
 export default useLegend;

@@ -11,15 +11,14 @@ import {
   CalciteLabel,
   CalciteSlider,
 } from "@esri/calcite-components-react";
-import React, {  } from "react";
+import React from "react";
 import { PanelProps } from "../utils/PanelProps";
 // import Blend from "./Blend/Blend";
 
 import "./Basemaps.css";
 import useBasemaps from "./utils/useBasemaps";
 function Basemaps(props: PanelProps) {
-    
-  const { 
+  const {
     basemapRef,
     imagesRef,
     esriRef,
@@ -29,7 +28,7 @@ function Basemaps(props: PanelProps) {
     tipsClicked,
     blendUpdated,
     blendOpacityChanged,
-    blendActive
+    blendActive,
   } = useBasemaps(props);
   return (
     <CalcitePanel
@@ -40,11 +39,19 @@ function Basemaps(props: PanelProps) {
       closable
       onCalcitePanelClose={panelDismissed}
     >
-      <CalciteAction id="tip" icon="lightbulb"  text="Tips" slot="header-actions-end" onClick={tipsClicked}></CalciteAction>
-      <CalciteTooltip label="Show Tip" referenceElement="tip" closeOnClick>Show Tip</CalciteTooltip>
+      <CalciteAction
+        id="tip"
+        icon="lightbulb"
+        text="Tips"
+        slot="header-actions-end"
+        onClick={tipsClicked}
+      ></CalciteAction>
+      <CalciteTooltip label="Show Tip" referenceElement="tip" closeOnClick>
+        Show Tip
+      </CalciteTooltip>
       <div className="basemaps">
         <CalciteTabs position="bottom" layout="center" scale="l">
-          <CalciteTabNav  slot="title-group">
+          <CalciteTabNav slot="title-group">
             <CalciteTabTitle>Maps</CalciteTabTitle>
             <CalciteTabTitle>Images</CalciteTabTitle>
             <CalciteTabTitle>Esri</CalciteTabTitle>
@@ -54,12 +61,20 @@ function Basemaps(props: PanelProps) {
             <div ref={basemapRef}></div>
           </CalciteTab>
           <CalciteTab>
-            <br/>
+            <br />
             <CalciteLabel layout="inline" alignment="end">
-              <CalciteSwitch onCalciteSwitchChange={blendUpdated}></CalciteSwitch>
+              <CalciteSwitch
+                onCalciteSwitchChange={blendUpdated}
+              ></CalciteSwitch>
               Blend
             </CalciteLabel>
-            <CalciteSlider hidden={blendActive ? undefined : true} max={100} min={0} value={50} onCalciteSliderInput={blendOpacityChanged}></CalciteSlider>
+            <CalciteSlider
+              hidden={blendActive ? undefined : true}
+              max={100}
+              min={0}
+              value={50}
+              onCalciteSliderInput={blendOpacityChanged}
+            ></CalciteSlider>
             <div ref={imagesRef}></div>
           </CalciteTab>
           <CalciteTab>

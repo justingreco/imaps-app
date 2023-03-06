@@ -22,10 +22,10 @@ export function initializeBasemaps(
       query: `id: ${id}`,
     },
   });
-  reactiveUtils.whenOnce(
-    () => gallery.source.basemaps.length > 0)
+  reactiveUtils
+    .whenOnce(() => gallery.source.basemaps.length > 0)
     .then(() => {
-      const basemap = gallery.source.basemaps.find(basemap => {
+      const basemap = gallery.source.basemaps.find((basemap) => {
         return basemap.portalItem.title === view.map.basemap.title;
       });
       if (basemap) {
@@ -52,16 +52,16 @@ export function initializeImageMaps(
       },
     }),
   });
-  reactiveUtils.whenOnce(
-    () => images.source.basemaps.length > 0)
+  reactiveUtils
+    .whenOnce(() => images.source.basemaps.length > 0)
     .then(() => {
-      const basemap = images.source.basemaps.find(basemap => {
+      const basemap = images.source.basemaps.find((basemap) => {
         return basemap.portalItem.title === view.map.basemap.title;
       });
       if (basemap) {
         images.activeBasemap = basemap;
       }
-    });  
+    });
   images.when(() => {
     images.source.basemaps.reverse();
     if (!imageryBoundary) {
@@ -87,16 +87,16 @@ export function initializeEsriMaps(view: MapView, ref: HTMLDivElement) {
     container: ref,
     view: view,
   });
-  reactiveUtils.whenOnce(
-    () => esri.source.basemaps.length > 0)
+  reactiveUtils
+    .whenOnce(() => esri.source.basemaps.length > 0)
     .then(() => {
-      const basemap = esri.source.basemaps.find(basemap => {
+      const basemap = esri.source.basemaps.find((basemap) => {
         return basemap.portalItem.title === view.map.basemap.title;
       });
       if (basemap) {
         esri.activeBasemap = basemap;
       }
-    });    
+    });
 }
 
 let imageryBoundary: Polygon;
@@ -158,53 +158,67 @@ const viewExtentChanged = (
   }
 };
 
-export const updateBlendOpacity = (opacityValue: number, view: __esri.MapView, streetMapId: string, opacity: number) => {
-  const layer = view.map.basemap.baseLayers.find(layer => {
-    if (layer.type === 'vector-tile') {
-      return (layer as VectorTileLayer).portalItem.id === streetMapId
+export const updateBlendOpacity = (
+  opacityValue: number,
+  view: __esri.MapView,
+  streetMapId: string,
+  opacity: number
+) => {
+  const layer = view.map.basemap.baseLayers.find((layer) => {
+    if (layer.type === "vector-tile") {
+      return (layer as VectorTileLayer).portalItem.id === streetMapId;
     } else {
       return false;
     }
   });
-  
+
   if (layer) {
     layer.opacity = opacity;
   }
-}
-export const blendBasemap = (switched: boolean, view: __esri.MapView, streetMapId: string, opacity: number) => {
- const streetMap = new VectorTileLayer({portalItem: {id: streetMapId}});
- if (switched) {
-  streetMap.opacity = opacity;
-  view.map.basemap.baseLayers.add(streetMap);
- } else {
-  view.map.basemap.baseLayers.remove(streetMap);
-  const layer = view.map.basemap.baseLayers.find(layer => {
-    if (layer.type === 'vector-tile') {
-      return (layer as VectorTileLayer).portalItem.id === streetMap.portalItem.id;
-    } else {
-      return false;
-    }
-  });
-  
-  if (layer) {
-    view.map.basemap.baseLayers.remove(layer);
-  }
- }
- images.watch('activeBasemap', activeBasemap => {
+};
+export const blendBasemap = (
+  switched: boolean,
+  view: __esri.MapView,
+  streetMapId: string,
+  opacity: number
+) => {
+  const streetMap = new VectorTileLayer({ portalItem: { id: streetMapId } });
   if (switched) {
-    const layer = activeBasemap.baseLayers.find((layer: __esri.Layer) => {
-      if (layer.type === 'vector-tile') {
-        return (layer as VectorTileLayer).portalItem.id === streetMap.portalItem.id;
+    streetMap.opacity = opacity;
+    view.map.basemap.baseLayers.add(streetMap);
+  } else {
+    view.map.basemap.baseLayers.remove(streetMap);
+    const layer = view.map.basemap.baseLayers.find((layer) => {
+      if (layer.type === "vector-tile") {
+        return (
+          (layer as VectorTileLayer).portalItem.id === streetMap.portalItem.id
+        );
       } else {
         return false;
       }
     });
-    if (!layer) {
-     activeBasemap.baseLayers.add(streetMap);
+
+    if (layer) {
+      view.map.basemap.baseLayers.remove(layer);
     }
   }
- });
-}
+  images.watch("activeBasemap", (activeBasemap) => {
+    if (switched) {
+      const layer = activeBasemap.baseLayers.find((layer: __esri.Layer) => {
+        if (layer.type === "vector-tile") {
+          return (
+            (layer as VectorTileLayer).portalItem.id === streetMap.portalItem.id
+          );
+        } else {
+          return false;
+        }
+      });
+      if (!layer) {
+        activeBasemap.baseLayers.add(streetMap);
+      }
+    }
+  });
+};
 
 const checkBasemapTheme = (
   basemap: Basemap,

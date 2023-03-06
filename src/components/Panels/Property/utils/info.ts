@@ -12,7 +12,12 @@ export function initializeFeature(ref: HTMLDivElement, view: MapView) {
   return feature;
 }
 
-export function updateFeature(feature: Feature, graphic: Graphic, condos: Graphic[], featureTable: FeatureTable | undefined) {
+export function updateFeature(
+  feature: Feature,
+  graphic: Graphic,
+  condos: Graphic[],
+  featureTable: FeatureTable | undefined
+) {
   getPhotos(graphic).then((mediaInfos: __esri.MediaInfo[]) => {
     graphic.popupTemplate = createTemplate(
       feature.view as __esri.MapView,
@@ -21,7 +26,7 @@ export function updateFeature(feature: Feature, graphic: Graphic, condos: Graphi
       condos,
       featureTable
     );
-    
+
     const media = (graphic.popupTemplate.content as __esri.Content[]).find(
       (content: __esri.Content) => {
         return content?.type === "media";

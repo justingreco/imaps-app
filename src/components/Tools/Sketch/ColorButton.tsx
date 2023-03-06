@@ -55,7 +55,7 @@ function ColorButton(props: any) {
             slot="header-actions-end"
             onClick={() => {
               if (popover.current) {
-                popover.current.open = !popover.current.open ;
+                popover.current.open = !popover.current.open;
               }
               const c = new Color(color);
               c.a = 1 - transparency / 100;

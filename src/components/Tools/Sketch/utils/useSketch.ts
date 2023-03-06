@@ -1,11 +1,14 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ToolProps } from "../../utils/ToolProps";
-import { cancelSketch, initializeSketchViewModel, sketchActivated } from "./sketch";
+import {
+  cancelSketch,
+  initializeSketchViewModel,
+  sketchActivated,
+} from "./sketch";
 import { tips } from "./tips";
-  
-const useSketch = (props: ToolProps) => {
 
-const loaded = useRef(false);
+const useSketch = (props: ToolProps) => {
+  const loaded = useRef(false);
   const [activeSketchTool, setActiveSketchTool] = useState("");
   const [isActive, setIsActive] = useState(false);
   const [selectedGraphics, setSelectedGraphics] = useState<__esri.Graphic[]>(
@@ -21,7 +24,6 @@ const loaded = useRef(false);
         setSelectedGraphics
       );
     }
-    
   }, []);
   useEffect(() => {
     setIsActive(props.isActive);
@@ -29,9 +31,9 @@ const loaded = useRef(false);
       props.toolDismissed();
       cancelSketch();
       setActiveSketchTool("");
-      setSelectedGraphics([...[],...[]]);
+      setSelectedGraphics([...[], ...[]]);
       //props.view.highlightOptions = {fillOpacity: 0.25, color: '#00ffff', haloColor: '#00ffff', haloOpacity: 1} as any;
-    }  else {
+    } else {
       (props.view as __esri.MapView).popup.autoOpenEnabled = false;
       sketchActivated();
     }
@@ -40,32 +42,48 @@ const loaded = useRef(false);
     props.toolDismissed();
     cancelSketch();
     setActiveSketchTool("");
-    setSelectedGraphics([...[],...[]]);
+    setSelectedGraphics([...[], ...[]]);
 
     //props.view.highlightOptions = {fillOpacity: 0.25, color: '#00ffff', haloColor: '#00ffff', haloOpacity: 1} as any;
   }, []);
   const tipsClicked = useCallback((e: any) => {
     props.showTips(tips);
-    }, []);
-  const checkGeometryType = (selectedGraphics: __esri.Graphic[], geometryType: string) => {
-    const geometryTypes = selectedGraphics.map(graphic => {
+  }, []);
+  const checkGeometryType = (
+    selectedGraphics: __esri.Graphic[],
+    geometryType: string
+  ) => {
+    const geometryTypes = selectedGraphics.map((graphic) => {
       let type: string = graphic.geometry.type;
-      if (graphic.symbol.type === 'text') {
-        type = 'text';
+      if (graphic.symbol.type === "text") {
+        type = "text";
       }
       return type;
     });
     const uniqueTypes = geometryTypes.filter((t, index) => {
       return geometryTypes.indexOf(t) === index;
     });
-    if (uniqueTypes.length > 1 || uniqueTypes.length < 1 || selectedGraphics.length !== 1) {
+    if (
+      uniqueTypes.length > 1 ||
+      uniqueTypes.length < 1 ||
+      selectedGraphics.length !== 1
+    ) {
       return false;
     }
     if (uniqueTypes.length === 1 && uniqueTypes[0] === geometryType) {
       return true;
     }
-  }
-  return {activeSketchTool, setActiveSketchTool, selectedGraphics, setSelectedGraphics, isActive, toolDismissed, tipsClicked,checkGeometryType}
+  };
+  return {
+    activeSketchTool,
+    setActiveSketchTool,
+    selectedGraphics,
+    setSelectedGraphics,
+    isActive,
+    toolDismissed,
+    tipsClicked,
+    checkGeometryType,
+  };
 };
 
 export default useSketch;

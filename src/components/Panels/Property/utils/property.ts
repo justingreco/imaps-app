@@ -94,5 +94,5 @@ export function clearAddressPoints(view: MapView) {
     view.graphics.filter((graphic) => {
       return graphic.getAttribute("type") === "address";
     })
-  );    
+  );
 }

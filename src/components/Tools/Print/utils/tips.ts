@@ -1,3 +1,1 @@
-export const tips = {title: 'Print Tips', tips: [
-
-]}
+export const tips = { title: "Print Tips", tips: [] };

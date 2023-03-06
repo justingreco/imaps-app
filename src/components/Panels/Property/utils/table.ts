@@ -42,13 +42,18 @@ export function initializeFeatureTable(
       document.addEventListener(
         "visibilitychange",
         (e) => {
-
           if (document.hidden) {
-            const visibleFields = featureTable.columns.filter((column: any) => {
-              return !column.hidden;
-            }).map((column: any) => {return column.field.name});
-            window.localStorage.setItem('imaps_table_template', JSON.stringify(visibleFields));
-  
+            const visibleFields = featureTable.columns
+              .filter((column: any) => {
+                return !column.hidden;
+              })
+              .map((column: any) => {
+                return column.field.name;
+              });
+            window.localStorage.setItem(
+              "imaps_table_template",
+              JSON.stringify(visibleFields)
+            );
           }
         },
         false
@@ -57,39 +62,47 @@ export function initializeFeatureTable(
         resolve(featureTable);
         initializeGrid(featureTable);
 
-        featureTable.highlightIds.on('change', (e) => {
+        featureTable.highlightIds.on("change", (e) => {
           if (e.added.length) {
-            (featureTable.layer as __esri.FeatureLayer).queryFeatures({where:`OBJECTID = ${e.added[0]}`, outFields: ['REID'], returnGeometry: false}).then(fs => {
-              if (fs.features.length) {
-                const condoTable = (
-                  view.map.allTables.find((table: __esri.Layer) => {
-                    return table.title.includes("Condo");
-                  }) as __esri.FeatureLayer
-                );
-                (featureTable.layer as __esri.FeatureLayer)
-                  condoTable.queryFeatures({
-                    where: `REID = '${fs.features[0].getAttribute('REID')}'`,
-                    outFields: ['*'],
-                    returnGeometry: false,
-                  })
-                  .then((featureSet) => {
-                    if (featureSet.features.length) {
-                      const oid = featureSet.features[0].getAttribute('OBJECTID');
-                      getProperty([oid]).then(properties => {
-                        if (properties.length) {
-                          featureSet.features[0].geometry = properties[0].geometry;
-                          //view.goTo(featureSet.features[0]);
-                          featureSelected(featureSet.features[0]);                      
-                        }
-                      })
-                      //view.goTo(featureSet.features[0]);
-                      //featureSelected(featureSet.features[0]);
+            (featureTable.layer as __esri.FeatureLayer)
+              .queryFeatures({
+                where: `OBJECTID = ${e.added[0]}`,
+                outFields: ["REID"],
+                returnGeometry: false,
+              })
+              .then((fs) => {
+                if (fs.features.length) {
+                  const condoTable = view.map.allTables.find(
+                    (table: __esri.Layer) => {
+                      return table.title.includes("Condo");
                     }
-                  });
-                 // featureTable.highlightIds.removeAll();
-              }
-            });
-           
+                  ) as __esri.FeatureLayer;
+                  featureTable.layer as __esri.FeatureLayer;
+                  condoTable
+                    .queryFeatures({
+                      where: `REID = '${fs.features[0].getAttribute("REID")}'`,
+                      outFields: ["*"],
+                      returnGeometry: false,
+                    })
+                    .then((featureSet) => {
+                      if (featureSet.features.length) {
+                        const oid =
+                          featureSet.features[0].getAttribute("OBJECTID");
+                        getProperty([oid]).then((properties) => {
+                          if (properties.length) {
+                            featureSet.features[0].geometry =
+                              properties[0].geometry;
+                            //view.goTo(featureSet.features[0]);
+                            featureSelected(featureSet.features[0]);
+                          }
+                        });
+                        //view.goTo(featureSet.features[0]);
+                        //featureSelected(featureSet.features[0]);
+                      }
+                    });
+                  // featureTable.highlightIds.removeAll();
+                }
+              });
           }
         });
       });
@@ -109,7 +122,9 @@ function initializeGrid(featureTable: FeatureTable) {
     ) as any;
     updateTableTitle(grid);
     //set tabpanel to 100% in shadowRoot
-    (featureTable.container as HTMLElement).parentElement?.shadowRoot?.querySelector('[role="tabpanel"]')?.setAttribute('style', 'height: 100%');
+    (featureTable.container as HTMLElement).parentElement?.shadowRoot
+      ?.querySelector('[role="tabpanel"]')
+      ?.setAttribute("style", "height: 100%");
     grid?.addEventListener("cell-activate", (e: any) => {
       featureTable.highlightIds.removeAll();
       const feature = e.detail.model.item.feature;
@@ -174,7 +189,9 @@ function getTableTemplate(layer: __esri.FeatureLayer): TableTemplate {
   const tableTemplate: TableTemplate = new TableTemplate({
     columnTemplates: [],
   });
-  const storedFields = JSON.parse(window.localStorage.getItem('imaps_table_template') as string);
+  const storedFields = JSON.parse(
+    window.localStorage.getItem("imaps_table_template") as string
+  );
   const ignoreFields = ["OBJECTID", "PARCELPK", "GlobalID"];
   const showColumns = ["SITE_ADDRESS", "OWNER", "REID", "PIN_NUM", "PIN_EXT"];
   //const showColumns: string[] = storedFields ? storedFields : ["SITE_ADDRESS", "OWNER", "REID", "PIN_NUM", "PIN_EXT"];
@@ -188,7 +205,9 @@ function getTableTemplate(layer: __esri.FeatureLayer): TableTemplate {
     const columnTemplate = new FieldColumnTemplate({
       label: field.label,
       fieldName: field.fieldName,
-      visible: storedFields ? storedFields.includes(field.fieldName) : showColumns.includes(field.fieldName),
+      visible: storedFields
+        ? storedFields.includes(field.fieldName)
+        : showColumns.includes(field.fieldName),
       editable: false,
       initialSortPriority: setSortPriority(field.fieldName),
       direction: "asc",
@@ -204,7 +223,10 @@ function getTableTemplate(layer: __esri.FeatureLayer): TableTemplate {
         new FieldColumnTemplate({
           label: field.label,
           fieldName: field.fieldName,
-          visible: storedFields ? storedFields.includes(field.fieldName) : showColumns.includes(field.fieldName),          editable: false,
+          visible: storedFields
+            ? storedFields.includes(field.fieldName)
+            : showColumns.includes(field.fieldName),
+          editable: false,
         } as any)
       );
     }
@@ -214,7 +236,6 @@ function getTableTemplate(layer: __esri.FeatureLayer): TableTemplate {
 
 export function updateTable(features: Graphic[], featureTable: FeatureTable) {
   if (featureTable) {
- 
     (featureTable.layer as __esri.FeatureLayer)
       .queryFeatures({
         where: "1=1",
@@ -227,11 +248,10 @@ export function updateTable(features: Graphic[], featureTable: FeatureTable) {
             (featureTable.layer as __esri.FeatureLayer)
               .applyEdits({ addFeatures: features })
               .then((result) => {
-                requestAnimationFrame(()=> {
+                requestAnimationFrame(() => {
                   featureTable.refresh();
                 });
                 updateTableTitle((featureTable as any).grid._grid);
-
               })
               .catch((reason) => {
                 console.log(reason);
@@ -252,9 +272,8 @@ const updateTableTitle = (grid: any) => {
     if (title) {
       title.textContent = "Selected Properties: " + grid?.items?.length;
     }
-  },100);
-
-}
+  }, 100);
+};
 const exportTable = (table: FeatureTable): void => {
   (table.layer as FeatureLayer)
     .queryFeatures({ where: "1=1", outFields: ["*"] })
